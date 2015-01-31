@@ -6,17 +6,19 @@ require 'geo_combine/version'
 Gem::Specification.new do |spec|
   spec.name          = "geo_combine"
   spec.version       = GeoCombine::VERSION
-  spec.authors       = ["TODO: Write your name"]
+  spec.authors       = ["Jack Reed"]
   spec.email         = ["pjreed@stanford.edu"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{A Ruby toolkit for managing geospatial metadata}
+  spec.description   = %q{A Ruby toolkit for managing geospatial metadata}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "Apache"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
+
+  spec.add_dependency 'rsolr'
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"

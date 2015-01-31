@@ -1,5 +1,7 @@
-require "geo_combine/version"
+require 'geo_combine/version'
 
 module GeoCombine
-  # Your code goes here...
+
 end
+
+load File.expand_path('../tasks/geo_combine.rake', __FILE__)
