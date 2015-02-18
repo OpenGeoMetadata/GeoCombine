@@ -19,6 +19,20 @@ Or install it yourself as:
     $ gem install geo_combine
 
 ## Usage
+GeoCombine can be used as a set of rake tasks for cloning, updating, and indexing OpenGeoMetdata metdata. It can also be used as a Ruby library for converting metdata.
+
+### Transforming metadata
+
+```ruby
+# Create a new ISO19139 object
+> iso_metadata =  GeoCombine::Iso19139.new('./tmp/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
+
+# Convert it to GeoBlacklight
+> iso_metadata.to_geoblacklight
+
+# Convert that to JSON
+> iso_metadata.to_geoblacklight.to_json
+```
 
 ### Clone all OpenGeoMetadata repositories
 
