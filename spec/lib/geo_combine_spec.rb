@@ -18,5 +18,6 @@ RSpec.describe GeoCombine::Metadata do
       expect(metadata_object.metadata.css('Author').count).to eq 2
     end
   end
-  # GeoCombine subclasses should individually test `to_geoblacklight` method
+  # GeoCombine subclasses should individually test `to_geoblacklight` and
+  # `to_html` methods
 end
