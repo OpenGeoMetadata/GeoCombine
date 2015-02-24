@@ -17,7 +17,7 @@ module GeoCombine
     ##
     # Creates a new GeoCombine::Metadata object, where metadata parameter is can
     # be a File path or String of XML
-    # @param (String) metadata can be a File path 
+    # @param [String] metadata can be a File path 
     # "./tmp/edu.stanford.purl/bb/338/jh/0716/iso19139.xml" or a String of XML
     # metadata
     def initialize metadata
@@ -28,8 +28,16 @@ module GeoCombine
 
     ##
     # Perform an XSLT tranformation on metadata using an object's XSL
+    # @return [GeoCombine::Geoblacklight] the data transformed into geoblacklight schema, returned as a GeoCombine::Geoblacklight
     def to_geoblacklight
-      GeoCombine::Geoblacklight.new(xsl.transform(@metadata))
+      GeoCombine::Geoblacklight.new(xsl_geoblacklight.transform(@metadata))
+    end
+
+    ##
+    # Perform an XSLT transformation to HTML using an object's XSL
+    # @return [String] the xml transformed to an HTML String
+    def to_html
+      xsl_html.transform(@metadata).to_html
     end
   end
 end

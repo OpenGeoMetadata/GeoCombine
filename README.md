@@ -36,6 +36,9 @@ GeoCombine can be used as a set of rake tasks for cloning, updating, and indexin
 
 # Convert that to JSON
 > iso_metadata.to_geoblacklight.to_json
+
+# Convert ISO or FGDC to HTML
+> iso_metadata.to_html
 ```
 
 ### Clone all OpenGeoMetadata repositories
