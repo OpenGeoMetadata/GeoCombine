@@ -37,15 +37,15 @@ http://www.w3.org/TR/xslt
 
   <!-- Import another XSLT file for replacing newlines with HTML <br/>'s: -->
 
-  <xsl:import href="./lib/xslt/utils/replace-newlines.xsl"/>
+  <xsl:import href="utils/replace-newlines.xsl"/>
 
   <!-- Import another XSLT file for doing other string substitutions: -->
 
-  <xsl:import href="./lib/xslt/utils/replace-string.xsl"/>
+  <xsl:import href="utils/replace-string.xsl"/>
 
   <!-- Import another XSLT file for limiting the number of decimal places: -->
 
-  <xsl:import href="./lib/xslt/utils/strip-digits.xsl"/>
+  <xsl:import href="utils/strip-digits.xsl"/>
 
   <!-- 
 
