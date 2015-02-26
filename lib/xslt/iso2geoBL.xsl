@@ -495,30 +495,7 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="$x2"/>
         </field>
-      
-     
-        <field name="solr_bbox">
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-        </field>
-        
-        <field name="solr_sw_pt">
-          <xsl:value-of select="$y1"/>
-          <xsl:text>,</xsl:text>
-          <xsl:value-of select="$x1"/>
-        </field>
-        
-        <field name="solr_ne_pt">
-          <xsl:value-of select="$y2"/>
-          <xsl:text>,</xsl:text>
-          <xsl:value-of select="$x2"/>
-        </field>
-        
+              
         <!-- content date: singular, or beginning date of range: YYYY -->
         <xsl:choose>
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition/text() != ''">
