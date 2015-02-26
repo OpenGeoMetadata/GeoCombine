@@ -10,7 +10,7 @@ namespace :geocombine do
     ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map{ |repo| repo['git_url']}
     ogm_repos.each do |repo|
       if repo =~ /^git:\/\/github.com\/OpenGeoMetadata\/edu.*/
-        system "cd tmp && git clone #{repo}"
+        system "mkdir -p tmp && cd tmp && git clone #{repo}"
       end
     end
   end
