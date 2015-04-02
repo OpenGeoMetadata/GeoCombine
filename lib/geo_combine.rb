@@ -1,4 +1,6 @@
 require 'nokogiri'
+require 'json'
+require 'json-schema'
 
 module GeoCombine
 

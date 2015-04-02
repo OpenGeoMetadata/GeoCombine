@@ -8,6 +8,11 @@ RSpec.describe GeoCombine::Geoblacklight do
       expect(valid_json?(geobl_object.to_json)).to be_truthy
     end
   end
+  describe '#valid?' do
+    pending 'geoblacklight object should be valid' do
+      expect(geobl_object.valid?).to be_truthy
+    end
+  end
   describe '#to_hash' do
     it 'returns a hash' do
       expect(geobl_object.to_hash).to be_an Hash

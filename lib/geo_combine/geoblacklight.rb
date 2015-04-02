@@ -9,6 +9,14 @@ module GeoCombine
     end
 
     ##
+    # Validates a GeoBlacklight-Schema json document
+    # @return [Boolean]
+    def valid?
+      schema = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../schema/geoblacklight-schema.json')))
+      JSON::Validator.validate!(schema, JSON.parse(to_json), validate_schema: true)
+    end
+
+    ##
     # Returns a hash from a GeoBlacklight object
     # @return (Hash)
     def to_hash
@@ -17,7 +25,7 @@ module GeoCombine
         (hash[field.attributes['name'].value] ||= []) << field.children.text
       end
       hash.collect do |key, value|
-        hash[key] = value.count > 1 ? { key => value } : { key => value[0] }
+        hash[key] = value.count > 1 ? value : value[0]
       end
       hash
     end
