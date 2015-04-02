@@ -31,8 +31,8 @@ module GeoCombine
     ##
     # Perform an XSLT tranformation on metadata using an object's XSL
     # @return [GeoCombine::Geoblacklight] the data transformed into geoblacklight schema, returned as a GeoCombine::Geoblacklight
-    def to_geoblacklight
-      GeoCombine::Geoblacklight.new(xsl_geoblacklight.transform(@metadata))
+    def to_geoblacklight fields = {}
+      GeoCombine::Geoblacklight.new(xsl_geoblacklight.apply_to(@metadata), fields)
     end
 
     ##
