@@ -1,11 +1,36 @@
 module GeoCombine
-  class Geoblacklight < Metadata
+  class Geoblacklight
+    include GeoCombine::Formats
+    include GeoCombine::Subjects
+
+    attr_reader :metadata
+
+    ##
+    # Initializes a GeoBlacklight object
+    # @param [String] metadata be a valid JSON string document in
+    # GeoBlacklight-Schema
+    # @param [Hash] fields enhancements to metadata that are merged with @metadata
+    def initialize(metadata, fields = {})
+      @metadata = JSON.parse(metadata).merge(fields)
+    end
+
+    ##
+    # Calls metadata enhancement methods for each key, value pair in the
+    # metadata hash
+    def enhance_metadata
+      @metadata.each do |key, value|
+        translate_formats(key, value)
+        enhance_subjects(key, value)
+        format_proper_date(key, value)
+        fields_should_be_array(key, value)
+      end
+    end
 
     ##
     # Returns a string of JSON from a GeoBlacklight hash
     # @return (String)
     def to_json
-      to_hash.to_json
+      @metadata.to_json
     end
 
     ##
@@ -13,21 +38,45 @@ module GeoCombine
     # @return [Boolean]
     def valid?
       schema = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../schema/geoblacklight-schema.json')))
-      JSON::Validator.validate!(schema, JSON.parse(to_json), validate_schema: true)
+      JSON::Validator.validate!(schema, to_json, validate_schema: true)
+    end
+
+    private
+
+    ##
+    # Enhances the 'dc_format_s' field by translating a format type to a valid
+    # GeoBlacklight-Schema format
+    def translate_formats(key, value)
+      @metadata[key] = formats[value] if key == 'dc_format_s' && formats.include?(value)
     end
 
     ##
-    # Returns a hash from a GeoBlacklight object
-    # @return (Hash)
-    def to_hash
-      hash = {}
-      @metadata.css('field').each do |field|
-        (hash[field.attributes['name'].value] ||= []) << field.children.text
-      end
-      hash.collect do |key, value|
-        hash[key] = value.count > 1 ? value : value[0]
-      end
-      hash
+    # Enhances the 'dc_subject_sm' field by translating subjects to ISO topic
+    # categories
+    def enhance_subjects(key, value)
+      @metadata[key] = value.map do |val|
+        if subjects.include?(val)
+          subjects[val]
+        else
+          val
+        end
+      end if key == 'dc_subject_sm'
+    end
+
+    ##
+    # Formats the 'layer_modified_dt' to a valid valid RFC3339 date/time string
+    def format_proper_date(key, value)
+      @metadata[key] = DateTime.parse(value).to_s if key == 'layer_modified_dt'
+    end
+
+    def fields_should_be_array(key, value)
+      @metadata[key] = [value] if should_be_array.include?(key) && !value.kind_of?(Array)
+    end
+
+    ##
+    # GeoBlacklight-Schema fields that should be type Array
+    def should_be_array
+      ['dc_creator_sm', 'dc_subject_sm', 'dct_spatial_sm', 'dct_temporal_sm', 'dct_isPartOf_sm']
     end
   end
 end
