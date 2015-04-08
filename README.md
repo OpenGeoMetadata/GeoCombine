@@ -57,13 +57,37 @@ $ rake geocombine:pull
 
 Runs `git pull origin master` on all cloned repositories in `./tmp`
 
-### Index all of the GeoBlacklight documents
+### Delete files from cloning repositories
 
 ```sh
-$ rake geocombine:index
+$ rake geocombine:clean
 ```
 
-Indexs all of the `geoblacklight.xml` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
+Will recursively delete the `./tmp` directory
+
+### Index all of the GeoBlacklight documents (solr URI is optional)
+
+```sh
+$ rake geocombine:index["http://solr_url.edu/solr"]
+```
+
+Indexes all of the `geoblacklight.xml` files in cloned repositories to a Solr index running at given URI, or at http://127.0.0.1:8983/solr by default
+
+### Clear the index (solr URI is optional)
+
+```sh
+$ rake geocombine:delete["http://solr_url.edu/solr"]
+```
+
+Deletes everything from the given solr index, or http://127.0.0.1:8983/solr by default
+
+### Clone and index in one command (useful for first runs) (solr URI is optional)
+
+```sh
+$ rake geocombine:all["http://solr_url.edu/solr"]
+```
+
+The same as running geocombine:clone and gecombine:index (at given URI, or http://127.0.0.1:8983/solr by default)
 
 ## Contributing
 
