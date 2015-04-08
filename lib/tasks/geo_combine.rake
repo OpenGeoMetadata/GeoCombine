@@ -9,14 +9,15 @@ namespace :geocombine do
   desc 'Clone and index all in one go'
   task :all, [:solr_url] => [:clone, :index]
 
+  ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
   desc 'Clone all OpenGeoMetadata repositories'
   task :clone do
-    FileUtils.mkdir_p('tmp')
+    FileUtils.mkdir_p(ogm_path)
     ogm_api_uri = URI('https://api.github.com/orgs/opengeometadata/repos')
     ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map{ |repo| repo['git_url']}
     ogm_repos.each do |repo|
       if repo =~ /^git:\/\/github.com\/OpenGeoMetadata\/edu.*/
-        system "mkdir -p tmp && cd tmp && git clone #{repo}"
+        system "mkdir -p #{ogm_path} && cd #{ogm_path} && git clone #{repo}"
       end
     end
   end
@@ -24,7 +25,7 @@ namespace :geocombine do
   desc 'Delete the tmp directory'
   task :clean do
     puts "Removing 'tmp' directory." if verbose == true
-    FileUtils.rm_rf('tmp') 
+    FileUtils.rm_rf(ogm_path) 
   end
 
   desc "Delete the Solr index"
@@ -42,7 +43,7 @@ namespace :geocombine do
 
   desc '"git pull" OpenGeoMetadata repositories'
   task :pull do
-    Dir.glob('tmp/*').map{ |dir| system "cd #{dir} && git pull origin master" if dir =~ /.*edu.*./ }
+    Dir.glob("#{ogm_path}/*").map{ |dir| system "cd #{dir} && git pull origin master" if dir =~ /.*edu.*./ }
   end
 
   desc 'Index all of the GeoBlacklight documents'
@@ -52,7 +53,7 @@ namespace :geocombine do
       solr = RSolr.connect :url => args[:solr_url], :read_timeout => 720
 
       puts "Finding geoblacklight.xml files." if verbose == true
-      xml_files = Dir.glob("tmp/**/*geoblacklight.xml")
+      xml_files = Dir.glob("#{ogm_path}/**/*geoblacklight.xml")
 
       puts "Loading files into solr." if verbose == true
       xml_files.each_with_index do |file, i|

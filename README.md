@@ -29,7 +29,7 @@ GeoCombine can be used as a set of rake tasks for cloning, updating, and indexin
 
 ```ruby
 # Create a new ISO19139 object
-> iso_metadata =  GeoCombine::Iso19139.new('./tmp/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
+> iso_metadata =  GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
 
 # Convert it to GeoBlacklight
 > iso_metadata.to_geoblacklight
@@ -47,7 +47,11 @@ GeoCombine can be used as a set of rake tasks for cloning, updating, and indexin
 $ rake geocombine:clone
 ```
 
-Will clone all edu.* OpenGeoMetadata repositories into `./tmp`
+Will clone all edu.* OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
+
+```sh
+$ OGM_PATH='my/custom/location' rake geocombine:clone
+```
 
 ### Pull all OpenGeoMetadata repositories
 
@@ -55,7 +59,7 @@ Will clone all edu.* OpenGeoMetadata repositories into `./tmp`
 $ rake geocombine:pull
 ```
 
-Runs `git pull origin master` on all cloned repositories in `./tmp`
+Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometadata` (or custom path with configured environment variable `OGM_PATH`)
 
 ### Delete files from cloning repositories
 
