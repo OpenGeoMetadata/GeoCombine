@@ -698,50 +698,6 @@ module XmlDocs
   end
 
   ##
-  # Example GeoBlacklight XML from 
-  def stanford_geobl
-    <<-xml
-      <?xml version="1.0" encoding="UTF-8"?>
-      <add xmlns="http://lucene.apache.org/solr/4/document">
-      <doc>
-        <field name="uuid">http://purl.stanford.edu/bb338jh0716</field>
-        <field name="dc_identifier_s">http://purl.stanford.edu/bb338jh0716</field>
-        <field name="dc_title_s">Hydrologic Sub-Area Boundaries: Russian River Watershed, California, 1999</field>
-        <field name="dc_description_s">This polygon dataset represents the Hydrologic Sub-Area boundaries for the Russian River basin, as defined by the Calwater 2.2a watershed boundaries. The original CALWATER22 layer (Calwater 2.2a watershed boundaries) was developed as a coverage named calw22a and is administered by the Interagency California Watershed Mapping Committee (ICWMC). This shapefile can be used to map and analyze data at the Hydrologic Sub-Area scale.</field>
-        <field name="dc_rights_s">Restricted</field>
-        <field name="dct_provenance_s">Stanford</field>
-        <field name="dct_references_s">{"http://schema.org/url":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb338jh0716/default.html","http://www.loc.gov/mods/v3":"http://purl.stanford.edu/bb338jh0716.mods","http://www.isotc211.org/schemas/2005/gmd/":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb338jh0716/iso19139.xml","http://www.w3.org/1999/xhtml":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb338jh0716/default.html","http://www.opengis.net/def/serviceType/ogc/wfs":"https://geowebservices-restricted.stanford.edu/geoserver/wfs","http://www.opengis.net/def/serviceType/ogc/wms":"https://geowebservices-restricted.stanford.edu/geoserver/wms"}</field>
-        <field name="layer_id_s">druid:bb338jh0716</field>
-        <field name="layer_slug_s">stanford-bb338jh0716</field>
-        <field name="layer_geom_type_s">Polygon</field>
-        <field name="layer_modified_dt">2014-12-16T19:30:53Z</field>
-        <field name="dc_format_s">Shapefile</field>
-        <field name="dc_language_s">English</field>
-        <field name="dc_type_s">Dataset</field>
-        <field name="dc_publisher_s">Circuit Rider Productions</field>
-        <field name="dc_creator_sm">Circuit Rider Productions</field>
-        <field name="dc_subject_sm">Hydrology</field>
-        <field name="dc_subject_sm">Watersheds</field>
-        <field name="dc_subject_sm">Boundaries</field>
-        <field name="dc_subject_sm">Inland Waters</field>
-        <field name="dct_issued_s">2002</field>
-        <field name="dct_temporal_sm">1999</field>
-        <field name="dct_spatial_sm">Sonoma County (Calif.)</field>
-        <field name="dct_spatial_sm">Mendocino County (Calif.)</field>
-        <field name="dct_spatial_sm">Russian River Watershed (Calif.)</field>
-        <field name="dc_relation_sm">http://sws.geonames.org/5397100/about.rdf</field>
-        <field name="dc_relation_sm">http://sws.geonames.org/5372163/about.rdf</field>
-        <field name="georss_box_s">38.298673 -123.387626 39.399103 -122.528843</field>
-        <field name="georss_polygon_s">38.298673 -123.387626 39.399103 -123.387626 39.399103 -122.528843 38.298673 -122.528843 38.298673 -123.387626</field>
-        <field name="solr_geom">ENVELOPE(-123.387626, -122.528843, 39.399103, 38.298673)</field>
-        <field name="solr_bbox">-123.387626 38.298673 -122.528843 39.399103</field>
-        <field name="solr_year_i">1999</field>
-      </doc>
-      </add>
-    xml
-  end
-
-  ##
   # Example FGDC XML from https://github.com/OpenGeoMetadata/edu.tufts/blob/master/0/108/220/208/fgdc.xml
   def tufts_fgdc
     <<-xml

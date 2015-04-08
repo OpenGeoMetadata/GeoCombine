@@ -21,6 +21,7 @@ Coveralls.wear!
 
 require 'geo_combine'
 require 'fixtures/xml_docs'
+require 'fixtures/json_docs'
 require 'helpers'
 
 RSpec.configure do |config|

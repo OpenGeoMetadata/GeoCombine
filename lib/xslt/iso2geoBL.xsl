@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-     iso2geoBl.xsl - Transformation from ISO 19139 XML into GeoBlacklight solr
+     iso2geoBl.xsl - Transformation from ISO 19139 XML into GeoBlacklight solr json
      
 -->
 <xsl:stylesheet 
@@ -11,16 +10,12 @@
   xmlns:gml="http://www.opengis.net/gml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   version="1.0" exclude-result-prefixes="gml gmd gco gmi xsl">
-  <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+  <xsl:output method="text" version="1.0" omit-xml-declaration="yes" indent="no" media-type="application/json"/>
   <xsl:strip-space elements="*"/>
   <xsl:param name="geometryType"/>
   <xsl:param name="purl"/>
   <xsl:param name="zipName" select="'data.zip'"/>
-  
-  
 
-
-  
   <xsl:template match="/">
     <!-- institution  -->
     <xsl:variable name="institution">
@@ -102,25 +97,12 @@
         </xsl:otherwise>
          </xsl:choose>
     </xsl:variable>
-    <add>
-      <doc>
-        <field name="uuid">
-          <xsl:value-of select="$uuid"/>
-        </field>
-       
-        <field name="dc_identifier_s">
-          <xsl:value-of select="$uuid"/>
-        </field>
-        
-        <field name="dc_title_s">
-          <xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title"/>
-        </field>
-
-        <field name="dc_description_s">
-          <xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract"/>
-        </field>
-        
-        <field name="dc_rights_s">
+    <xsl:text>{</xsl:text>
+      <xsl:text>"uuid": "</xsl:text><xsl:value-of select="$uuid"/><xsl:text>",</xsl:text>
+      <xsl:text>"dc_identifier_s": "</xsl:text><xsl:value-of select="$uuid"/><xsl:text>",</xsl:text>
+      <xsl:text>"dc_title_s": "</xsl:text><xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title"/><xsl:text>",</xsl:text>
+      <xsl:text>"dc_description_s": "</xsl:text><xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract"/><xsl:text>",</xsl:text>
+      <xsl:text>"dc_rights_s": "</xsl:text>
           <xsl:choose>
             <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='restricted']">
               <xsl:text>Restricted</xsl:text>
@@ -150,97 +132,56 @@
             <xsl:otherwise>
               <xsl:text>Public</xsl:text>
             </xsl:otherwise>
-          </xsl:choose>
-        </field>
-
-        <field name="dct_provenance_s">
-          <xsl:value-of select="$institution"/>
-        </field>
-
-        <field name="dct_references_s">
-          <xsl:text>{</xsl:text>
-          <xsl:text>"http://schema.org/url":"</xsl:text>              
-          <xsl:value-of select="$uuid"/>
-          <xsl:text>",</xsl:text>
-          <!--<xsl:text>"http://schema.org/thumbnailUrl":"</xsl:text>              
-          <xsl:value-of select="$stacks_root"/>
-          <xsl:text>/file/druid:</xsl:text>
-          <xsl:value-of select="$identifier"/>
-          <xsl:text>/preview.jpg",</xsl:text>
-          <xsl:text>"http://schema.org/DownloadAction":"</xsl:text>              
-          <xsl:value-of select="$stacks_root"/>
-          <xsl:text>/file/druid:</xsl:text>
-          <xsl:value-of select="$identifier"/>
-          <xsl:text>/data.zip",</xsl:text>
-          <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
-          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
-          <xsl:value-of select="$identifier"/>
-          <xsl:text>/mods",</xsl:text>
-          <xsl:text>"http://www.isotc211.org/schemas/2005/gmd/":"</xsl:text>              
-          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
-          <xsl:value-of select="$identifier"/>
-          <xsl:text>/iso19139",</xsl:text>
-          <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wms":"</xsl:text>
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wms",</xsl:text>
-          <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wfs":"</xsl:text>
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wfs",</xsl:text>
-          <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wcs"</xsl:text> -->
-          <xsl:text>}</xsl:text>
-        </field>
-
-        <field name="layer_id_s">
-          <xsl:choose>
-            <xsl:when test="$institution = 'Stanford'">
-              <xsl:text>druid:</xsl:text>
-              <xsl:value-of select="$identifier"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>urn:</xsl:text>
-              <xsl:value-of select="$identifier"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </field>
-        
-        <field name="layer_slug_s">
-          <xsl:value-of select="$institution"/>
-          <xsl:text>-</xsl:text>
-          <xsl:value-of select="$identifier"/>
-        </field>
-
-        <field name="layer_geom_type_s">
-          <xsl:value-of select="$geometryType"/>
-        </field>
-        
+          </xsl:choose><xsl:text>",</xsl:text>
+      <xsl:text>"dct_provenance_s": "</xsl:text><xsl:value-of select="$institution"/>",
+      
+      <xsl:text>"layer_id_s": "</xsl:text>
+        <xsl:choose>
+          <xsl:when test="$institution = 'Stanford'">
+            <xsl:text>druid:</xsl:text>
+            <xsl:value-of select="$identifier"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>urn:</xsl:text>
+            <xsl:value-of select="$identifier"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      <xsl:text>",</xsl:text>
+      <xsl:text>"layer_slug_s": "</xsl:text>
+        <xsl:value-of select="$institution"/>
+        <xsl:text>-</xsl:text>
+        <xsl:value-of select="$identifier"/>
+      <xsl:text>",</xsl:text>
+      <xsl:text>"layer_geom_type_s": "</xsl:text><xsl:value-of select="$geometryType"/><xsl:text>",</xsl:text>
+      
         <xsl:choose>
           <xsl:when test="contains(gmd:MD_Metadata/gmd:dateStamp, 'T')">
-            <field name="layer_modified_dt">
+            <xsl:text>"layer_modified_dt": "</xsl:text>
               <xsl:value-of select="substring-before(gmd:MD_Metadata/gmd:dateStamp, 'T')"/>
-            </field>
+              <xsl:text>",</xsl:text>
           </xsl:when>
           <xsl:when test="gmd:MD_Metadata/gmd:dateStamp">
-            <field name="layer_modified_dt">
+            <xsl:text>"layer_modified_dt": "</xsl:text>
               <xsl:value-of select="gmd:MD_Metadata/gmd:dateStamp"/>
-            </field>
+              <xsl:text>",</xsl:text>
           </xsl:when>
         </xsl:choose>
 
-        <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty">  
+        <!-- <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty">  
           <xsl:choose>
             <xsl:when test="gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+              <xsl:text>"dc_creator_sm": [</xsl:text>
               <xsl:for-each select="gmd:organisationName">
-                <field name="dc_creator_sm">
+                <xsl:text>"</xsl:text>
                   <xsl:value-of select="."/>
-                </field>
+                <xsl:text>",</xsl:text>
               </xsl:for-each>
               <xsl:for-each select="gmd:individualName">
-                <field name="dc_creator_sm">
+                <xsl:text>"</xsl:text>
                   <xsl:value-of select="."/>
-                </field>
+                <xsl:text>",</xsl:text>
               </xsl:for-each>
+              <xsl:text>],</xsl:text>
             </xsl:when>
             
             <xsl:when test="gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
@@ -257,165 +198,109 @@
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>
-        
-        <field name="dc_format_s">
-          <xsl:value-of select="$format"/>
-        </field>
+         -->
+
+        <xsl:text>"dc_format_s": "</xsl:text><xsl:value-of select="$format"/><xsl:text>",</xsl:text>
         
         <!-- TODO: add inputs for other languages -->
-        <field name="dc_language_s">
+        <!-- <field name="dc_language_s">
           <xsl:if test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language | gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode, 'eng')">
             <xsl:text>English</xsl:text>
           </xsl:if>
-        </field>
+        </field> -->
         
         <!-- from DCMI type vocabulary -->
         <xsl:choose>
           <xsl:when test="contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString, 'dataset')">
-            <field name="dc_type_s">
-              <xsl:text>Dataset</xsl:text>
-            </field>
+            <xsl:text>"dc_type_s": "Dataset",</xsl:text>
           </xsl:when>
 
           <xsl:when test="contains(gmd:MD_Metadata/gmd:hierarchyLevelName/gco:CharacterString, 'service')">
-            <field name="dc_type_s">
-              <xsl:text>Service</xsl:text>
-            </field>
+            <xsl:text>"dc_type_s": "Service",</xsl:text>
           </xsl:when>
        </xsl:choose>
 
         <!-- translate ISO topic categories -->
-        <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode">
-          <field name="dc_subject_sm">
-            <xsl:choose>
-              <xsl:when test="contains(.,'farming')">
-                <xsl:text>Farming</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'biota')">
-                <xsl:text>Biology and Ecology</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'climatologyMeteorologyAtmosphere')">
-                <xsl:text>Climatology, Meteorology and Atmosphere</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'boundaries')">
-                <xsl:text>Boundaries</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'elevation')">
-                <xsl:text>Elevation</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'environment')">
-                <xsl:text>Environment</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'geoscientificInformation')">
-                <xsl:text>Geoscientific Information</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'health')">
-                <xsl:text>Health</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'imageryBaseMapsEarthCover')">
-                <xsl:text>Imagery and Base Maps</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'intelligenceMilitary')">
-                <xsl:text>Military</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'inlandWaters')">
-                <xsl:text>Inland Waters</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'location')">
-                <xsl:text>Location</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'oceans')">
-                <xsl:text>Oceans</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'planningCadastre')">
-                <xsl:text>Planning and Cadastral</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'structure')">
-                <xsl:text>Structure</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'transportation')">
-                <xsl:text>Transportation</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'utilitiesCommunication')">
-                <xsl:text>Utilities and Communication</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'society')">
-                <xsl:text>Society</xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(.,'economy')">
-                <xsl:text>Economy</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="."/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </field>
-        </xsl:for-each>
+        <xsl:if test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode or gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
+          <xsl:text>"dc_subject_sm": [</xsl:text>
+            <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode">
+              <xsl:text>"</xsl:text>              
+                  <xsl:value-of select="."/>
+                <xsl:text>"</xsl:text>
+              <xsl:if test="position() != last()">
+                <xsl:text>,</xsl:text>
+              </xsl:if>
+            </xsl:for-each>
+          <xsl:text>],</xsl:text>
+        </xsl:if>
         
         <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
           <xsl:choose>
-            <xsl:when test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='theme']">
+            <!-- <xsl:when test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='theme']">
               <xsl:for-each select="gmd:keyword">
                 <field name="dc_subject_sm">
                   <xsl:value-of select="."/>
                 </field>
               </xsl:for-each>
-            </xsl:when>
+            </xsl:when> -->
 
             <xsl:when test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='place']">
+              <xsl:text>"dc_spatial_sm": [</xsl:text>
               <xsl:for-each select="gmd:keyword">
-                <field name="dc_spatial_sm">
-                  <xsl:value-of select="."/>
-                </field>
+                <xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
+                  <xsl:if test="position() != last()">
+                    <xsl:text>,</xsl:text>
+                  </xsl:if>
               </xsl:for-each>
+              <xsl:text>],</xsl:text>
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>
 
         <xsl:choose>
           <xsl:when test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:DateTime, 'T')">
-            <field name="dct_issued_s">
+            <xsl:text>"dct_issued_s": "</xsl:text>
               <xsl:value-of select="substring-before(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:DateTime,'T')"/>
-            </field>
+            <xsl:text>",</xsl:text>
           </xsl:when>
 
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:DateTime">
-            <field name="dct_issued_s">
+            <xsl:text>"dct_issued_s": "</xsl:text>
               <xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:DateTime"/>
-            </field>
+            <xsl:text>",</xsl:text>
           </xsl:when>
 
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date">
-            <field name="dct_issued_s">
+            <xsl:text>"dct_issued_s": "</xsl:text>
               <xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date"/>
-            </field>
+            <xsl:text>",</xsl:text>
           </xsl:when>
-  
-          <xsl:otherwise>unknown</xsl:otherwise>
+          
+          <!-- <xsl:otherwise>unknown</xsl:otherwise> -->
         </xsl:choose>
         
         
       <!-- content date: range YYYY-YYYY if dates differ  -->
         <xsl:choose>
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition/text() != ''">
-            <field name="dct_temporal_sm">
-            <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition, 1,4)"/>
-            <xsl:if test="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition, 1,4) != substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition,1,4)">  
-            <xsl:text>-</xsl:text>
-            <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition, 1,4)"/>
-            </xsl:if>
-            </field>
+            <xsl:text>"dct_temporal_sm": "</xsl:text>
+              <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition, 1,4)"/>
+              <xsl:if test="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition, 1,4) != substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition,1,4)">  
+                <xsl:text>-</xsl:text>
+              <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition, 1,4)"/>
+              </xsl:if>
+              <xsl:text>",</xsl:text>
           </xsl:when>
             
             <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant">
-              <field name="dct_temporal_sm">
-              <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant, 1,4)"/>
-              </field> 
+              <xsl:text>"dct_temporal_sm": "</xsl:text>
+                <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant, 1,4)"/>
+              <xsl:text>",</xsl:text>
             </xsl:when>
           </xsl:choose>
         
         <!-- collection -->
-        <xsl:choose>
+        <!-- <xsl:choose>
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='largerWorkCitation']">
             <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='largerWorkCitation']">
             <field name="dct_isPartOf_sm">
@@ -430,16 +315,23 @@
             </field>
             </xsl:for-each>
           </xsl:when>
-        </xsl:choose>
+        </xsl:choose> -->
      
         <!-- cross-references -->
-        <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='crossReference']">
-           <field name="dc_relation_sm">
-             <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
-           </field>
-         </xsl:for-each>
+        <xsl:if test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='crossReference']">
+          <xsl:text>"dc_relation_sm": [</xsl:text> 
+          <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='crossReference']">            
+            <xsl:text>"</xsl:text>
+              <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
+            <xsl:text>"</xsl:text>
+            <xsl:if test="position() != last()">
+              <xsl:text>,</xsl:text>
+            </xsl:if>
+           </xsl:for-each>
+        </xsl:if>
         
           <field name="georss_polygon_s">
+        <xsl:text>"georss_polygon_s": "</xsl:text> 
           <xsl:text></xsl:text>
           <xsl:value-of select="$y1"/>
           <xsl:text> </xsl:text>
@@ -460,10 +352,9 @@
           <xsl:value-of select="$y1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$x1"/>
-        </field>
+        <xsl:text>",</xsl:text>
         
-        <field name="solr_geom">
-          <xsl:text>ENVELOPE(</xsl:text>
+          <xsl:text>"solr_geom": "ENVELOPE(</xsl:text>
           <xsl:value-of select="$x1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
@@ -483,10 +374,9 @@
           <xsl:value-of select="$x1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
-          <xsl:text>)</xsl:text>
-        </field>
+          <xsl:text>)",</xsl:text>
         
-        <field name="georss_box_s">
+        <xsl:text>"georss_box_s": "</xsl:text>
           <xsl:value-of select="$y1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$x1"/>
@@ -494,23 +384,20 @@
           <xsl:value-of select="$y2"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$x2"/>
-        </field>
-              
+        <xsl:text>",</xsl:text>
+        
         <!-- content date: singular, or beginning date of range: YYYY -->
         <xsl:choose>
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition/text() != ''">
-            <field name="solr_year_i">
+            <xsl:text>"solr_year_i": </xsl:text>
               <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition, 1,4)"/>
-            </field>         
           </xsl:when>
           <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant">
-            <field name="solr_year_i">
+            <xsl:text>"solr_year_i": </xsl:text>
               <xsl:value-of select="substring(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant, 1,4)"/>
-            </field> 
           </xsl:when>
         </xsl:choose>
-      </doc>
-    </add>
+      <xsl:text>}</xsl:text>
   </xsl:template>
 
 </xsl:stylesheet>

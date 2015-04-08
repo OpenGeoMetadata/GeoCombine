@@ -1,4 +1,6 @@
 require 'nokogiri'
+require 'json'
+require 'json-schema'
 
 module GeoCombine
 
@@ -28,9 +30,12 @@ module GeoCombine
 
     ##
     # Perform an XSLT tranformation on metadata using an object's XSL
-    # @return [GeoCombine::Geoblacklight] the data transformed into geoblacklight schema, returned as a GeoCombine::Geoblacklight
-    def to_geoblacklight
-      GeoCombine::Geoblacklight.new(xsl_geoblacklight.transform(@metadata))
+    # @return fields additional GeoBlacklight fields to be passed to
+    # GeoCombine::Geoblacklight on its instantiation
+    # @return [GeoCombine::Geoblacklight] the data transformed into
+    # geoblacklight schema, returned as a GeoCombine::Geoblacklight
+    def to_geoblacklight fields = {}
+      GeoCombine::Geoblacklight.new(xsl_geoblacklight.apply_to(@metadata), fields)
     end
 
     ##
@@ -41,6 +46,9 @@ module GeoCombine
     end
   end
 end
+
+require 'geo_combine/formats'
+require 'geo_combine/subjects'
 
 require 'geo_combine/fgdc'
 require 'geo_combine/geoblacklight'
