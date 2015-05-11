@@ -10,4 +10,8 @@ module Helpers
       return false
     end
   end
+
+  def trim(text)
+    %r/\A\s+#{text}\s+\Z/
+  end
 end
