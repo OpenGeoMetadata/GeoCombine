@@ -77,13 +77,6 @@ $ rake geocombine:index["http://solr_url.edu/solr"]
 
 Indexes all of the `geoblacklight.xml` files in cloned repositories to a Solr index running at given URI, or at http://127.0.0.1:8983/solr by default
 
-### Clear the index (solr URI is optional)
-
-```sh
-$ rake geocombine:delete["http://solr_url.edu/solr"]
-```
-
-Deletes everything from the given solr index, or http://127.0.0.1:8983/solr by default
 
 ### Clone and index in one command (useful for first runs) (solr URI is optional)
 
