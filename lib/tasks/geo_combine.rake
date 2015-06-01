@@ -2,11 +2,18 @@ require 'find'
 require 'net/http'
 require 'json'
 require 'rsolr'
+require 'fileutils'
+
+ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
+solr_url = ENV['SOLR_URL'] || 'http://127.0.0.1:8983/solr'
 
 namespace :geocombine do
-  ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
+  desc 'Clone and index all in one go'
+  task :all => [:clone, :index]
+
   desc 'Clone all OpenGeoMetadata repositories'
   task :clone do
+    FileUtils.mkdir_p(ogm_path)
     ogm_api_uri = URI('https://api.github.com/orgs/opengeometadata/repos')
     ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map{ |repo| repo['git_url']}
     ogm_repos.each do |repo|
@@ -15,23 +22,55 @@ namespace :geocombine do
       end
     end
   end
+
+  desc 'Delete the tmp directory'
+  task :clean do
+    puts "Removing 'tmp' directory." if verbose == true
+    FileUtils.rm_rf(ogm_path) 
+  end
+
   desc '"git pull" OpenGeoMetadata repositories'
   task :pull do
     Dir.glob("#{ogm_path}/*").map{ |dir| system "cd #{dir} && git pull origin master" if dir =~ /.*edu.*./ }
   end
+
   desc 'Index all of the GeoBlacklight documents'
-  task :index do
-    solr = RSolr.connect :url => 'http://127.0.0.1:8983/solr'
-    Find.find(ogm_path) do |path|
-      if path =~ /.*geoblacklight.xml$/
-        doc = File.read(path)
+  task :index  do
+    begin
+      solr = RSolr.connect :url => solr_url, :read_timeout => 720
+
+      puts "Finding geoblacklight.xml files." if verbose == true
+      xml_files = Dir.glob("#{ogm_path}/**/*geoblacklight.xml")
+
+      puts "Loading files into solr." if verbose == true
+      xml_files.each_with_index do |file, i|
+        @the_file = file
+        doc = File.read(file)
         begin
           solr.update data: doc
-          solr.commit
         rescue RSolr::Error::Http => error
-          puts error
+          puts "\n#{file}\n#{error}" if verbose == true
+          next
+        end
+
+        if verbose == true
+          if i % 100 == 0 && i > 0
+            print "." 
+            if i % 1000 == 0
+              puts " #{i} files uploaded."
+            end
+          end
         end
       end
+
+    rescue Exception => e
+      puts "\n#{@the_file}\nError: #{e}" if verbose == true
+      next
     end
+
+    puts "\nIndexing and optimizing Solr." if verbose == true
+    solr.commit
+    solr.optimize
+    puts "\n" if verbose == true
   end
 end
