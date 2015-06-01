@@ -21,13 +21,15 @@ namespace :geocombine do
   end
   desc 'Index all of the GeoBlacklight documents'
   task :index do
-    solr = RSolr.connect :url => 'http://127.0.0.1:8983/solr'
+    solr = RSolr.connect :url => 'http://127.0.0.1:8983/solr/blacklight-core'
     Find.find(ogm_path) do |path|
-      if path =~ /.*geoblacklight.xml$/
-        doc = File.read(path)
+      if path =~ /.*geoblacklight.json$/
+        doc = JSON.parse(File.read(path))
         begin
-          solr.update data: doc
-          solr.commit
+          solr.update params: { commitWithin: 500, overwrite: true },
+                      data: [doc].to_json,
+                      headers: { 'Content-Type' => 'application/json' }
+
         rescue RSolr::Error::Http => error
           puts error
         end
