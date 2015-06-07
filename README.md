@@ -67,7 +67,7 @@ Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometada
 $ rake geocombine:index
 ```
 
-Indexs all of the `geoblacklight.xml` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
+Indexs all of the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
 
 ## Contributing
 
