@@ -12,4 +12,10 @@ module JsonDocs
   def full_geoblacklight
     File.read(File.join(File.dirname(__FILE__), './docs/full_geoblacklight.json'))
   end
+
+  ##
+  # A sample Esri OpenData metadata record
+  def esri_opendata_metadata
+    File.read(File.join(File.dirname(__FILE__), './docs/esri_open_data.json'))
+  end
 end

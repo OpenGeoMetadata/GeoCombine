@@ -32,7 +32,7 @@ RSpec.describe GeoCombine::Geoblacklight do
     end
   end
   describe '#enhance_metadata' do
-    let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'dct_references_s' => '', 'layer_geom_type_s' => 'Polygon') }
+    let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'dct_references_s' => '', 'layer_geom_type_s' => 'esriGeometryPolygon') }
     before { enhanced_geobl.enhance_metadata }
     it 'calls enhancement methods to validate document' do
       expect { basic_geobl.valid? }.to raise_error JSON::Schema::ValidationError
@@ -40,6 +40,12 @@ RSpec.describe GeoCombine::Geoblacklight do
     end
     it 'enhances the dc_subject_sm field' do
       expect(enhanced_geobl.metadata['dc_subject_sm']).to include 'Boundaries', 'Inland Waters'
+    end
+    it 'formats the date properly as ISO8601' do
+      expect(enhanced_geobl.metadata['layer_modified_dt']).to match(/Z$/)
+    end
+    it 'formats the geometry type field' do
+      expect(enhanced_geobl.metadata['layer_geom_type_s']).to eq 'Polygon'
     end
   end
   describe '#valid?' do

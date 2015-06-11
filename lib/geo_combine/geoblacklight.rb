@@ -2,6 +2,7 @@ module GeoCombine
   class Geoblacklight
     include GeoCombine::Formats
     include GeoCombine::Subjects
+    include GeoCombine::GeometryTypes
 
     attr_reader :metadata
 
@@ -23,6 +24,7 @@ module GeoCombine
         enhance_subjects(key, value)
         format_proper_date(key, value)
         fields_should_be_array(key, value)
+        translate_geometry_type(key, value)
       end
     end
 
@@ -51,6 +53,12 @@ module GeoCombine
     end
 
     ##
+    # Enhances the 'layer_geom_type_s' field by translating from known types
+    def translate_geometry_type(key, value)
+      @metadata[key] = geometry_types[value] if key == 'layer_geom_type_s' && geometry_types.include?(value)
+    end
+
+    ##
     # Enhances the 'dc_subject_sm' field by translating subjects to ISO topic
     # categories
     def enhance_subjects(key, value)
@@ -65,8 +73,9 @@ module GeoCombine
 
     ##
     # Formats the 'layer_modified_dt' to a valid valid RFC3339 date/time string
+    # and ISO8601 (for indexing into Solr)
     def format_proper_date(key, value)
-      @metadata[key] = DateTime.parse(value).to_s if key == 'layer_modified_dt'
+      @metadata[key] = Time.parse(value).utc.iso8601 if key == 'layer_modified_dt'
     end
 
     def fields_should_be_array(key, value)
