@@ -1,0 +1,53 @@
+{
+  "object_id_field": null,
+  "supported_extensions": "",
+  "advanced_query_capabilities": {
+    "use_standardized_queries": true,
+    "supports_statistics": true,
+    "supports_order_by": true,
+    "supports_distinct": true,
+    "supports_pagination": true,
+    "supports_true_curve": true,
+    "supports_returning_query_extent": true,
+    "supports_query_with_distance": true
+  },
+  "supports_advanced_queries": true,
+  "display_field": "ETC_STATUS.ETC_CODE",
+  "max_record_count": 1000,
+  "record_count": 50,
+  "geometry_type": "esriGeometryPoint",
+  "arcgis_online_item_url": "https://www.arcgis.com/home/item.html?id=267b6c8cdee749bf90bb2737d9e07fc8",
+  "description": "\u003cspan style='color: rgb(77, 77, 77); font-family: ;'\u003eEbola Treatment Centers (ETCs)\u003c/span\u003e\u003cdiv\u003e\u003cspan style='color: rgb(77, 77, 77); font-family: ;'\u003e\u003cbr /\u003e\u003c/span\u003e\u003c/div\u003e\u003cdiv\u003e\u003cspan style='color: rgb(77, 77, 77); font-family: ;'\u003e\u003cbr /\u003e\u003c/span\u003e\u003c/div\u003e\u003cdiv\u003e\u003cspan style='color: rgb(77, 77, 77); font-family: ;'\u003e\u003cbr /\u003e\u003c/span\u003e\u003c/div\u003e\u003cdiv\u003e\u003cspan style='color: rgb(77, 77, 77); font-family: ;'\u003e\u003cbr /\u003e\u003c/span\u003e\u003c/div\u003e\u003cdiv\u003e\u003cp style='margin: 0cm 0cm 6pt; mso-add-space: auto;'\u003e\u003cfont face='Calibri, sans-serif' size='4'\u003e\u003cspan style='line-height: 22.15px;'\u003e\u003cb\u003e\u003cu\u003eAttribute Information\u003c/u\u003e\u003c/b\u003e\u003c/span\u003e\u003c/font\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003eAdmin2:\u003c/b\u003e\u003cbr /\u003e\r\n   Guinea – Prefecture\u003cbr /\u003e   Liberia – County\u003cbr /\u003e\u003cspan style='line-height: 1.3846;'\u003e   Sierra Leone – District\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003eCountryISO:\u003c/b\u003e 3-character ISO Country Code\u003c/p\u003e\u003cp\u003e\u003cb\u003eETC Code:\u003c/b\u003e Unique code\u003c/p\u003e\u003cp\u003e\u003cb\u003eSiteName:\u003c/b\u003e ETC Site Name\u003c/p\u003e\u003cp style='margin: 0cm 0cm 6pt; mso-add-space: auto;'\u003e\r\n\r\n\r\n\r\n\r\n\r\n\u003c/p\u003e\u003cp\u003e\u003cb\u003eStatus: \u003c/b\u003e\u003ci\u003e\u003cspan style='background: white; color: rgb(4, 4, 4); mso-ascii-font-family: Calibri; mso-hansi-font-family: Calibri; mso-bidi-font-family: Calibri;'\u003eETCs scheduled for closure will be decommissioned only when\r\nand where the epidemiological situation and the strength of referral pathways\r\nthrough non-EVD facilities allow. Several ETCs will be unstaffed but remain on\r\na stand-by level of readiness, whereby stocks of protective equipment and\r\nessential medicines will be kept on-site such that the facility can become\r\noperational within 48 hours. This transition would be triggered by higher\r\noccupancy rates in nearby ETCs. Strategically located core ETCs will remain\r\nfully operational at their current capacity (Maintain) or a slightly reduced\r\ncapacity (Scale Down and Maintain).\u003c/span\u003e\u003c/i\u003e\u003c/p\u003e\u003c/div\u003e",
+  "extent": {
+    "coordinates": [
+      [-13.6832, 4.3934],
+      [-7.6925, 10.374]
+    ]
+  },
+  "id": "267b6c8cdee749bf90bb2737d9e07fc8_0",
+  "item_name": "Ebola Treatment Centers",
+  "type": "ItemLayer",
+  "item_type": "Feature Layer",
+  "license": "\u003cspan style='color: rgb(0, 0, 0); line-height: normal; font-family: monospace; font-size: medium; white-space: pre-wrap; background-color: rgb(255, 255, 255);'\u003eData are based on situation reports provided by countries. The boundaries and names shown and the designations used on this site do not imply the expression of any opinion whatsoever on the part of the World Health Organization concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Dotted and dashed lines on maps represent approximate border lines for which there may not yet be full agreement.\u003c/span\u003e",
+  "main_group_description": "Open Data hosting site",
+  "main_group_thumbnail_url": "https://www.arcgis.com/sharing/rest/community/groups/bdccbf91281c4144914e765b1fe0c692/info/EbolaResponseHomeOpenData.png",
+  "main_group_title": "Open Data Sharing",
+  "name": "Ebola Treatment Centers",
+  "owner": "er_admin",
+  "tags": ["Open Data", "ETC", "Ebola Treatment Center", "Ebola", "WHO"],
+  "thumbnail_url": "https://www.arcgis.com/sharing/rest/content/items/267b6c8cdee749bf90bb2737d9e07fc8/info/thumbnail/outputimageETCLYR.png",
+  "sites": [{
+    "title": "Ebola Response",
+    "url": "http://home.ebolaresponse.opendata.arcgis.com",
+    "logo": "http://ebolaresponse.opendata.arcgis.com/favicon.ico"
+  }],
+  "public": null,
+  "created_at": "2015-04-07T10:08:55.000+00:00",
+  "updated_at": "2015-06-04T15:59:16.000+00:00",
+  "url": "http://maps.who.int/arcgis/rest/services/OpenData/CurrentItems/MapServer/0",
+  "views": null,
+  "quality": 85,
+  "coverage": "regional",
+  "current_version": 10.31,
+  "use_standardized_queries": true
+}

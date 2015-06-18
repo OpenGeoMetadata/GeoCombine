@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'json'
 require 'json-schema'
+require 'sanitize'
 
 module GeoCombine
 
@@ -47,10 +48,19 @@ module GeoCombine
   end
 end
 
+# Require translation mixins
 require 'geo_combine/formats'
 require 'geo_combine/subjects'
+require 'geo_combine/geometry_types'
 
+# Require helper mixins
+require 'geo_combine/formatting'
+
+# Require additional classes
 require 'geo_combine/fgdc'
 require 'geo_combine/geoblacklight'
 require 'geo_combine/iso19139'
+require 'geo_combine/esri_open_data'
+
+# Require gem files
 require 'geo_combine/version'
