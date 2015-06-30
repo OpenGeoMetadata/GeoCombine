@@ -31,6 +31,10 @@ RSpec.describe GeoCombine::Iso19139 do
       expect(valid_geoblacklight.metadata["dc_creator_sm"]).to be_an Array
       expect(valid_geoblacklight.metadata["dc_creator_sm"]).to eq ["Circuit Rider Productions"]
     end
+    it 'should have dc_publisher_sm' do
+      expect(valid_geoblacklight.metadata["dc_publisher_sm"]).to be_an Array
+      expect(valid_geoblacklight.metadata["dc_publisher_sm"]).to eq ["Circuit Rider Productions"]
+    end    
   end
   describe '#to_html' do
     it 'should create a transformation of the metadata as a String' do
