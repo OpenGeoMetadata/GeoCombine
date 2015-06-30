@@ -27,15 +27,13 @@ RSpec.describe GeoCombine::Iso19139 do
       valid_geoblacklight.enhance_metadata
       expect(valid_geoblacklight.valid?).to be_truthy
     end
+    it 'has the correct geometry' do
+      expect(iso_object.to_geoblacklight.metadata['solr_geom']).to eq "ENVELOPE(-123.387866, -122.522658, 39.399217, 38.298024)"
+    end
   end
   describe '#to_html' do
     it 'should create a transformation of the metadata as a String' do
       expect(iso_object.to_html).to be_an String
-    end
-  end
-  describe '#to_geoblacklight#solr_geom' do
-    it 'has the correct geometry' do
-      expect(iso_object.to_geoblacklight.metadata['solr_geom']).to eq "ENVELOPE(-123.387866, -122.522658, 39.399217, 38.298024)"
     end
   end
 end

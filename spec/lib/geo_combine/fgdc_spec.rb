@@ -23,17 +23,14 @@ RSpec.describe GeoCombine::Fgdc do
       pending('fgdc2geoBL.xsl is incomplete and can cause errors')
       expect(fgdc_object.to_geoblacklight).to be_an GeoCombine::Geoblacklight
     end
+    it 'has the correct geometry' do
+      pending('fgdc2geoBL.xsl is incomplete and can cause errors')
+      expect(fgdc_object.to_geoblacklight.metadata['solr_geom']).to eq "ENVELOPE(...)"
+    end
   end
   describe '#to_html' do
     it 'should create a transformation of the metadata as a String' do
       expect(fgdc_object.to_html).to be_an String
     end
   end
-  describe '#to_geoblacklight#solr_geom' do
-    it 'has the correct geometry' do
-      pending('fgdc2geoBL.xsl is incomplete and can cause errors')
-      expect(fgdc_object.to_geoblacklight.metadata['solr_geom']).to eq "ENVELOPE(...)"
-    end
-  end
-
 end
