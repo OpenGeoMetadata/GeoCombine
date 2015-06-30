@@ -167,38 +167,55 @@
           </xsl:when>
         </xsl:choose>
 
-        <!-- <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty">  
-          <xsl:choose>
-            <xsl:when test="gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
-              <xsl:text>"dc_creator_sm": [</xsl:text>
-              <xsl:for-each select="gmd:organisationName">
-                <xsl:text>"</xsl:text>
-                  <xsl:value-of select="."/>
-                <xsl:text>",</xsl:text>
-              </xsl:for-each>
-              <xsl:for-each select="gmd:individualName">
-                <xsl:text>"</xsl:text>
-                  <xsl:value-of select="."/>
-                <xsl:text>",</xsl:text>
-              </xsl:for-each>
-              <xsl:text>],</xsl:text>
-            </xsl:when>
-            
-            <xsl:when test="gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
-              <xsl:for-each select="gmd:organisationName">
-                <field name="dc_publisher_sm">
-                  <xsl:value-of select="."/>
-                </field>
-              </xsl:for-each>
-              <xsl:for-each select="gmd:individualName">
-                <field name="dc_creator_sm">
-                  <xsl:value-of select="."/>
-                </field>
-              </xsl:for-each>
-            </xsl:when>
-          </xsl:choose>
-        </xsl:for-each>
-         -->
+             
+    <xsl:if test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+      <xsl:text>"dc_creator_sm": [</xsl:text>
+      
+      <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+        <xsl:if test="ancestor-or-self::*/gmd:organisationName">
+          <xsl:text>"</xsl:text>
+          <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
+          <xsl:text>"</xsl:text>
+          <xsl:if test="position() != last()">
+            <xsl:text>,</xsl:text>
+          </xsl:if>
+        </xsl:if>
+        
+        <xsl:if test="ancestor-or-self::*/gmd:individualName">
+          <xsl:text>"</xsl:text>
+          <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+          <xsl:text>"</xsl:text>
+          <xsl:if test="position() != last()">
+            <xsl:text>,</xsl:text>
+          </xsl:if>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:text>],</xsl:text>
+    </xsl:if>
+    <xsl:if test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
+      <xsl:text>"dc_publisher_sm": [</xsl:text>
+      
+      <xsl:for-each select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
+        <xsl:if test="ancestor-or-self::*/gmd:organisationName">
+          <xsl:text>"</xsl:text>
+          <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
+          <xsl:text>"</xsl:text>
+          <xsl:if test="position() != last()">
+            <xsl:text>,</xsl:text>
+          </xsl:if>
+        </xsl:if>
+        
+        <xsl:if test="ancestor-or-self::*/gmd:individualName">
+          <xsl:text>"</xsl:text>
+          <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+          <xsl:text>"</xsl:text>
+          <xsl:if test="position() != last()">
+            <xsl:text>,</xsl:text>
+          </xsl:if>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:text>],</xsl:text>
+    </xsl:if>
 
         <xsl:text>"dc_format_s": "</xsl:text><xsl:value-of select="$format"/><xsl:text>",</xsl:text>
         
