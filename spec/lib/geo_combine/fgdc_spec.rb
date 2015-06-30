@@ -29,4 +29,11 @@ RSpec.describe GeoCombine::Fgdc do
       expect(fgdc_object.to_html).to be_an String
     end
   end
+  describe '#to_geoblacklight#solr_geom' do
+    it 'has the correct geometry' do
+      pending('fgdc2geoBL.xsl is incomplete and can cause errors')
+      expect(fgdc_object.to_geoblacklight.metadata['solr_geom']).to eq "ENVELOPE(...)"
+    end
+  end
+
 end
