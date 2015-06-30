@@ -12,8 +12,6 @@
   version="1.0" exclude-result-prefixes="gml gmd gco gmi xsl">
   <xsl:output method="text" version="1.0" omit-xml-declaration="yes" indent="no" media-type="application/json"/>
   <xsl:strip-space elements="*"/>
-  <xsl:param name="geometryType"/>
-  <xsl:param name="purl"/>
   <xsl:param name="zipName" select="'data.zip'"/>
 
   <xsl:template match="/">
@@ -152,8 +150,6 @@
         <xsl:text>-</xsl:text>
         <xsl:value-of select="$identifier"/>
       <xsl:text>",</xsl:text>
-      <xsl:text>"layer_geom_type_s": "</xsl:text><xsl:value-of select="$geometryType"/><xsl:text>",</xsl:text>
-      
         <xsl:choose>
           <xsl:when test="contains(gmd:MD_Metadata/gmd:dateStamp, 'T')">
             <xsl:text>"layer_modified_dt": "</xsl:text>
