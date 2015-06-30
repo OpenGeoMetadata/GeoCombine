@@ -354,27 +354,19 @@
           <xsl:value-of select="$x1"/>
         <xsl:text>",</xsl:text>
         
-          <xsl:text>"solr_geom": "ENVELOPE(</xsl:text>
+        <field name="solr_geom">
+          <xsl:text>"solr_geom": "</xsl:text>
+          <xsl:text>ENVELOPE(</xsl:text>
           <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
           <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y2"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-          <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
-          <xsl:text>)",</xsl:text>
+          <xsl:text>)</xsl:text>
+          <xsl:text>",</xsl:text>
+        </field>
         
         <xsl:text>"georss_box_s": "</xsl:text>
           <xsl:value-of select="$y1"/>
