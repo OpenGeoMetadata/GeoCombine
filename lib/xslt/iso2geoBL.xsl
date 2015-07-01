@@ -343,7 +343,7 @@
            </xsl:for-each>
         </xsl:if>
         
-          <field name="georss_polygon_s">
+        <!--<field name="georss_polygon_s">-->
         <xsl:text>"georss_polygon_s": "</xsl:text> 
           <xsl:text></xsl:text>
           <xsl:value-of select="$y1"/>
