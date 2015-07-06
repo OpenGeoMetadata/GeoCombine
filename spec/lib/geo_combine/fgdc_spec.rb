@@ -20,7 +20,6 @@ RSpec.describe GeoCombine::Fgdc do
   end
   describe '#to_geoblacklight' do
     it 'returns a GeoCombine::Geoblacklight object' do
-      pending('fgdc2geoBL.xsl is incomplete and can cause errors')
       expect(fgdc_object.to_geoblacklight).to be_an GeoCombine::Geoblacklight
     end
   end
