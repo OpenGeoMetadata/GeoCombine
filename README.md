@@ -41,10 +41,12 @@ GeoCombine can be used as a set of rake tasks for cloning, updating, and indexin
 > iso_metadata.to_html
 ```
 
+## Command line ##
+
 ### Clone all OpenGeoMetadata repositories
 
 ```sh
-$ rake geocombine:clone
+$ bundle exec geocombine clone
 ```
 
 Will clone all edu.* OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
@@ -56,7 +58,7 @@ $ OGM_PATH='my/custom/location' rake geocombine:clone
 ### Pull all OpenGeoMetadata repositories
 
 ```sh
-$ rake geocombine:pull
+$ bundle exec geocombine pull
 ```
 
 Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometadata` (or custom path with configured environment variable `OGM_PATH`)
@@ -64,7 +66,7 @@ Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometada
 ### Index all of the GeoBlacklight documents
 
 ```sh
-$ rake geocombine:index
+$ bundle exec geocombine index
 ```
 
 Indexs all of the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
