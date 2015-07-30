@@ -77,7 +77,7 @@ RSpec.describe GeoCombine::EsriOpenData do
   end
   describe '#references_hash' do
     it 'builds out references' do
-      expect(esri_sample.references_hash).to include('http://schema.org/url' => metadata['arcgis_online_item_url'])
+      expect(esri_sample.references_hash).to include('http://schema.org/url' => metadata['landing_page'])
       expect(esri_sample.references_hash).to include('http://resources.arcgis.com/en/help/arcgis-rest-api' => metadata['url'])
     end
   end
