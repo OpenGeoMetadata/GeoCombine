@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'geo_combine/cli'
+
+GeoCombine::CLI.start(ARGV)
