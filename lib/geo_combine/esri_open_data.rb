@@ -57,7 +57,7 @@ module GeoCombine
     # @return [Hash]
     def references_hash
       {
-        'http://schema.org/url' => @metadata['arcgis_online_item_url'],
+        'http://schema.org/url' => @metadata['landing_page'],
         'http://resources.arcgis.com/en/help/arcgis-rest-api' => @metadata['url']
       }
     end
