@@ -1,7 +1,9 @@
 require 'thor'
 require 'rake'
 
-Dir.glob('lib/tasks/geo_combine.rake').each { |r| load r }
+root = Gem::Specification.find_by_name('geo_combine').gem_dir
+tasks = File.join(root, 'lib/tasks/*.rake')
+Dir.glob(tasks).each { |r| load r }
 
 module GeoCombine
   class CLI < Thor
@@ -12,7 +14,7 @@ module GeoCombine
 
     desc 'pull', '"git pull" OpenGeoMetadata repositories'
     def pull
-      Rake::Task['geocombine:pull']
+      Rake::Task['geocombine:pull'].invoke
     end
 
     desc "index", "Index all of the GeoBlacklight documents"
