@@ -48,7 +48,7 @@ GeoCombine's tasks can be run either as rake tasks or as standalone executables.
 ### Clone all OpenGeoMetadata repositories
 
 ```sh
-$ rake geocombine:index
+$ rake geocombine:clone
 ```
 
 ```sh
