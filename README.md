@@ -83,7 +83,15 @@ $ rake geocombine:index
 $ bundle exec geocombine index
 ```
 
-Indexs all of the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
+Indexes all of the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
+
+#### Custom Solr location
+
+Solr location can also be specified by an environment variable `SOLR_URL`.
+
+```sh
+$ SOLR_URL=http://www.example.com:1234/solr/collection rake geocombine:index
+```
 
 ## Contributing
 
