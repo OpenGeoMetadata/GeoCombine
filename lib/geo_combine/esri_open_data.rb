@@ -26,14 +26,12 @@ module GeoCombine
     # @return [Hash]
     def geoblacklight_terms
       {
-        uuid: @metadata['id'],
         dc_identifier_s: @metadata['id'],
         dc_title_s: @metadata['name'],
         dc_description_s: sanitize_and_remove_lines(@metadata['description']),
         dc_rights_s: 'Public',
         dct_provenance_s: @metadata['owner'],
         dct_references_s: references,
-        georss_box_s: georss_box,
         # layer_id_s is used for describing a layer id for a web serivce (WMS, WFS) but is still a required field
         layer_id_s: '',
         layer_geom_type_s: @metadata['geometry_type'],
@@ -60,13 +58,6 @@ module GeoCombine
         'http://schema.org/url' => @metadata['landing_page'],
         'http://resources.arcgis.com/en/help/arcgis-rest-api' => @metadata['url']
       }
-    end
-
-    ##
-    # Builds a GeoRSS box
-    # @return [String]
-    def georss_box
-      "#{south} #{west} #{north} #{east}"
     end
 
     ##

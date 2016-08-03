@@ -21,9 +21,6 @@ RSpec.describe GeoCombine::EsriOpenData do
   describe '#geoblacklight_terms' do
     describe 'builds a hash which maps metadata' do
       let(:metadata) { esri_sample.instance_variable_get(:@metadata) }
-      it 'with uuid' do
-        expect(esri_sample.geoblacklight_terms).to include(uuid: metadata['id'])
-      end
       it 'with dc_identifier_s' do
         expect(esri_sample.geoblacklight_terms).to include(dc_identifier_s: metadata['id'])
       end
@@ -43,10 +40,6 @@ RSpec.describe GeoCombine::EsriOpenData do
       it 'with dct_references_s' do
         expect(esri_sample).to receive(:references).and_return ''
         expect(esri_sample.geoblacklight_terms).to include(:dct_references_s)
-      end
-      it 'with georss_box_s' do
-        expect(esri_sample).to receive(:georss_box).and_return ''
-        expect(esri_sample.geoblacklight_terms).to include(georss_box_s: '')
       end
       it 'with layer_id_s that is blank' do
         expect(esri_sample.geoblacklight_terms).to include(layer_id_s: '')
@@ -81,16 +74,10 @@ RSpec.describe GeoCombine::EsriOpenData do
       expect(esri_sample.references_hash).to include('http://resources.arcgis.com/en/help/arcgis-rest-api' => metadata['url'])
     end
   end
-  describe '#georss_box' do
-    it 'creates a GeoRSS box' do
-      expect(esri_sample.georss_box).to be_an String
-      expect(esri_sample.georss_box.split(' ').count).to eq 4
-    end
-  end
   describe '#envelope' do
     it 'creates an envelope for use in Solr' do
       expect(esri_sample.envelope).to be_an String
-      expect(esri_sample.envelope).to match /ENVELOPE\(/
+      expect(esri_sample.envelope).to match /ENVELOPE\(.+,.+,.+,.+\)/
     end
   end
 end
