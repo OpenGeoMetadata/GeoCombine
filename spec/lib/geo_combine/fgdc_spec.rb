@@ -24,11 +24,12 @@ RSpec.describe GeoCombine::Fgdc do
       expect(fgdc_geobl).to be_an GeoCombine::Geoblacklight
     end
     it 'is not valid' do
+      skip 'not sure why this document would not be valid -- dct_references_s is not required'
       expect { fgdc_geobl.valid? }.to raise_error
     end
     describe 'with GeoBlacklight-Schema fields' do
-      it 'uuid' do
-        expect(fgdc_geobl.metadata['uuid']).to eq 'Ecuador50KDrillingTower11'
+      it 'should have geoblacklight_version' do
+        expect(fgdc_geobl.metadata['geoblacklight_version']).to eq '1.0'
       end
       it 'dc_identifier_s' do
         expect(fgdc_geobl.metadata['dc_identifier_s']).to eq 'http://www.geoportaligm.gob.ec/portal/'
@@ -85,14 +86,8 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_geobl.metadata['dct_isPartOf_sm']).to be_an Array
         expect(fgdc_geobl.metadata['dct_isPartOf_sm']).to include 'Ecuador', 'Instituto Geografico Militar Data'
       end
-      it 'georss_polygon_s' do
-        expect(fgdc_geobl.metadata['georss_polygon_s']).to eq '-1.377743 -79.904768 -1.377743 -79.904768 -1.377743 -79.904768 -1.377743 -79.904768 -1.377743 -79.904768'
-      end
       it 'solr_geom' do
         expect(fgdc_geobl.metadata['solr_geom']).to eq 'ENVELOPE(-79.904768, -79.904768, -1.377743, -1.377743)'
-      end
-      it 'georss_box_s' do
-        expect(fgdc_geobl.metadata['georss_box_s']).to eq '-1.377743 -79.904768 -1.377743 -79.904768'
       end
       it 'solr_year_i' do
         expect(fgdc_geobl.metadata['solr_year_i']).to eq '2011'

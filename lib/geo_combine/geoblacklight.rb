@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module GeoCombine
   class Geoblacklight
     include GeoCombine::Formats
@@ -39,8 +41,10 @@ module GeoCombine
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
     def valid?
-      schema = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../schema/geoblacklight-schema.json')))
-      JSON::Validator.validate!(schema, to_json, validate_schema: true)
+      schema = JSON.parse(open('https://raw.githubusercontent.com/geoblacklight/geoblacklight/master/schema/geoblacklight-schema.json').read)
+      data = to_json
+      data = [data] unless data.is_a? Array
+      JSON::Validator.validate!(schema, data, validate_schema: true)
     end
 
     private
