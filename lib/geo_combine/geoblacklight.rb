@@ -15,6 +15,7 @@ module GeoCombine
     # @param [Hash] fields enhancements to metadata that are merged with @metadata
     def initialize(metadata, fields = {})
       @metadata = JSON.parse(metadata).merge(fields)
+      @schema = nil
     end
 
     ##
@@ -41,10 +42,10 @@ module GeoCombine
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
     def valid?
-      schema = JSON.parse(open('https://raw.githubusercontent.com/geoblacklight/geoblacklight/master/schema/geoblacklight-schema.json').read)
+      @schema ||= JSON.parse(open('https://raw.githubusercontent.com/geoblacklight/geoblacklight/master/schema/geoblacklight-schema.json').read)
       data = to_json
       data = [data] unless data.is_a? Array
-      JSON::Validator.validate!(schema, data, validate_schema: true)
+      JSON::Validator.validate!(@schema, data, validate_schema: true)
     end
 
     private
