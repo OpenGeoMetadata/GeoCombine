@@ -8,6 +8,8 @@ module GeoCombine
 
     attr_reader :metadata
 
+    GEOBLACKLIGHT_VERSION = 'v1.0.3'
+
     ##
     # Initializes a GeoBlacklight object
     # @param [String] metadata be a valid JSON string document in
@@ -42,7 +44,7 @@ module GeoCombine
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
     def valid?
-      @schema ||= JSON.parse(open('https://raw.githubusercontent.com/geoblacklight/geoblacklight/master/schema/geoblacklight-schema.json').read)
+      @schema ||= JSON.parse(open("https://raw.githubusercontent.com/geoblacklight/geoblacklight/#{GEOBLACKLIGHT_VERSION}/schema/geoblacklight-schema.json").read)
       JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer')
     end
 
