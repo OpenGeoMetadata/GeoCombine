@@ -52,6 +52,60 @@ RSpec.describe GeoCombine::Geoblacklight do
     it 'a valid geoblacklight-schema document should be valid' do
       expect(full_geobl.valid?).to be true
     end
+    context 'must have required fields' do
+      %w(
+        dc_title_s
+        dc_identifier_s
+        dc_rights_s
+        dct_provenance_s
+        layer_slug_s
+        solr_geom
+      ).each do |field|
+        it field do
+          full_geobl.metadata.delete field
+          expect { full_geobl.valid? }.to raise_error(JSON::Schema::ValidationError, /#{field}/)
+        end
+      end
+    end
+    context 'need not have optional fields' do
+      %w(
+        dc_description_s
+        dc_format_s
+        dc_language_s
+        dc_publisher_s
+        dc_source_sm
+        dc_subject_sm
+        dct_isPartOf_sm
+        dct_issued_dt
+        dct_references_s
+        dct_spatial_sm
+        dct_temporal_sm
+        geoblacklight_version
+        layer_geom_type_s
+        layer_id_s
+        layer_modified_dt
+        solr_year_i
+      ).each do |field|
+        it field do
+          full_geobl.metadata.delete field
+          expect { full_geobl.valid? }.not_to raise_error
+        end
+      end
+    end
+    context 'need not have deprecated fields' do
+      %w(
+        dc_relation_sm
+        dc_type_s
+        georss_box_s
+        georss_point_s
+        uuid
+      ).each do |field|
+        it field do
+          full_geobl.metadata.delete field
+          expect { full_geobl.valid? }.not_to raise_error
+        end
+      end
+    end
     it 'an invalid document' do
       expect { basic_geobl.valid? }.to raise_error JSON::Schema::ValidationError
     end
