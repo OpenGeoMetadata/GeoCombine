@@ -43,9 +43,7 @@ module GeoCombine
     # @return [Boolean]
     def valid?
       @schema ||= JSON.parse(open('https://raw.githubusercontent.com/geoblacklight/geoblacklight/master/schema/geoblacklight-schema.json').read)
-      data = to_json
-      data = [data] unless data.is_a? Array
-      JSON::Validator.validate!(@schema, data, validate_schema: true)
+      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer')
     end
 
     private
