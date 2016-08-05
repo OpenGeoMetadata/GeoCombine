@@ -145,6 +145,31 @@
           </xsl:otherwise>
         </xsl:choose>
       <xsl:text>",</xsl:text>
+       <xsl:text>"layer_geom_type_s": "</xsl:text>
+      <xsl:choose>
+          <xsl:when test="gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode[@codeListValue='surface']">
+              <xsl:text>Polygon</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains(gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode, 'surface')">
+              <xsl:text>Polygon</xsl:text>
+          </xsl:when>
+          <xsl:when test="gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode[@codeListValue='curve']">
+              <xsl:text>Line</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains(gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode, 'curve')">
+              <xsl:text>Line</xsl:text>
+          </xsl:when>
+          <xsl:when test="gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode[@codeListValue='point']">
+              <xsl:text>Point</xsl:text>
+          </xsl:when>   
+          <xsl:when test="contains(gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode, 'point')">
+              <xsl:text>Point</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode, 'grid')">
+              <xsl:text>Raster</xsl:text>
+          </xsl:when>         
+      </xsl:choose>
+      <xsl:text>",</xsl:text>
       <xsl:text>"layer_slug_s": "</xsl:text>
         <xsl:value-of select="$institution"/>
         <xsl:text>-</xsl:text>
