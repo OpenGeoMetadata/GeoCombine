@@ -8,7 +8,7 @@ module GeoCombine
 
     attr_reader :metadata
 
-    GEOBLACKLIGHT_VERSION = 'v1.0.3'
+    GEOBLACKLIGHT_VERSION = 'v1.1.0'
 
     ##
     # Initializes a GeoBlacklight object
