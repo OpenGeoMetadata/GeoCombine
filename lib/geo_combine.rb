@@ -48,6 +48,9 @@ module GeoCombine
   end
 end
 
+# Require custom exceptions
+require 'geo_combine/exceptions'
+
 # Require translation mixins
 require 'geo_combine/formats'
 require 'geo_combine/subjects'
