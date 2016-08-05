@@ -1,5 +1,5 @@
 {
-  "uuid":"http://purl.stanford.edu/cz128vq0535",
+  "geoblacklight_version":"1.0",
   "dc_identifier_s":"http://purl.stanford.edu/cz128vq0535",
   "dc_title_s":"2005 Rural Poverty GIS Database: Uganda",
   "dc_description_s":"This polygon shapefile contains 2005 poverty data for 855 rural subcounties in Uganda. These data are intended for researchers, students, policy makers and the general public for reference and mapping purposes, and may be used for basic applications such as viewing, querying, and map output production.",
@@ -28,12 +28,6 @@
   "dct_spatial_sm":[
     "Uganda"
   ],
-  "dc_relation_sm":[
-    "http://sws.geonames.org/226074/about.rdf"
-  ],
-  "georss_box_s":"-1.478794 29.572742 4.234077 35.000308",
-  "georss_polygon_s":"-1.478794 29.572742 4.234077 29.572742 4.234077 35.000308 -1.478794 35.000308 -1.478794 29.572742",
   "solr_geom":"ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)",
-  "solr_bbox":"29.572742 -1.478794 35.000308 4.234077",
   "solr_year_i":2005
 }
