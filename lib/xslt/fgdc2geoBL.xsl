@@ -68,19 +68,19 @@
   <xsl:variable name="format">
     <xsl:choose>
       <xsl:when test="contains(metadata/idinfo/citation/citeinfo/geoform, 'raster digital data')">
-      <xsl:text>image/tiff</xsl:text>
+      <xsl:text>GeoTIFF</xsl:text>
     </xsl:when>
       <xsl:when test="contains(metadata/idinfo/citation/citeinfo/geoform, 'vector digital data')">
-        <xsl:text>application/x-esri-shapefile</xsl:text>
+        <xsl:text>Shapefile</xsl:text>
       </xsl:when>
       <xsl:when test="contains(metadata/distinfo/stdorder/digform/digtinfo/formname, 'TIFF')">
-        <xsl:text>image/tiff</xsl:text>
+        <xsl:text>GeoTIFF</xsl:text>
       </xsl:when>
       <xsl:when test="contains(metadata/distinfo/stdorder/digform/digtinfo/formname, 'JPEG2000')">
-        <xsl:text>image/tiff</xsl:text>
+        <xsl:text>image/jpeg</xsl:text>
       </xsl:when>
       <xsl:when test="contains(metadata/distinfo/stdorder/digform/digtinfo/formname, 'Shape')">
-        <xsl:text>application/x-esri-shapefile</xsl:text>
+        <xsl:text>Shapefile</xsl:text>
       </xsl:when>
     </xsl:choose>
   </xsl:variable>

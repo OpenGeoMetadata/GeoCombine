@@ -19,7 +19,7 @@ RSpec.describe GeoCombine::Iso19139 do
     end
   end
   describe '#to_geoblacklight' do
-    let(:valid_geoblacklight) { iso_object.to_geoblacklight('layer_geom_type_s' => 'Polygon', 'dct_references_s' => '') }
+    let(:valid_geoblacklight) { iso_object.to_geoblacklight('layer_geom_type_s' => 'Polygon') }
     it 'should create a GeoCombine::Geoblacklight object' do
       expect(valid_geoblacklight).to be_an GeoCombine::Geoblacklight
     end

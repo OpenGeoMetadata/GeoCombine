@@ -32,11 +32,9 @@ RSpec.describe GeoCombine::Geoblacklight do
     end
   end
   describe '#enhance_metadata' do
-    let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'dct_references_s' => '', 'layer_geom_type_s' => 'esriGeometryPolygon') }
+    let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'layer_geom_type_s' => 'esriGeometryPolygon') }
     before { enhanced_geobl.enhance_metadata }
     it 'calls enhancement methods to validate document' do
-      skip 'not sure why this document would not be valid -- dct_references_s is not required'
-      expect { basic_geobl.valid? }.to raise_error JSON::Schema::ValidationError
       expect(enhanced_geobl.valid?).to be true
     end
     it 'enhances the dc_subject_sm field' do
@@ -54,7 +52,6 @@ RSpec.describe GeoCombine::Geoblacklight do
       expect(full_geobl.valid?).to be true
     end
     it 'an invalid document' do
-      skip 'not sure why this document would not be valid -- dct_references_s is not required'
       expect { basic_geobl.valid? }.to raise_error JSON::Schema::ValidationError
     end
   end

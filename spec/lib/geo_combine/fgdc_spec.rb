@@ -19,16 +19,17 @@ RSpec.describe GeoCombine::Fgdc do
     end
   end
   describe '#to_geoblacklight' do
-    let(:fgdc_geobl) { fgdc_object.to_geoblacklight(dct_references_s: '', ) }
+    let(:fgdc_geobl) { fgdc_object.to_geoblacklight }
     it 'returns a GeoCombine::Geoblacklight object' do
       expect(fgdc_geobl).to be_an GeoCombine::Geoblacklight
     end
-    it 'is not valid' do
-      skip 'not sure why this document would not be valid -- dct_references_s is not required'
-      expect { fgdc_geobl.valid? }.to raise_error
+    it 'is not valid due to bad modification date but valid otherwise' do
+      expect { fgdc_geobl.valid? }.to raise_error(JSON::Schema::ValidationError)
+      fgdc_geobl.metadata.delete 'layer_modified_dt'
+      expect(fgdc_geobl.valid?).to be_truthy
     end
     describe 'with GeoBlacklight-Schema fields' do
-      it 'should have geoblacklight_version' do
+      it 'geoblacklight_version' do
         expect(fgdc_geobl.metadata['geoblacklight_version']).to eq '1.0'
       end
       it 'dc_identifier_s' do
@@ -60,7 +61,7 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_geobl.metadata['dc_creator_sm']).to include 'Instituto Geografico Militar (Ecuador)'
       end
       it 'dc_format_s' do
-        expect(fgdc_geobl.metadata['dc_format_s']).to eq 'application/x-esri-shapefile'
+        expect(fgdc_geobl.metadata['dc_format_s']).to eq 'Shapefile'
       end
       it 'dc_language_s' do
         expect(fgdc_geobl.metadata['dc_language_s']).to eq 'English'
@@ -80,7 +81,8 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_geobl.metadata['dct_issued_s']).to eq '2011'
       end
       it 'dct_temporal_sm' do
-        expect(fgdc_geobl.metadata['dct_temporal_sm']).to eq '2011'
+        expect(fgdc_geobl.metadata['dct_temporal_sm']).to be_an Array
+        expect(fgdc_geobl.metadata['dct_temporal_sm']).to include '2011'
       end
       it 'dct_isPartOf_sm' do
         expect(fgdc_geobl.metadata['dct_isPartOf_sm']).to be_an Array
@@ -90,7 +92,7 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_geobl.metadata['solr_geom']).to eq 'ENVELOPE(-79.904768, -79.904768, -1.377743, -1.377743)'
       end
       it 'solr_year_i' do
-        expect(fgdc_geobl.metadata['solr_year_i']).to eq '2011'
+        expect(fgdc_geobl.metadata['solr_year_i']).to eq 2011
       end
     end
   end
