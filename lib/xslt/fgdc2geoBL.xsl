@@ -355,17 +355,17 @@
 
     <xsl:for-each select="idinfo/timeperd/timeinfo/sngdate/caldate">
       <xsl:if test="text() !='' ">
-        <xsl:text>"dct_temporal_sm": "</xsl:text>
+        <xsl:text>"dct_temporal_sm": ["</xsl:text>
         <xsl:value-of select="substring(.,1,4)"/>
-        <xsl:text>",</xsl:text>
+        <xsl:text>"],</xsl:text>
       </xsl:if>
     </xsl:for-each>
 
 
     <xsl:for-each select="idinfo/timeperd/timeinfo/mdattim/sngdate">
-      <xsl:text>"dct_temporal_sm": "</xsl:text>
+      <xsl:text>"dct_temporal_sm": ["</xsl:text>
       <xsl:value-of select="substring(caldate,1,4)"/>
-      <xsl:text>",</xsl:text>
+      <xsl:text>"],</xsl:text>
     </xsl:for-each>
 
 
@@ -389,20 +389,20 @@
     <!-- content date range: YYYY-YYYY if dates in range differ -->
 
     <xsl:for-each select="idinfo/timeperd/timeinfo/rngdates">
-      <xsl:text>"dct_temporal_sm": "</xsl:text>
+      <xsl:text>"dct_temporal_sm": ["</xsl:text>
       <xsl:value-of select="substring(begdate, 1,4)"/>
       <xsl:if test="substring(begdate,1,4) != substring(enddate,1,4)">
         <xsl:text>-</xsl:text>
         <xsl:value-of select="substring(enddate,1,4)"/>
       </xsl:if>
-      <xsl:text>",</xsl:text>
+      <xsl:text>"],</xsl:text>
     </xsl:for-each>
 
     <xsl:for-each select="idinfo/keywords/temporal/tempkey">
       <xsl:if test="text() != substring(idinfo/timeperd/timeinfo/sngdate/caldate,1,4)">
-        <xsl:text>"dct_temporal_sm": "</xsl:text>
+        <xsl:text>"dct_temporal_sm": ["</xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>",</xsl:text>
+        <xsl:text>"],</xsl:text>
       </xsl:if>
     </xsl:for-each>
 
@@ -437,27 +437,21 @@
         <xsl:when test="idinfo/timeperd/timeinfo/sngdate/caldate/text() != ''">
 
             <xsl:text>"solr_year_i": </xsl:text>
-            <xsl:text>"</xsl:text>
             <xsl:value-of select="substring(idinfo/timeperd/timeinfo/sngdate/caldate,1,4)"/>
-            <xsl:text>"</xsl:text>
 
         </xsl:when>
 
         <xsl:when test="idinfo/timeperd/timeinfo/mdattim/sngdate/caldate">
           <xsl:if test="position() = 1">
             <xsl:text>"solr_year_i": </xsl:text>
-            <xsl:text>"</xsl:text>
             <xsl:value-of select="substring(caldate,1,4)"/>
-            <xsl:text>"</xsl:text>
           </xsl:if>
         </xsl:when>
 
         <xsl:when test="idinfo/timeperd/timeinfo/rngdates/begdate/text() != ''[1]">
           <xsl:if test="position() = 1">
             <xsl:text>"solr_year_i": </xsl:text>
-            <xsl:text>"</xsl:text>
             <xsl:value-of select="substring(rngdates/begdate/text(), 1,4)"/>
-            <xsl:text>"</xsl:text>
           </xsl:if>
         </xsl:when>
 
@@ -465,9 +459,7 @@
           <xsl:for-each select="//metadata/idinfo/keywords/temporal/tempkey[1]">
             <xsl:if test="text() != ''">
               <xsl:text>"solr_year_i": </xsl:text>
-              <xsl:text>"</xsl:text>
               <xsl:value-of select="."/>
-              <xsl:text>"</xsl:text>
             </xsl:if>
           </xsl:for-each>
         </xsl:when>
