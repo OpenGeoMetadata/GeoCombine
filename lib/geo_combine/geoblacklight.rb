@@ -45,7 +45,21 @@ module GeoCombine
     # @return [Boolean]
     def valid?
       @schema ||= JSON.parse(open("https://raw.githubusercontent.com/geoblacklight/geoblacklight/#{GEOBLACKLIGHT_VERSION}/schema/geoblacklight-schema.json").read)
-      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer')
+      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer') && dct_references_validate!
+    end
+
+    ##
+    # Validate dct_references_s
+    # @return [Boolean]
+    def dct_references_validate!
+      return true unless metadata.key?('dct_references_s')
+      begin
+        ref = JSON.parse(metadata['dct_references_s'])
+        raise GeoCombine::Exceptions::InvalidDCTReferences, 'dct_references must be parsed to a Hash' unless ref.is_a?(Hash)
+        true
+      rescue JSON::ParserError => e
+        raise e, "Invalid JSON in dct_references_s: #{e.message}"
+      end
     end
 
     private
