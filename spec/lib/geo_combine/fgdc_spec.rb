@@ -24,7 +24,7 @@ RSpec.describe GeoCombine::Fgdc do
       expect(fgdc_geobl).to be_an GeoCombine::Geoblacklight
     end
     it 'is not valid due to bad modification date but valid otherwise' do
-      expect { fgdc_geobl.valid? }.to raise_error(JSON::Schema::ValidationError)
+      expect { fgdc_geobl.valid? }.to raise_error(JSON::Schema::ValidationError, /layer_modified_dt/)
       fgdc_geobl.metadata.delete 'layer_modified_dt'
       expect(fgdc_geobl.valid?).to be_truthy
     end
