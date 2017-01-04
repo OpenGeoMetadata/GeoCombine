@@ -21,15 +21,37 @@ module GeoCombine
         dc_identifier_s: @metadata['id'],
         dc_title_s: @metadata['title'],
         dc_rights_s: 'Public',
-        dct_provenance_s: @metadata['organization']['title'],
+        layer_geom_type_s: @metadata['type'],
+        dct_provenance_s: organization['title'],
+        dc_description_s: @metadata['notes'],
         layer_slug_s: @metadata['name'],
         solr_geom: envelope,
         dc_subject_sm: subjects
-      }
+      }.select { |_k, v| !v.nil? }
+    end
+
+    def organization
+      @metadata['organization'] || { title: '' }
     end
 
     def envelope
-      "ENVELOPE(#{extras('bbox-west-long')}, #{extras('bbox-east-long')}, #{extras('bbox-north-lat')}, #{extras('bbox-south-lat')})"
+      bbox = extras('bbox-west-long')
+      # If bbox is there, use that
+      if !bbox.empty?
+        return "ENVELOPE(#{extras('bbox-west-long').strip}, #{extras('bbox-east-long').strip}, #{extras('bbox-north-lat').strip}, #{extras('bbox-south-lat').strip})"
+      else
+        spatial = extras('spatial')
+        # Use spatial if it is there
+        unless spatial.empty?
+          commasplit = spatial.split(',')
+          split = spatial.split(' ')
+          # These can be separated by commas or spaces
+          split = commasplit if commasplit.length == 4
+          if spatial =~ /(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3})/
+            return "ENVELOPE(#{split[0]}, #{split[2]}, #{split[3]}, #{split[1]})"
+          end
+        end
+      end
     end
 
     def subjects
@@ -37,7 +59,9 @@ module GeoCombine
     end
 
     def extras(key)
-      @metadata['extras'].select { |h| h['key'] == key }[0]['value']
+      if @metadata['extras']
+        @metadata['extras'].select { |h| h['key'] == key }.collect { |v| v['value'] }[0] || ''
+      end
     end
   end
 end
