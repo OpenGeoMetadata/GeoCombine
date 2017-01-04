@@ -18,4 +18,8 @@ module JsonDocs
   def esri_opendata_metadata
     File.read(File.join(File.dirname(__FILE__), './docs/esri_open_data.json'))
   end
+
+  def ckan_metadata
+    File.read(File.join(File.dirname(__FILE__), './docs/ckan.json'))
+  end
 end

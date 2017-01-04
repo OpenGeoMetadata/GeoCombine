@@ -64,6 +64,7 @@ require 'geo_combine/fgdc'
 require 'geo_combine/geoblacklight'
 require 'geo_combine/iso19139'
 require 'geo_combine/esri_open_data'
+require 'geo_combine/ckan_metadata'
 
 # Require gem files
 require 'geo_combine/version'

@@ -1,0 +1,456 @@
+{
+  "license_title": null,
+  "maintainer": null,
+  "relationships_as_object": [
+
+  ],
+  "private": false,
+  "maintainer_email": null,
+  "num_tags": 0,
+  "id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+  "metadata_created": "2015-09-26T20:11:41.272887",
+  "metadata_modified": "2016-10-03T21:32:38.295427",
+  "author": null,
+  "author_email": null,
+  "state": "active",
+  "version": null,
+  "creator_user_id": "47303a9e-1187-4290-85a3-1fc02dc49e4a",
+  "type": "dataset",
+  "resources": [
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "76eea1e9-525a-4f70-8f70-8a8164f24446",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Navigate directly to the URL for a descriptive web page with download links.",
+      "format": "Originator data format",
+      "tracking_summary": {
+        "total": 0,
+        "recent": 0
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "Descriptive Information",
+      "created": "2016-10-03T17:32:38.603178",
+      "url": "https://accession.nodc.noaa.gov/8600315",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 0,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "95be096e-48e2-4faa-8236-21bb1875bafc",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Navigate directly to the URL for a descriptive web page with download links.",
+      "format": "Originator data format",
+      "tracking_summary": {
+        "total": 0,
+        "recent": 0
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "Descriptive Information",
+      "created": "2016-10-03T17:32:38.603199",
+      "url": "https://accession.nodc.noaa.gov/oas/8600315",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 1,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "a4b99005-faa3-462f-8efb-fa82f5faa651",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "download",
+      "hash": "",
+      "description": "Navigate directly to the URL for data access and direct download.",
+      "format": "Originator data format",
+      "tracking_summary": {
+        "total": 0,
+        "recent": 0
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "HTTP",
+      "created": "2016-10-03T17:32:38.603208",
+      "url": "https://accession.nodc.noaa.gov/download/8600315",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 2,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "60855295-ca99-45a0-bec7-898ecf52ef4a",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "download",
+      "hash": "",
+      "description": "These data are available through the File Transfer Protocol (FTP). You may use any FTP client to download these data.",
+      "format": "Originator data format",
+      "tracking_summary": {
+        "total": 0,
+        "recent": 0
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "FTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "FTP",
+      "created": "2016-10-03T17:32:38.603216",
+      "url": "ftp://ftp.nodc.noaa.gov/nodc/archive/arc0001/8600315/",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 3,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "7544a4f9-aa0f-46b6-8e7b-fccb1f52397a",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Main NCEI website providing links to access data and data services.",
+      "format": "",
+      "tracking_summary": {
+        "total": 51,
+        "recent": 8
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NOAA National Centers for Environmental Information website",
+      "created": "2016-10-03T17:32:38.603224",
+      "url": "https://www.ncei.noaa.gov/",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 4,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "4ed6ee47-42cb-46a2-91b9-8d702c229988",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Main NCEI website providing links to access data and data services.",
+      "format": "",
+      "tracking_summary": {
+        "total": 51,
+        "recent": 8
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NOAA National Centers for Environmental Information website",
+      "created": "2016-10-03T17:32:38.603241",
+      "url": "https://www.ncei.noaa.gov/",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 5,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "14f71eee-29ae-4641-8440-c1cac6570cc5",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Overview of the NASA GCMD Keywords.",
+      "format": "HTML",
+      "tracking_summary": {
+        "total": 163,
+        "recent": 14
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NASA GCMD Keyword Community Page",
+      "created": "2016-10-03T17:32:38.603254",
+      "url": "http://gcmd.gsfc.nasa.gov/learn/keywords.html",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 6,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "9d46c3f8-5933-4001-9352-5a0fff917a51",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Overview of the NASA GCMD Keywords.",
+      "format": "HTML",
+      "tracking_summary": {
+        "total": 163,
+        "recent": 14
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NASA GCMD Keyword Community Page",
+      "created": "2016-10-03T17:32:38.603262",
+      "url": "http://gcmd.gsfc.nasa.gov/learn/keywords.html",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 7,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "c9824b30-b5ac-459d-ba50-188403b3b775",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Overview of the NASA GCMD Keywords.",
+      "format": "HTML",
+      "tracking_summary": {
+        "total": 163,
+        "recent": 14
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NASA GCMD Keyword Community Page",
+      "created": "2016-10-03T17:32:38.603269",
+      "url": "http://gcmd.gsfc.nasa.gov/learn/keywords.html",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 8,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    },
+    {
+      "cache_last_updated": null,
+      "package_id": "0009a4da-24ad-4d86-917b-1d1a1b1a67f3",
+      "webstore_last_updated": null,
+      "id": "0aee2404-4087-4a09-9c5e-ea4bf08ba6a6",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "information",
+      "hash": "",
+      "description": "Overview of the NASA GCMD Keywords.",
+      "format": "HTML",
+      "tracking_summary": {
+        "total": 163,
+        "recent": 14
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "HTTP",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "NASA GCMD Keyword Community Page",
+      "created": "2016-10-03T17:32:38.603277",
+      "url": "http://gcmd.gsfc.nasa.gov/learn/keywords.html",
+      "webstore_url": null,
+      "last_modified": null,
+      "position": 9,
+      "revision_id": "48f8ab67-468b-4354-a450-35f2cb8e51a7",
+      "resource_type": null
+    }
+  ],
+  "num_resources": 10,
+  "tags": [
+
+  ],
+  "tracking_summary": {
+    "total": 2,
+    "recent": 2
+  },
+  "groups": [
+
+  ],
+  "license_id": null,
+  "relationships_as_subject": [
+
+  ],
+  "organization": {
+    "description": "",
+    "created": "2013-03-14T03:44:40.434269",
+    "title": "National Oceanic and Atmospheric Administration, Department of Commerce",
+    "name": "noaa-gov",
+    "is_organization": true,
+    "state": "active",
+    "image_url": "https://fortress.wa.gov/dfw/score/score/images/noaa_logo.png",
+    "revision_id": "c6d43080-22e1-405e-a83d-f2a512d9e867",
+    "type": "organization",
+    "id": "e811f0b4-451f-4896-9e8f-fc6802837819",
+    "approval_status": "approved"
+  },
+  "name": "water-depth-and-other-data-from-thomas-g-thompson-and-other-platforms-from-gulf-of-alaska-and-o",
+  "isopen": false,
+  "url": null,
+  "notes": "",
+  "owner_org": "e811f0b4-451f-4896-9e8f-fc6802837819",
+  "extras": [
+    {
+      "key": "bbox-east-long",
+      "value": "-105.7"
+    },
+    {
+      "key": "resource-type",
+      "value": "dataset"
+    },
+    {
+      "key": "bbox-north-lat",
+      "value": "59.2"
+    },
+    {
+      "key": "coupled-resource",
+      "value": "[]"
+    },
+    {
+      "key": "guid",
+      "value": "gov.noaa.nodc:8600315"
+    },
+    {
+      "key": "spatial_harvester",
+      "value": true
+    },
+    {
+      "key": "bbox-south-lat",
+      "value": "8.9"
+    },
+    {
+      "key": "spatial-reference-system",
+      "value": ""
+    },
+    {
+      "key": "spatial",
+      "value": "{\"type\": \"Polygon\", \"coordinates\": [[[-158.2, 8.9], [-105.7, 8.9], [-105.7, 59.2], [-158.2, 59.2], [-158.2, 8.9]]]}"
+    },
+    {
+      "key": "progress",
+      "value": "completed"
+    },
+    {
+      "key": "access_constraints",
+      "value": "[\"Cite as: University of Washington (2015). Cloud amount/frequency, NITRATE and other data from THOMAS G. THOMPSON in the NW Pacific, Gulf of Alaska and NE Pacific from 1967-02-05 to 1975-10-09 (NCEI Accession 8600315). Version 2.2. NOAA National Centers for Environmental Information. Dataset. [access date]\", \"NOAA and NCEI cannot provide any warranty as to the accuracy, reliability, or completeness of furnished data. Users assume responsibility to determine the usability of these data. The user is responsible for the results of any application of this data for other than its intended purpose.\"]"
+    },
+    {
+      "key": "temporal-extent-begin",
+      "value": "1967-02-05"
+    },
+    {
+      "key": "contact-email",
+      "value": "NCEI.Info@noaa.gov"
+    },
+    {
+      "key": "bbox-west-long",
+      "value": "-158.2"
+    },
+    {
+      "key": "metadata-date",
+      "value": "2016-01-07T14:52:07"
+    },
+    {
+      "key": "dataset-reference-date",
+      "value": "[{\"type\": \"publication\", \"value\": \"2015-11-30\"}]"
+    },
+    {
+      "key": "frequency-of-update",
+      "value": "asNeeded"
+    },
+    {
+      "key": "licence",
+      "value": "[\"accessLevel: Public\"]"
+    },
+    {
+      "key": "metadata_type",
+      "value": "geospatial"
+    },
+    {
+      "key": "responsible-party",
+      "value": "[{\"name\": \"DOC/NOAA/NESDIS/NCEI > National Centers for Environmental Information, NESDIS, NOAA, U.S. Department of Commerce\", \"roles\": [\"pointOfContact\"]}]"
+    },
+    {
+      "key": "temporal-extent-end",
+      "value": "1975-10-09"
+    },
+    {
+      "key": "spatial-data-service-type",
+      "value": ""
+    },
+    {
+      "key": "metadata-language",
+      "value": "eng"
+    },
+    {
+      "key": "tags",
+      "value": "ocean temperature, atmosphere, ocean waves, conductivity, temperature, depth, pacific ocean, ocean optics, doc/noaa/nesdis/ncei, ocean, national oceanographic data center, nesdis, noaa, u.s. department of commerce, cloud properties, earth science, oceanography, photometers, density, atmospheric pressure, in situ/laboratory instruments, acoustic velocity, wind speed/wind direction, cloud types, wave period, atmospheric temperature, nitrate, ph, conductivity, attenuation/transmission, national centers for environmental information, nesdis, noaa, u.s. department of commerce, oceans, wave height, ocean acoustics, ocean color, surface winds, silicate, earth remote sensing instruments, passive remote sensing, water temperature, doc/noaa/nesdis/nodc, salinity/density, atmospheric winds, clouds, oxygen, cloud frequency, secchi disks, surface temperature, gulf of alaska, transmissometers, air temperature, salinity, ctd, profilers/sounders, phosphate, secchi depth, north pacific ocean, photon/optical detectors, hydrostatic pressure, ocean chemistry"
+    },
+    {
+      "key": "harvest_object_id",
+      "value": "1e5fbc3e-a6ab-489d-be34-5b676f2dd29d"
+    },
+    {
+      "key": "harvest_source_id",
+      "value": "2aed8e29-fc5b-4cde-aa66-fb1118fd705e"
+    },
+    {
+      "key": "harvest_source_title",
+      "value": "NOAA CSW Harvest Source"
+    }
+  ],
+  "title": "Cloud amount/frequency, NITRATE and other data from THOMAS G. THOMPSON in the NW Pacific, Gulf of Alaska and NE Pacific from 1967-02-05 to 1975-10-09 (NCEI Accession 8600315)",
+  "revision_id": "76e8f157-2773-48aa-b02c-23e45facd25c"
+}
