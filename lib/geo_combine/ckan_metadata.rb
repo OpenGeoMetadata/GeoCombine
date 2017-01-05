@@ -21,7 +21,7 @@ module GeoCombine
         dc_identifier_s: @metadata['id'],
         dc_title_s: @metadata['title'],
         dc_rights_s: 'Public',
-        layer_geom_type_s: @metadata['type'],
+        layer_geom_type_s: 'Not Specified',
         dct_provenance_s: organization['title'],
         dc_description_s: @metadata['notes'],
         layer_slug_s: @metadata['name'],
@@ -74,6 +74,8 @@ module GeoCombine
     def extras(key)
       if @metadata['extras']
         @metadata['extras'].select { |h| h['key'] == key }.collect { |v| v['value'] }[0] || ''
+      else
+        ''
       end
     end
 
