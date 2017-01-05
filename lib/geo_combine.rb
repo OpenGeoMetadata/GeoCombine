@@ -58,6 +58,7 @@ require 'geo_combine/geometry_types'
 
 # Require helper mixins
 require 'geo_combine/formatting'
+require 'geo_combine/bounding_box'
 
 # Require additional classes
 require 'geo_combine/fgdc'

@@ -35,22 +35,34 @@ module GeoCombine
     end
 
     def envelope
-      bbox = extras('bbox-west-long')
-      # If bbox is there, use that
-      if !bbox.empty?
-        return "ENVELOPE(#{extras('bbox-west-long').strip}, #{extras('bbox-east-long').strip}, #{extras('bbox-north-lat').strip}, #{extras('bbox-south-lat').strip})"
-      else
-        spatial = extras('spatial')
-        # Use spatial if it is there
-        unless spatial.empty?
-          commasplit = spatial.split(',')
-          split = spatial.split(' ')
-          # These can be separated by commas or spaces
-          split = commasplit if commasplit.length == 4
-          if spatial =~ /(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3}),?\s?(-?[0-9]{2,3})/
-            return "ENVELOPE(#{split[0]}, #{split[2]}, #{split[3]}, #{split[1]})"
-          end
-        end
+      return envelope_from_bbox unless envelope_from_bbox.nil?
+      return envelope_from_spatial(',') unless envelope_from_spatial(',').nil?
+      return envelope_from_spatial(' ') unless envelope_from_spatial(' ').nil?
+    end
+
+    def envelope_from_bbox
+      bbox = GeoCombine::BoundingBox.new(
+        west: extras('bbox-west-long'),
+        south: extras('bbox-south-lat'),
+        east: extras('bbox-east-long'),
+        north: extras('bbox-north-lat')
+      )
+      begin
+        return bbox.to_envelope if bbox.valid?
+      rescue GeoCombine::Exceptions::InvalidGeometry
+        return nil
+      end
+    end
+
+    def envelope_from_spatial(delimiter)
+      bbox = GeoCombine::BoundingBox.from_string_delimiter(
+        extras('spatial'),
+        delimiter: delimiter
+      )
+      begin
+        return bbox.to_envelope if bbox.valid?
+      rescue GeoCombine::Exceptions::InvalidGeometry
+        return nil
       end
     end
 
