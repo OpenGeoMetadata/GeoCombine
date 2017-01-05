@@ -35,9 +35,6 @@ RSpec.describe GeoCombine::Geoblacklight do
   let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'layer_geom_type_s' => 'esriGeometryPolygon') }
   before { enhanced_geobl.enhance_metadata }
   describe '#enhance_metadata' do
-    it 'calls enhancement methods to validate document' do
-      expect(enhanced_geobl.valid?).to be true
-    end
     it 'enhances the dc_subject_sm field' do
       expect(enhanced_geobl.metadata['dc_subject_sm']).to include 'Boundaries', 'Inland Waters'
     end
@@ -113,6 +110,11 @@ RSpec.describe GeoCombine::Geoblacklight do
       expect(enhanced_geobl).to receive(:dct_references_validate!)
       enhanced_geobl.valid?
     end
+    it 'validates spatial bounding box' do
+      expect(JSON::Validator).to receive(:validate!).and_return true
+      expect { basic_geobl.valid? }
+        .to raise_error GeoCombine::Exceptions::InvalidGeometry
+    end
   end
   describe '#dct_references_validate!' do
     context 'with valid document' do
@@ -149,6 +151,14 @@ RSpec.describe GeoCombine::Geoblacklight do
       it 'not a hash' do
         expect { not_hash.dct_references_validate! }.to raise_error GeoCombine::Exceptions::InvalidDCTReferences
       end
+    end
+  end
+  describe 'spatial_validate!' do
+    context 'when valid' do
+      it { full_geobl.spatial_validate! }
+    end
+    context 'when invalid' do
+      it { expect { basic_geobl.spatial_validate! }.to raise_error GeoCombine::Exceptions::InvalidGeometry }
     end
   end
 end

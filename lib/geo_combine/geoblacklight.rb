@@ -45,7 +45,9 @@ module GeoCombine
     # @return [Boolean]
     def valid?
       @schema ||= JSON.parse(open("https://raw.githubusercontent.com/geoblacklight/geoblacklight/#{GEOBLACKLIGHT_VERSION}/schema/geoblacklight-schema.json").read)
-      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer') && dct_references_validate!
+      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer') &&
+        dct_references_validate! &&
+        spatial_validate!
     end
 
     ##
@@ -60,6 +62,10 @@ module GeoCombine
       rescue JSON::ParserError => e
         raise e, "Invalid JSON in dct_references_s: #{e.message}"
       end
+    end
+
+    def spatial_validate!
+      GeoCombine::BoundingBox.from_envelope(metadata['solr_geom']).valid?
     end
 
     private
