@@ -1,5 +1,7 @@
 module GeoCombine
   class CkanMetadata
+    MAX_STRING_LENGTH = 32765 # Solr limit
+
     attr_reader :metadata
     def initialize(metadata)
       @metadata = JSON.parse(metadata)
@@ -23,7 +25,7 @@ module GeoCombine
         dc_rights_s: 'Public',
         layer_geom_type_s: 'Not Specified',
         dct_provenance_s: organization['title'],
-        dc_description_s: @metadata['notes'],
+        dc_description_s: @metadata['notes'].respond_to?(:[]) ? @metadata['notes'][0..MAX_STRING_LENGTH] : nil,
         layer_slug_s: @metadata['name'],
         solr_geom: envelope,
         dc_subject_sm: subjects,

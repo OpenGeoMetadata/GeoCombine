@@ -87,6 +87,28 @@ RSpec.describe GeoCombine::CkanMetadata do
           expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).not_to include('http://schema.org/downloadUrl')
         end
       end
+      context 'with very long descriptions' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata['notes'] = 'x' * 50000
+          ckan
+        end
+        it 'restricts the size' do
+          expect(ckan_sample.geoblacklight_terms[:dc_description_s].length).to eq GeoCombine::CkanMetadata::MAX_STRING_LENGTH + 1
+        end
+      end
+      context 'with no descriptions' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata['notes'] = nil
+          ckan
+        end
+        it 'omits the description' do
+          expect(ckan_sample.geoblacklight_terms).not_to include(:dc_description_s)
+        end
+      end
     end
   end
 end
