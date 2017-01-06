@@ -27,7 +27,8 @@ module GeoCombine
         layer_slug_s: @metadata['name'],
         solr_geom: envelope,
         dc_subject_sm: subjects,
-        dct_references_s: external_references.to_json.to_s
+        dct_references_s: external_references.to_json.to_s,
+        dc_format_s: downloadable? ? 'ZIP' : nil # TODO: we only allow direct ZIP file downloads
       }.select { |_k, v| !v.nil? }
     end
 
@@ -80,10 +81,19 @@ module GeoCombine
     end
 
     def external_references
-      {
-        'http://schema.org/url' => resource_urls('information').first,
-        'http://schema.org/downloadUrl' => resource_urls('download').first
-      }.select { |_k, v| !v.nil? }
+      h = {
+        'http://schema.org/url' => resource_urls('information').first
+      }
+
+      if downloadable?
+        h['http://schema.org/downloadUrl'] = resource_urls('download').first
+      end
+
+      h.select { |_k, v| !v.nil? }
+    end
+
+    def downloadable?
+      resource_urls('download').first =~ /.*\.zip/im
     end
 
     def resources(type)

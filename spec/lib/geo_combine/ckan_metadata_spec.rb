@@ -32,14 +32,6 @@ RSpec.describe GeoCombine::CkanMetadata do
       it 'with dc_subject_sm' do
         expect(ckan_sample.geoblacklight_terms[:dc_subject_sm].length).to eq 63
       end
-      context 'with resources' do
-        it 'with dct_references_s' do
-          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
-            'http://schema.org/url' => 'https://accession.nodc.noaa.gov/8600315',
-            'http://schema.org/downloadUrl' => 'https://accession.nodc.noaa.gov/download/8600315'
-          )
-        end
-      end
       context 'with no information resources' do
         let(:ckan_sample) do
           ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
@@ -47,10 +39,8 @@ RSpec.describe GeoCombine::CkanMetadata do
           metadata['resources'].delete_if { |resource| resource['resource_locator_function'] == 'information' }
           ckan
         end
-        it 'with dct_references_s' do
-          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
-            'http://schema.org/downloadUrl' => 'https://accession.nodc.noaa.gov/download/8600315'
-          )
+        it 'has no url (home page) in dct_references_s' do
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).not_to include('http://schema.org/url')
         end
       end
       context 'with no download resources' do
@@ -60,10 +50,28 @@ RSpec.describe GeoCombine::CkanMetadata do
           metadata['resources'].delete_if { |resource| resource['resource_locator_function'] == 'download' }
           ckan
         end
-        it 'with dct_references_s' do
-          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
-          'http://schema.org/url' => 'https://accession.nodc.noaa.gov/8600315'
-          )
+        it 'has no downloadUrl in dct_references_s' do
+          expect(ckan_sample.downloadable?).to be_falsey
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).not_to include('http://schema.org/downloadUrl')
+        end
+      end
+      context 'with a ZIP download' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata['resources'] = [
+            {
+              'resource_locator_function' => 'download',
+              'format' => 'ZIP',
+              'url' => 'https://example.com/layer.zip'
+            }
+          ]
+          ckan
+        end
+        it 'has a format and a download URL' do
+          expect(ckan_sample.downloadable?).to be_truthy
+          expect(ckan_sample.geoblacklight_terms).to include(dc_format_s: 'ZIP')
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include('http://schema.org/downloadUrl' => 'https://example.com/layer.zip')
         end
       end
       context 'without any resources' do
@@ -73,8 +81,10 @@ RSpec.describe GeoCombine::CkanMetadata do
           metadata.delete('resources')
           ckan
         end
-        it 'with dct_references_s' do
-          expect(ckan_sample.geoblacklight_terms[:dct_references_s]).to eq '{}'
+        it 'has no urls in dct_references_s' do
+          expect(ckan_sample.downloadable?).to be_falsey
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).not_to include('http://schema.org/url')
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).not_to include('http://schema.org/downloadUrl')
         end
       end
     end
