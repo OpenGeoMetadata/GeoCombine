@@ -26,7 +26,8 @@ module GeoCombine
         dc_description_s: @metadata['notes'],
         layer_slug_s: @metadata['name'],
         solr_geom: envelope,
-        dc_subject_sm: subjects
+        dc_subject_sm: subjects,
+        dct_references_s: external_references.to_json.to_s
       }.select { |_k, v| !v.nil? }
     end
 
@@ -73,6 +74,24 @@ module GeoCombine
     def extras(key)
       if @metadata['extras']
         @metadata['extras'].select { |h| h['key'] == key }.collect { |v| v['value'] }[0] || ''
+      end
+    end
+
+    def external_references
+      {
+        'http://schema.org/url' => resource_urls('information').first,
+        'http://schema.org/downloadUrl' => resource_urls('download').first
+      }.select { |_k, v| !v.nil? }
+    end
+
+    def resources(type)
+      return [] if @metadata['resources'].nil?
+      @metadata['resources'].select { |resource| resource['resource_locator_function'] == type }
+    end
+
+    def resource_urls(type)
+      resources(type).collect do |resource|
+        resource['url'] if resource.respond_to?(:[])
       end
     end
   end

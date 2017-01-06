@@ -32,6 +32,51 @@ RSpec.describe GeoCombine::CkanMetadata do
       it 'with dc_subject_sm' do
         expect(ckan_sample.geoblacklight_terms[:dc_subject_sm].length).to eq 63
       end
+      context 'with resources' do
+        it 'with dct_references_s' do
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
+            'http://schema.org/url' => 'https://accession.nodc.noaa.gov/8600315',
+            'http://schema.org/downloadUrl' => 'https://accession.nodc.noaa.gov/download/8600315'
+          )
+        end
+      end
+      context 'with no information resources' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata['resources'].delete_if { |resource| resource['resource_locator_function'] == 'information' }
+          ckan
+        end
+        it 'with dct_references_s' do
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
+            'http://schema.org/downloadUrl' => 'https://accession.nodc.noaa.gov/download/8600315'
+          )
+        end
+      end
+      context 'with no download resources' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata['resources'].delete_if { |resource| resource['resource_locator_function'] == 'download' }
+          ckan
+        end
+        it 'with dct_references_s' do
+          expect(JSON.parse(ckan_sample.geoblacklight_terms[:dct_references_s])).to include(
+          'http://schema.org/url' => 'https://accession.nodc.noaa.gov/8600315'
+          )
+        end
+      end
+      context 'without any resources' do
+        let(:ckan_sample) do
+          ckan = GeoCombine::CkanMetadata.new(ckan_metadata)
+          metadata = ckan.instance_variable_get('@metadata')
+          metadata.delete('resources')
+          ckan
+        end
+        it 'with dct_references_s' do
+          expect(ckan_sample.geoblacklight_terms[:dct_references_s]).to eq '{}'
+        end
+      end
     end
   end
 end
