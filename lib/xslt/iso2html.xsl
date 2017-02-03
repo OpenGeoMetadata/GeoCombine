@@ -531,6 +531,7 @@
                   </xsl:for-each>
                 </dl>
           </dd>
+        </dl>
         </div>
             
  <!-- Spatial Reference Info -->
@@ -1063,8 +1064,7 @@
                   </dd>  
                 </xsl:if>
               </dl>
-            </dd>  
-          </dl>
+            </dd>        
         </div>
      </xsl:template> 
 </xsl:stylesheet>
