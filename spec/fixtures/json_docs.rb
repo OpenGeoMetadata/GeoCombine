@@ -22,4 +22,12 @@ module JsonDocs
   def ckan_metadata
     File.read(File.join(File.dirname(__FILE__), './docs/ckan.json'))
   end
+
+  def ogp_harvard_raster
+    File.read(File.join(File.dirname(__FILE__), './docs/ogp_harvard_raster.json'))
+  end
+
+  def ogp_tufts_vector
+    File.read(File.join(File.dirname(__FILE__), './docs/ogp_tufts_vector.json'))
+  end
 end
