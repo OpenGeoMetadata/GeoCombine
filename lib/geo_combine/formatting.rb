@@ -25,5 +25,9 @@ module GeoCombine
     def sanitize_and_remove_lines(text)
       remove_lines(sanitize(text))
     end
+
+    def sluggify(text)
+      URI.encode(text.tr('.', '-').tr('_', '-').downcase)
+    end
   end
 end
