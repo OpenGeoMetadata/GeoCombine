@@ -1,9 +1,9 @@
-require 'find'
 require 'net/http'
 require 'json'
 require 'rsolr'
 
 namespace :geocombine do
+  commit_within = (ENV['SOLR_COMMIT_WITHIN'] || 5000).to_i
   ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
   solr_url = ENV['SOLR_URL'] || 'http://127.0.0.1:8983/solr/blacklight-core'
   whitelist = %w[
@@ -29,17 +29,17 @@ namespace :geocombine do
   desc 'Index all of the GeoBlacklight JSON documents'
   task :index do
     solr = RSolr.connect :url => solr_url
-    Find.find(ogm_path) do |path|
-      next unless path =~ /.*geoblacklight.json$/
+    Dir.glob("#{ogm_path}/**/geoblacklight.json") do |path|
       doc = JSON.parse(File.read(path))
       begin
-        solr.update params: { commitWithin: 500, overwrite: true },
-                    data: [doc].to_json,
+        solr.update params: { commitWithin: commit_within, overwrite: true },
+                    data: [doc].flatten.to_json,
                     headers: { 'Content-Type' => 'application/json' }
 
       rescue RSolr::Error::Http => error
         puts error
       end
     end
+    solr.commit
   end
 end
