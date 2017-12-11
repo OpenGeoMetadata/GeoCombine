@@ -48,24 +48,16 @@ GeoCombine's tasks can be run either as rake tasks or as standalone executables.
 ### Clone all OpenGeoMetadata repositories
 
 ```sh
-$ rake geocombine:clone
-```
-
-```sh
 $ bundle exec geocombine clone
 ```
 
-Will clone all edu.* OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
+Will clone all edu.*, org.*, and uk.* OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
 
 ```sh
-$ OGM_PATH='my/custom/location' rake geocombine:clone
+$ OGM_PATH='my/custom/location' bundle exec rake geocombine:clone
 ```
 
-### Pull all OpenGeoMetadata repositories
-
-```sh
-$ rake geocombine:pull
-```
+### Update all OpenGeoMetadata repositories
 
 ```sh
 $ bundle exec geocombine pull
@@ -75,9 +67,8 @@ Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometada
 
 ### Index all of the GeoBlacklight documents
 
-```sh
-$ rake geocombine:index
-```
+To index into Solr, GeoCombine requires a Solr instance that is running the
+[GeoBlacklight schema](https://github.com/geoblacklight/geoblacklight):
 
 ```sh
 $ bundle exec geocombine index
@@ -90,7 +81,7 @@ Indexes all of the `geoblacklight.json` files in cloned repositories to a Solr i
 Solr location can also be specified by an environment variable `SOLR_URL`.
 
 ```sh
-$ SOLR_URL=http://www.example.com:1234/solr/collection rake geocombine:index
+$ SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
 ```
 
 ## Contributing
