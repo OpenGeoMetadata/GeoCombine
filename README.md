@@ -89,6 +89,14 @@ change the [`commitWithin` parameter](https://lucene.apache.org/solr/guide/6_6/u
 $ SOLR_COMMIT_WITHIN=100 bundle exec rake geocombine:index
 ```
 
+## Tests
+
+To run the tests, use:
+
+```sh
+$ bundle exec rake spec
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/GeoCombine/fork )
