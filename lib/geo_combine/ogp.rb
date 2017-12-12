@@ -1,15 +1,35 @@
 module GeoCombine
   # Data model for OpenGeoPortal metadata
   class OGP
+    class InvalidMetadata < RuntimeError; end
     include GeoCombine::Formatting
     attr_reader :metadata
 
     ##
     # Initializes an OGP object for parsing
-    # @param [String] metadata a valid serialized JSON string from an ESRI Open
-    # Data portal
+    # @param [String] metadata a valid serialized JSON string from OGP instance
+    # @raise [InvalidMetadata]
     def initialize(metadata)
       @metadata = JSON.parse(metadata)
+      raise InvalidMetadata unless valid?
+    end
+
+    OGP_REQUIRED_FIELDS = %w[
+      Access
+      Institution
+      LayerDisplayName
+      LayerId
+      MaxX
+      MaxY
+      MinX
+      MinY
+      Name
+    ].freeze
+
+    ##
+    # Runs validity checks on OGP metadata to ensure fields are present
+    def valid?
+      OGP_REQUIRED_FIELDS.all? { |k| metadata[k].present? }
     end
 
     ##
@@ -103,16 +123,17 @@ module GeoCombine
       raise ArgumentError unless west >= -180 && west <= 180 &&
                                  east >= -180 && east <= 180 &&
                                  north >= -90 && north <= 90 &&
-                                 south >= -90 && south <= 90
+                                 south >= -90 && south <= 90 &&
+                                 west <= east && south <= north
       "ENVELOPE(#{west}, #{east}, #{north}, #{south})"
     end
 
     def subjects
-      fgdc.metadata.xpath('//themekey').map { |k| k.text } if fgdc
+      fgdc.metadata.xpath('//themekey').map(&:text) if fgdc
     end
 
     def placenames
-      fgdc.metadata.xpath('//placekey').map { |k| k.text } if fgdc
+      fgdc.metadata.xpath('//placekey').map(&:text) if fgdc
     end
 
     def fgdc
@@ -161,11 +182,35 @@ module GeoCombine
     end
 
     def identifier
-      URI.encode(metadata['LayerId'])
+      CGI.escape(metadata['LayerId']) # TODO: why are we using CGI.escape?
     end
 
     def slug
-      sluggify(metadata['LayerId'])
+      name = metadata['LayerId'] || metadata['Name'] || ''
+      name = [institution, name].join('-') if institution.present? &&
+                                              !name.downcase.start_with?(institution.downcase)
+      sluggify(filter_name(name))
+    end
+
+    SLUG_BLACKLIST = %w[
+      SDE_DATA.
+      SDE.
+      SDE2.
+      GISPORTAL.GISOWNER01.
+      GISDATA.
+      MORIS.
+    ].freeze
+
+    def filter_name(name)
+      # strip out schema and usernames
+      SLUG_BLACKLIST.each do |blacklisted|
+        name.sub!(blacklisted, '')
+      end
+      unless name.size > 1
+        # use first word of title is empty name
+        name = metadata['LayerDisplayName'].split.first
+      end
+      name
     end
   end
 end

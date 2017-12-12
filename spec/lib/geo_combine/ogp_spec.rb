@@ -23,10 +23,10 @@ RSpec.describe GeoCombine::OGP do
   describe '#geoblacklight_terms' do
     describe 'builds a hash which maps metadata' do
       it 'with dc_identifier_s' do
-        expect(ogp.geoblacklight_terms).to include(dc_identifier_s: metadata['LayerId'])
+        expect(ogp.geoblacklight_terms).to include(dc_identifier_s: 'HARVARD.SDE2.G1059_W57_1654_PF_SH1')
       end
       it 'with dc_title_s' do
-        expect(ogp.geoblacklight_terms).to include(dc_title_s: metadata['LayerDisplayName'])
+        expect(ogp.geoblacklight_terms).to include(dc_title_s: 'World Map, 1654 (Raster Image)')
       end
       it 'with dc_description_s sanitized' do
         expect(ogp.geoblacklight_terms).to include(dc_description_s: metadata['Abstract'])
@@ -35,7 +35,7 @@ RSpec.describe GeoCombine::OGP do
         expect(ogp.geoblacklight_terms).to include(dc_rights_s: 'Public')
       end
       it 'with dct_provenance_s' do
-        expect(ogp.geoblacklight_terms).to include(dct_provenance_s: metadata['Institution'])
+        expect(ogp.geoblacklight_terms).to include(dct_provenance_s: 'Harvard')
       end
       it 'with dct_references_s' do
         expect(ogp.geoblacklight_terms).to include(:dct_references_s)
@@ -49,7 +49,7 @@ RSpec.describe GeoCombine::OGP do
       end
       it 'with layer_slug_s' do
         expect(ogp.geoblacklight_terms)
-          .to include(layer_slug_s: 'harvard-sde2-g1059-w57-1654-pf-sh1')
+          .to include(layer_slug_s: 'harvard-g1059-w57-1654-pf-sh1')
       end
       it 'with solr_geom' do
         expect(ogp.geoblacklight_terms).to include(:solr_geom)

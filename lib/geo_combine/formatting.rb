@@ -15,7 +15,7 @@ module GeoCombine
     # @param [String] text
     # @return [String]
     def remove_lines(text)
-      text.gsub(/\n/, '')
+      text.delete("\n")
     end
 
     ##
@@ -26,8 +26,9 @@ module GeoCombine
       remove_lines(sanitize(text))
     end
 
-    def sluggify(text)
-      URI.encode(text.tr('.', '-').tr('_', '-').downcase)
+    # slugs should be lowercase and only have a-z, A-Z, 0-9, and -
+    def sluggify(slug)
+      slug.gsub(/[^a-zA-Z0-9\-]/, '-').gsub(/[\-]+/, '-').downcase
     end
   end
 end
