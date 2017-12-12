@@ -1,5 +1,5 @@
 module GeoCombine
-  # Data model for ESRI's open data portal metadata
+  # Data model for OpenGeoPortal metadata
   class OGP
     include GeoCombine::Formatting
     attr_reader :metadata
@@ -26,11 +26,11 @@ module GeoCombine
     def geoblacklight_terms
       {
         # Required fields
-        dc_identifier_s: URI.encode(metadata['LayerId']),
-        layer_slug_s: sluggify(metadata['LayerId']),
+        dc_identifier_s: identifier,
+        layer_slug_s: slug,
         dc_title_s: metadata['LayerDisplayName'],
         solr_geom: envelope,
-        dct_provenance_s: metadata['Institution'],
+        dct_provenance_s: institution,
         dc_rights_s: metadata['Access'],
         geoblacklight_version: '1.0',
 
@@ -85,7 +85,7 @@ module GeoCombine
       when 'Polygon', 'Point', 'Line'
         return 'Shapefile'
       else
-        ''
+        raise ArgumentError
       end
     end
 
@@ -100,19 +100,23 @@ module GeoCombine
     # Builds a Solr Envelope using CQL syntax
     # @return [String]
     def envelope
+      raise ArgumentError unless west >= -180 && west <= 180 &&
+                                 east >= -180 && east <= 180 &&
+                                 north >= -90 && north <= 90 &&
+                                 south >= -90 && south <= 90
       "ENVELOPE(#{west}, #{east}, #{north}, #{south})"
     end
 
     def subjects
-      fgdc.metadata.xpath('//themekey').map { |k| k.text }
+      fgdc.metadata.xpath('//themekey').map { |k| k.text } if fgdc
     end
 
     def placenames
-      fgdc.metadata.xpath('//placekey').map { |k| k.text }
+      fgdc.metadata.xpath('//placekey').map { |k| k.text } if fgdc
     end
 
     def fgdc
-      GeoCombine::Fgdc.new(metadata['FgdcText'])
+      GeoCombine::Fgdc.new(metadata['FgdcText']) if metadata['FgdcText']
     end
 
     private
@@ -137,19 +141,31 @@ module GeoCombine
     end
 
     def north
-      @metadata['MaxY']
+      metadata['MaxY']
     end
 
     def south
-      @metadata['MinY']
+      metadata['MinY']
     end
 
     def east
-      @metadata['MaxX']
+      metadata['MaxX']
     end
 
     def west
-      @metadata['MinX']
+      metadata['MinX']
+    end
+
+    def institution
+      metadata['Institution']
+    end
+
+    def identifier
+      URI.encode(metadata['LayerId'])
+    end
+
+    def slug
+      sluggify(metadata['LayerId'])
     end
   end
 end
