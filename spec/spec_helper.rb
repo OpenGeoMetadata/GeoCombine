@@ -24,6 +24,7 @@ require 'fixtures/xml_docs'
 require 'fixtures/json_docs'
 require 'helpers'
 require 'rspec-html-matchers'
+require 'byebug'
 
 RSpec.configure do |config|
   config.include Helpers

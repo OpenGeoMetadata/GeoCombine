@@ -21,14 +21,8 @@ RSpec.describe GeoCombine::Formatting do
   end
   describe '#sluggify' do
     let(:preslug) { 'HARVARD...Co_0l' }
-    it 'replaces . and _ for -' do
-      expect(subject.sluggify(preslug)).to_not include '.'
-      expect(subject.sluggify(preslug)).to_not include '_'
-      expect(subject.sluggify(preslug)).to include '---'
-      expect(subject.sluggify(preslug)).to include 'co-0l'
-    end
-    it 'downcases everything' do
-      expect(subject.sluggify(preslug)).to_not include 'HARVARD', 'C'
+    it 'handles multiple . and _ and uppercase' do
+      expect(subject.sluggify(preslug)).to eq 'harvard-co-0l'
     end
   end
 end
