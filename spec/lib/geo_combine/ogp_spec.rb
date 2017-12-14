@@ -5,6 +5,7 @@ RSpec.describe GeoCombine::OGP do
 
   subject(:ogp) { GeoCombine::OGP.new(ogp_harvard_raster) }
   let(:ogp_tufts) { GeoCombine::OGP.new(ogp_tufts_vector) }
+  let(:ogp_line) { GeoCombine::OGP.new(ogp_harvard_line) }
   let(:metadata) { ogp.instance_variable_get(:@metadata) }
 
   describe '#initialize' do
@@ -33,6 +34,7 @@ RSpec.describe GeoCombine::OGP do
       end
       it 'with dc_rights_s' do
         expect(ogp.geoblacklight_terms).to include(dc_rights_s: 'Public')
+        expect(ogp_line.geoblacklight_terms).to include(dc_rights_s: 'Restricted')
       end
       it 'with dct_provenance_s' do
         expect(ogp.geoblacklight_terms).to include(dct_provenance_s: 'Harvard')
@@ -113,7 +115,7 @@ RSpec.describe GeoCombine::OGP do
 
   describe '#envelope' do
     it 'properly formatted envelope' do
-      expect(ogp.envelope).to eq 'ENVELOPE(-180, 180, 90, -90)'
+      expect(ogp.envelope).to eq 'ENVELOPE(-180.0, 180.0, 90.0, -90.0)'
     end
     it 'fails on out-of-bounds envelopes' do
       expect(ogp).to receive(:west).and_return(-181)
@@ -138,11 +140,21 @@ RSpec.describe GeoCombine::OGP do
         )
       end
     end
+    context 'harvard line' do
+      it 'has restricted services' do
+        expect(JSON.parse(ogp_line.references)).to include(
+          'http://www.opengis.net/def/serviceType/ogc/wfs' => 'http://hgl.harvard.edu:8080/geoserver/wfs',
+          'http://www.opengis.net/def/serviceType/ogc/wms' => 'http://hgl.harvard.edu:8080/geoserver/wms'
+        )
+        expect(JSON.parse(ogp_line.references)).not_to include('http://schema.org/DownloadAction')
+      end
+    end
   end
 
   describe 'valid geoblacklight schema' do
     context 'harvard' do
       it { expect { ogp.to_geoblacklight.valid? }.to_not raise_error }
+      it { expect { ogp_line.to_geoblacklight.valid? }.to_not raise_error }
     end
     context 'tufts' do
       it { expect { ogp_tufts.to_geoblacklight.valid? }.to_not raise_error }

@@ -146,13 +146,23 @@ module GeoCombine
     # Builds references used for dct_references
     # @return [Hash]
     def references_hash
-      {
+      results = {
         'http://www.opengis.net/def/serviceType/ogc/wfs' => location['wfs'],
         'http://www.opengis.net/def/serviceType/ogc/wms' => location['wms'],
-        'http://schema.org/DownloadAction' => location['download']
-        # Handle null, "", and [""]
-      }.map { |k, v| { k => ([] << v).flatten.first } if v }
-        .flatten.compact.reduce({}, :merge)
+        'http://schema.org/url' => location['url'],
+        download_uri => location['download']
+      }
+
+      # Handle null, "", and [""]
+      results.map { |k, v| { k => ([] << v).flatten.first } if v }
+             .flatten
+             .compact
+             .reduce({}, :merge)
+    end
+
+    def download_uri
+      return 'http://schema.org/DownloadAction' if institution == 'Harvard'
+      'http://schema.org/downloadUrl'
     end
 
     ##
@@ -162,19 +172,19 @@ module GeoCombine
     end
 
     def north
-      metadata['MaxY']
+      metadata['MaxY'].to_f
     end
 
     def south
-      metadata['MinY']
+      metadata['MinY'].to_f
     end
 
     def east
-      metadata['MaxX']
+      metadata['MaxX'].to_f
     end
 
     def west
-      metadata['MinX']
+      metadata['MinX'].to_f
     end
 
     def institution

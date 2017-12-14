@@ -27,6 +27,10 @@ module JsonDocs
     File.read(File.join(File.dirname(__FILE__), './docs/ogp_harvard_raster.json'))
   end
 
+  def ogp_harvard_line
+    File.read(File.join(File.dirname(__FILE__), './docs/ogp_harvard_line.json'))
+  end
+
   def ogp_tufts_vector
     File.read(File.join(File.dirname(__FILE__), './docs/ogp_tufts_vector.json'))
   end
