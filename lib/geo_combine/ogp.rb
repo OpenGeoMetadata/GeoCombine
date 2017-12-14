@@ -1,3 +1,5 @@
+require 'active_support/core_ext/object/blank'
+
 module GeoCombine
   # Data model for OpenGeoPortal metadata
   class OGP
