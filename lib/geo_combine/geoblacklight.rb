@@ -36,8 +36,8 @@ module GeoCombine
     ##
     # Returns a string of JSON from a GeoBlacklight hash
     # @return (String)
-    def to_json
-      @metadata.to_json
+    def to_json(_options = {})
+      JSON.pretty_generate(@metadata)
     end
 
     ##
