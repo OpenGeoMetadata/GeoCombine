@@ -105,8 +105,8 @@ RSpec.describe GeoCombine::OGP do
     end
     context 'unknown data types' do
       it 'throws exception' do
-        expect(ogp).to receive(:metadata).and_return('DataType' => 'Unknown')
-        expect { ogp.ogp_formats }.to raise_error(ArgumentError)
+        expect(ogp).to receive(:metadata).twice.and_return('DataType' => 'Unknown')
+        expect { ogp.ogp_formats }.to raise_error(ArgumentError, 'Unknown')
       end
     end
   end

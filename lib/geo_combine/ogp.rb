@@ -1,4 +1,5 @@
 require 'active_support/core_ext/object/blank'
+require 'cgi'
 
 module GeoCombine
   # Data model for OpenGeoPortal metadata
@@ -107,7 +108,7 @@ module GeoCombine
       when 'Polygon', 'Point', 'Line'
         return 'Shapefile'
       else
-        raise ArgumentError
+        raise ArgumentError, metadata['DataType']
       end
     end
 
