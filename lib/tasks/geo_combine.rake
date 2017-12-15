@@ -28,16 +28,19 @@ namespace :geocombine do
 
   desc 'Index all of the GeoBlacklight JSON documents'
   task :index do
-    solr = RSolr.connect :url => solr_url
+    solr = RSolr.connect url: solr_url
+    puts "Indexing #{ogm_path} into #{solr_url}"
     Dir.glob("#{ogm_path}/**/geoblacklight.json") do |path|
       doc = JSON.parse(File.read(path))
-      begin
-        solr.update params: { commitWithin: commit_within, overwrite: true },
-                    data: [doc].flatten.to_json,
-                    headers: { 'Content-Type' => 'application/json' }
-
-      rescue RSolr::Error::Http => error
-        puts error
+      [doc].flatten.each do |record|
+        begin
+          puts "Indexing #{record['layer_slug_s']}: #{path}" if $DEBUG
+          solr.update params: { commitWithin: commit_within, overwrite: true },
+                      data: [record].to_json,
+                      headers: { 'Content-Type' => 'application/json' }
+        rescue RSolr::Error::Http => error
+          puts error
+        end
       end
     end
     solr.commit
