@@ -34,4 +34,8 @@ module JsonDocs
   def ogp_tufts_vector
     File.read(File.join(File.dirname(__FILE__), './docs/ogp_tufts_vector.json'))
   end
+
+  def geoblacklight_pre_v1
+    File.read(File.join(File.dirname(__FILE__), './docs/geoblacklight_pre_v1.json'))
+  end
 end

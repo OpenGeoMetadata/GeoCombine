@@ -4,14 +4,15 @@ RSpec.describe GeoCombine::Geoblacklight do
   include XmlDocs
   include JsonDocs
   include GeoCombine::Exceptions
-  let(:full_geobl) { GeoCombine::Geoblacklight.new(full_geoblacklight) }
-  let(:basic_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight) }
+  let(:full_geobl) { described_class.new(full_geoblacklight) }
+  let(:basic_geobl) { described_class.new(basic_geoblacklight) }
+  let(:pre_v1_geobl) { described_class.new(geoblacklight_pre_v1) }
   describe '#initialize' do
     it 'parses metadata argument JSON to Hash' do
       expect(basic_geobl.instance_variable_get(:@metadata)).to be_an Hash
     end
     describe 'merges fields argument into metadata' do
-      let(:basic_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'dc_identifier_s' => 'new one', "extra_field" => true)}
+      let(:basic_geobl) { described_class.new(basic_geoblacklight, 'dc_identifier_s' => 'new one', "extra_field" => true)}
       it 'overwrites existing metadata fields' do
         expect(basic_geobl.metadata['dc_identifier_s']).to eq 'new one'
       end
@@ -32,7 +33,7 @@ RSpec.describe GeoCombine::Geoblacklight do
       expect(valid_json?(basic_geobl.to_json)).to be_truthy
     end
   end
-  let(:enhanced_geobl) { GeoCombine::Geoblacklight.new(basic_geoblacklight, 'layer_geom_type_s' => 'esriGeometryPolygon') }
+  let(:enhanced_geobl) { described_class.new(basic_geoblacklight, 'layer_geom_type_s' => 'esriGeometryPolygon') }
   before { enhanced_geobl.enhance_metadata }
   describe '#enhance_metadata' do
     it 'enhances the dc_subject_sm field' do
@@ -159,6 +160,26 @@ RSpec.describe GeoCombine::Geoblacklight do
     end
     context 'when invalid' do
       it { expect { basic_geobl.spatial_validate! }.to raise_error GeoCombine::Exceptions::InvalidGeometry }
+    end
+  end
+  describe 'upgrade_to_v1' do
+    before do
+      expect(pre_v1_geobl).to receive(:upgrade_to_v1).and_call_original
+      pre_v1_geobl.enhance_metadata
+    end
+
+    it 'tags with version' do
+      expect(pre_v1_geobl.metadata).to include('geoblacklight_version' => '1.0')
+    end
+
+    it 'properly deprecates fields' do
+      described_class::DEPRECATED_KEYS_V1.each do |k|
+        expect(pre_v1_geobl.metadata.keys).not_to include(k.to_s)
+      end
+    end
+
+    it 'normalizes slugs' do
+      expect(pre_v1_geobl.metadata).to include('layer_slug_s' => 'sde-columbia-esri-arcatlas-snow-ln')
     end
   end
 end
