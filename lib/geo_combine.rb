@@ -20,7 +20,7 @@ module GeoCombine
     ##
     # Creates a new GeoCombine::Metadata object, where metadata parameter is can
     # be a File path or String of XML
-    # @param [String] metadata can be a File path 
+    # @param [String] metadata can be a File path
     # "./tmp/edu.stanford.purl/bb/338/jh/0716/iso19139.xml" or a String of XML
     # metadata
     def initialize metadata
@@ -70,3 +70,4 @@ require 'geo_combine/ogp'
 
 # Require gem files
 require 'geo_combine/version'
+require 'geo_combine/railtie' if defined?(Rails)
