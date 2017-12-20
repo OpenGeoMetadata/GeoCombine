@@ -1,6 +1,7 @@
 require 'net/http'
 require 'json'
 require 'rsolr'
+require 'find'
 
 namespace :geocombine do
   commit_within = (ENV['SOLR_COMMIT_WITHIN'] || 5000).to_i
@@ -28,9 +29,10 @@ namespace :geocombine do
 
   desc 'Index all of the GeoBlacklight JSON documents'
   task :index do
-    solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
     puts "Indexing #{ogm_path} into #{solr_url}"
-    Dir.glob("#{ogm_path}/**/geoblacklight.json") do |path|
+    solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
+    Find.find(ogm_path) do |path|
+      next unless File.basename(path) == 'geoblacklight.json'
       doc = JSON.parse(File.read(path))
       [doc].flatten.each do |record|
         begin
