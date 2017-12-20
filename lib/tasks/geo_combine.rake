@@ -28,7 +28,7 @@ namespace :geocombine do
 
   desc 'Index all of the GeoBlacklight JSON documents'
   task :index do
-    solr = RSolr.connect url: solr_url
+    solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
     puts "Indexing #{ogm_path} into #{solr_url}"
     Dir.glob("#{ogm_path}/**/geoblacklight.json") do |path|
       doc = JSON.parse(File.read(path))
