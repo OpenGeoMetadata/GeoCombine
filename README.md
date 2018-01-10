@@ -46,7 +46,7 @@ Or install it yourself as:
 #### Clone OpenGeoMetadata repositories locally
 
 ```sh
-$ bundle exec geocombine clone
+$ bundle exec rake geocombine:clone
 ```
 
 Will clone all `edu.*`,` org.*`, and `uk.*` OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
@@ -55,13 +55,25 @@ Will clone all `edu.*`,` org.*`, and `uk.*` OpenGeoMetadata repositories into `.
 $ OGM_PATH='my/custom/location' bundle exec rake geocombine:clone
 ```
 
+You can also specify a single repository:
+
+```sh
+$ bundle exec rake geocombine:clone[edu.stanford.purl]
+```
+
 #### Update local OpenGeoMetadata repositories
 
 ```sh
-$ bundle exec geocombine pull
+$ bundle exec rake geocombine:pull
 ```
 
-Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometadata` (or custom path with configured environment variable `OGM_PATH`)
+Runs `git pull origin master` on all cloned repositories in `./tmp/opengeometadata` (or custom path with configured environment variable `OGM_PATH`).
+
+You can also specify a single repository:
+
+```sh
+$ bundle exec rake geocombine:pull[edu.stanford.purl]
+```
 
 #### Index GeoBlacklight documents
 
@@ -69,7 +81,7 @@ To index into Solr, GeoCombine requires a Solr instance that is running the
 [GeoBlacklight schema](https://github.com/geoblacklight/geoblacklight):
 
 ```sh
-$ bundle exec geocombine index
+$ bundle exec rake geocombine:index
 ```
 
 Indexes the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr

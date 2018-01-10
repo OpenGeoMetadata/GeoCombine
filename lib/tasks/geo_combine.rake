@@ -7,23 +7,36 @@ namespace :geocombine do
   ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
   solr_url = ENV['SOLR_URL'] || 'http://127.0.0.1:8983/solr/blacklight-core'
   whitelist = %w[
-    git@github.com:OpenGeoMetadata/big-ten.git
+    https://github.com/OpenGeoMetadata/big-ten.git
   ]
 
-  desc 'Clone all OpenGeoMetadata repositories'
-  task :clone do
-    ogm_api_uri = URI('https://api.github.com/orgs/opengeometadata/repos')
-    ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map{ |repo| repo['git_url']}
+  desc 'Clone OpenGeoMetadata repositories'
+  task :clone, [:repo] do |_t, args|
+    if args.repo
+      ogm_repos = ["https://github.com/OpenGeoMetadata/#{args.repo}.git"]
+    else
+      ogm_api_uri = URI('https://api.github.com/orgs/opengeometadata/repos')
+      ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map do |repo|
+        repo['clone_url'] if repo['size'] > 0
+      end.compact
+      ogm_repos.select! { |repo| whitelist.include?(repo) || repo =~ /(edu|org|uk)\..*\.git$/ }
+    end
     ogm_repos.each do |repo|
-      if whitelist.include?(repo) || repo =~ /(edu|org|uk)\..*\.git$/
-        system "mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
-      end
+      system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
     end
   end
 
   desc '"git pull" OpenGeoMetadata repositories'
-  task :pull do
-    Dir.glob("#{ogm_path}/*").map{ |dir| system "cd #{dir} && git pull origin master" if dir =~ /(edu|org|uk)\..*$/ }
+  task :pull, [:repo] do |_t, args|
+    paths = if args.repo
+              [File.join(ogm_path, args.repo)]
+            else
+              Dir.glob("#{ogm_path}/*")
+            end
+    paths.each do |path|
+      next unless File.directory?(path)
+      system "echo #{path} && cd #{path} && git pull origin"
+    end
   end
 
   desc 'Index all of the GeoBlacklight JSON documents'
