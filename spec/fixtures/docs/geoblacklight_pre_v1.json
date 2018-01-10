@@ -1,0 +1,37 @@
+{
+  "uuid": "urn:columbia.edu:Columbia.ESRI_Arcatlas_snow_ln",
+  "dc_identifier_s": "urn:columbia.edu:Columbia.ESRI_Arcatlas_snow_ln",
+  "dc_title_s": "Worldwide Snow Cover (Polygon), 1996",
+  "dc_description_s": "Snow Cover (Polygon) is a polyline theme representing rates or snowcover worldwide.",
+  "dc_rights_s": "Restricted",
+  "dct_provenance_s": "Columbia",
+  "dct_references_s": "{\"http://schema.org/downloadUrl\":\"https://www1.columbia.edu/sec/acis/eds/dgate/studies/C1301/data/snow_poly.zip\",\"http://www.w3.org/1999/xhtml\":\"https://geoblacklight-prod.cul.columbia.edu/metadata/fgdc/html/ESRI_Arcatlas_snow_ln.html\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"https://geoblacklight-prod.cul.columbia.edu/metadata/fgdc/current/ESRI_Arcatlas_snow_ln.xml\"}",
+  "georss_box_s": "-85.0 -180.0 85.0 180.0",
+  "layer_id_s": "sde:columbia.ESRI_Arcatlas_snow_ln",
+  "layer_geom_type_s": "Polygon",
+  "layer_modified_dt": "2009-06-16T00:00:00Z",
+  "layer_slug_s": "sde-columbia-esri_arcatlas_snow_ln",
+  "solr_geom": "ENVELOPE(-180.0, 180.0, 85.0, -85.0)",
+  "solr_year_i": 1996,
+  "dc_creator_sm": [
+    "Environmental Systems Research Institute (Redlands, Calif.)"
+  ],
+  "dc_format_s": "Shapefile",
+  "dc_language_s": "",
+  "dc_publisher_s": "ESRI",
+  "dc_subject_sm": [
+    "climatologyMeteorologyAtmosphere"
+  ],
+  "dc_type_s": "Dataset",
+  "dct_spatial_sm": [
+    "Earth"
+  ],
+  "dct_temporal_sm": [
+    "1996"
+  ],
+  "dct_issued_s": "",
+  "dct_isPartOf_sm": [
+    "ArcAtlas"
+  ],
+  "georss_polygon_s": "85.0 -180.0 85.0 180.0 -85.0 180.0 -85.0 -180.0 85.0 -180.0"
+}
