@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <!-- 
-     fgdc2html.xsl - Transformation from CDSDGM/FGDC into HTML 
+<xsl:output method="html" encoding="utf-8" indent="yes" />
+<!--
+     fgdc2html.xsl - Transformation from CSDGM/FGDC into HTML
      Created by Kim Durante, Stanford University Libraries
 
-     -->
+     Modified by Keith Jenkins, Cornell University Library, 2018-01-25
+     to render attributes in a more readable form.
+-->
   <xsl:template match="/">
-    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text>
+    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html>
       <head>
         <title>
@@ -64,6 +67,7 @@
       </body>
     </html>
   </xsl:template>
+
   <!-- Identification -->
   <xsl:template match="idinfo">
     <div id="fgdc-identification-info">
@@ -335,6 +339,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Data Quality -->
   <xsl:template match="dataqual">
     <div id="fgdc-data-quality-info">
@@ -524,6 +529,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Spatial Data Organization -->
   <xsl:template match="spdoinfo">
     <div id="fgdc-spatialdataorganization-info">
@@ -637,6 +643,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Spatial Reference -->
   <xsl:template match="spref">
     <div id="fgdc-spatialreference-info">
@@ -1112,6 +1119,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Entity and Attribute -->
   <xsl:template match="eainfo">
     <div id="fgdc-entityattribute-info">
@@ -1145,7 +1153,7 @@
                   </dl>
                 </dd>
               </xsl:for-each>
-              <xsl:apply-templates select="attr" />
+              <xsl:call-template name='attributes' />
             </xsl:for-each>
             <xsl:for-each select="overview">
               <xsl:for-each select="eaover">
@@ -1166,6 +1174,94 @@
       </dl>
     </div>
   </xsl:template>
+
+  <xsl:template name='attributes'>
+    <xsl:if test='attr'>
+      <dt>Attributes</dt>
+      <dd>
+        <dl>
+          <xsl:for-each select="attr">
+            <dt><xsl:value-of select="attrlabl" /></dt>
+            <dd>
+              <xsl:value-of select="attrdef" />
+              <xsl:apply-templates select="attrdomv" />
+              <dl>
+                <xsl:for-each select="begdatea">
+                  <dt>Beginning Date of Attribute Values</dt>
+                  <dd>
+                    <xsl:value-of select="." />
+                  </dd>
+                </xsl:for-each>
+                <xsl:for-each select="enddatea">
+                  <dt>Ending Date of Attribute Values</dt>
+                  <dd>
+                    <xsl:value-of select="." />
+                  </dd>
+                </xsl:for-each>
+                <xsl:for-each select="attrvai">
+                  <xsl:for-each select="attrva">
+                    <dt>Attribute Value Accuracy</dt>
+                    <dd>
+                      <xsl:value-of select="." />
+                    </dd>
+                  </xsl:for-each>
+                  <xsl:for-each select="attrvae">
+                    <dt>Attribute Value Accuracy Explanation</dt>
+                    <dd>
+                      <xsl:value-of select="." />
+                    </dd>
+                  </xsl:for-each>
+                </xsl:for-each>
+                <xsl:for-each select="attrmfrq">
+                  <dt>Attribute Measurement Frequency</dt>
+                  <dd>
+                    <xsl:value-of select="." />
+                  </dd>
+                </xsl:for-each>
+              </dl>
+            </dd>
+          </xsl:for-each>
+        </dl>
+      </dd>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="attrdomv[codesetd]">
+    <xsl:text> (</xsl:text>
+    <xsl:value-of select="codesetd/codesetn" />
+    <xsl:apply-templates select="codesetd/codesets/text()" />
+    <xsl:text>)</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="attrdomv[edom]">
+    <br />
+    <button onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display==='none') ? '' : 'none';">show/hide coded values</button>
+    <dl style="display:none">
+      <xsl:for-each select="edom">
+        <dt><xsl:value-of select="edomv" /></dt>
+        <dd><xsl:value-of select="edomvd" /></dd>
+      </xsl:for-each>
+    </dl>
+  </xsl:template>
+
+  <xsl:template match="attrdomv[rdom]">
+    <xsl:text> (</xsl:text>
+    <xsl:value-of select="rdom/rdommin" />
+    <xsl:text> to </xsl:text>
+    <xsl:value-of select="rdom/rdommax" />
+    <xsl:if test="rdom/attrunit">
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="rdom/attrunit" />
+    </xsl:if>
+    <xsl:text>)</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="attrdomv[udom]">
+    <xsl:text> (</xsl:text>
+    <xsl:value-of select="udom" />
+    <xsl:text>)</xsl:text>
+  </xsl:template>
+
   <!-- Distribution -->
   <xsl:template match="distinfo">
     <div id="fgdc-distribution-info">
@@ -1202,6 +1298,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Metadata -->
   <xsl:template match="metainfo">
     <div id="fgdc-metadata-reference-info">
@@ -1265,6 +1362,7 @@
       </dl>
     </div>
   </xsl:template>
+
   <!-- Citation -->
   <xsl:template match="citeinfo">
     <dl>
@@ -1362,6 +1460,7 @@
       </xsl:for-each>
     </dl>
   </xsl:template>
+
   <!-- Contact -->
   <xsl:template match="cntinfo">
     <dt>Contact Information</dt>
@@ -1478,6 +1577,7 @@
       </dl>
     </dd>
   </xsl:template>
+
   <!-- Time Period Info -->
   <xsl:template match="timeinfo">
     <dt>Time Period Information</dt>
@@ -1769,158 +1869,6 @@
     <dt>Scale Factor at Central Meridian</dt>
     <dd>
       <xsl:value-of select="." />
-    </dd>
-  </xsl:template>
-  <xsl:template match="attr">
-    <dt>Attribute</dt>
-    <dd>
-      <dl>
-        <xsl:for-each select="attrlabl">
-          <dt>Attribute Label</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="attrdef">
-          <dt>Attribute Definition</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="attrdefs">
-          <dt>Attribute Definition Source</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="attrdomv">
-          <dt>Attribute Domain Values</dt>
-          <dd>
-            <dl>
-              <xsl:for-each select="edom">
-                <dt>Enumerated Domain</dt>
-                <dd>
-                  <dl>
-                    <xsl:for-each select="edomv">
-                      <dt>Enumerated Domain Value</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="edomvd">
-                      <dt>Enumerated Domain Value Definition</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="edomvds">
-                      <dt>Enumerated Domain Value Definition Source</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:apply-templates select="attr" />
-                  </dl>
-                </dd>
-              </xsl:for-each>
-              <xsl:for-each select="rdom">
-                <dt>Range Domain</dt>
-                <dd>
-                  <dl>
-                    <xsl:for-each select="rdommin">
-                      <dt>Range Domain Minimum</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="rdommax">
-                      <dt>Range Domain Maximum</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="attrunit">
-                      <dt>Attribute Units of Measure</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="attrmres">
-                      <dt>Attribute Measurement Resolution</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:apply-templates select="attr" />
-                  </dl>
-                </dd>
-              </xsl:for-each>
-              <xsl:for-each select="codesetd">
-                <dt>Codeset Domain</dt>
-                <dd>
-                  <dl>
-                    <xsl:for-each select="codesetn">
-                      <dt>Codeset Name</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                    <xsl:for-each select="codesets">
-                      <dt>Codeset Source</dt>
-                      <dd>
-                        <xsl:value-of select="." />
-                      </dd>
-                    </xsl:for-each>
-                  </dl>
-                </dd>
-              </xsl:for-each>
-              <xsl:for-each select="udom">
-                <dt>Unrepresentable Domain</dt>
-                <dd>
-                  <xsl:value-of select="." />
-                </dd>
-              </xsl:for-each>
-            </dl>
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="begdatea">
-          <dt>Beginning Date of Attribute Values</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="enddatea">
-          <dt>Ending Date of Attribute Values</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="attrvai">
-          <dt>Attribute Value Accuracy Information</dt>
-          <dd>
-            <dl>
-              <xsl:for-each select="attrva">
-                <dt>Attribute Value Accuracy</dt>
-                <dd>
-                  <xsl:value-of select="." />
-                </dd>
-              </xsl:for-each>
-              <xsl:for-each select="attrvae">
-                <dt>Attribute Value Accuracy Explanation</dt>
-                <dd>
-                  <xsl:value-of select="." />
-                </dd>
-              </xsl:for-each>
-            </dl>
-          </dd>
-        </xsl:for-each>
-        <xsl:for-each select="attrmfrq">
-          <dt>Attribute Measurement Frequency</dt>
-          <dd>
-            <xsl:value-of select="." />
-          </dd>
-        </xsl:for-each>
-      </dl>
     </dd>
   </xsl:template>
 </xsl:stylesheet>
