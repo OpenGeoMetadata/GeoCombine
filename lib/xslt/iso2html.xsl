@@ -7,8 +7,6 @@
      TODO: Needs full Data Quality section mapped
            Not sure if complete contactInfo is needed for each Responsible Party? 
 
-     
-     
      -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -738,28 +736,40 @@
                         </xsl:for-each>
                         
                       <xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions">
+                          <xsl:for-each select="gmd:onLine">
+                              
+                              <xsl:if test="gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
                             <dt>Online Access</dt>
                             <dd>
-                                <xsl:value-of select="gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
+                                <xsl:value-of select="gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
                             </dd>
+                              </xsl:if>
+                              
+                              <xsl:if test="gmd:CI_OnlineResource//gmd:protocol">
                             <dt>Protocol</dt>
                             <dd>
-                                <xsl:value-of select="gmd:onLine/gmd:CI_OnlineResource/gmd:protocol"/>
+                                <xsl:value-of select="gmd:CI_OnlineResource/gmd:protocol"/>
                             </dd>
+                              </xsl:if>
+                              
+                              <xsl:if test="gmd:CI_OnlineResource/gmd:name">
                             <dt>Name</dt>
                             <dd>
-                                <xsl:value-of select="gmd:onLine/gmd:CI_OnlineResource/gmd:name"/>
+                                <xsl:value-of select="gmd:CI_OnlineResource/gmd:name"/>
                             </dd>
-                            <xsl:if test="gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue">
+                             
+                              </xsl:if>
+                            <xsl:if test="gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue">
                             <dt>Function</dt>
                             <dd>
-                                <xsl:value-of select="gmd:onLine/gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue"/>
+                                <xsl:value-of select="gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode/@codeListValue"/>
                             </dd>
                             </xsl:if>
                           <xsl:if test="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:transferSize">
                               <dt>Transfer Size</dt>
                               <dd><xsl:value-of select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:transferSize"/></dd>
                           </xsl:if>
+                          </xsl:for-each>    
                         </xsl:for-each>
                     </dl>
                 </dd>
@@ -776,12 +786,21 @@
                             <dt>Feature Catalog Description</dt>
                             <dd>
                                 <dl>
+                                    <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:complianceCode">
                                     <dt>Compliance Code</dt>
                                     <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:complianceCode"/></dd>
-                                    <dt>Language</dt>
+                                    </xsl:if>
+                                    
+                                    <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:language">
+                                    <dt>Language</dt>                                  
                                     <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:language"/></dd>
+                                    </xsl:if>
+                                    
+                                    <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:includedWithDataset">
                                     <dt>Included With Dataset</dt>
                                     <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:includedWithDataset"/></dd>
+                                    </xsl:if>
+                                        
                                     <dt>Feature Catalog Citation</dt>
                                     <dd>
                                         <dl>
@@ -804,8 +823,15 @@
                                                     <dd><xsl:value-of select="ancestor-or-self::*/gmd:date/gmd:CI_Date/gmd:date"/></dd>
                                                 </xsl:if>
                                             </xsl:for-each>
-                                            <dt>Feature Catalog Identifier</dt>
-                                            <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/></dd>
+                                            
+                                            <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                                                    <dt>Feature Catalog Identifier</dt>
+                                                    <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/></dd>
+                                            </xsl:if>
+                                            <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/@uuidref">
+                                                <dt>Feature Catalog Identifier</dt>
+                                                <dd><xsl:value-of select="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription/gmd:featureCatalogueCitation/@uuidref"></xsl:value-of></dd>
+                                            </xsl:if>
                                         </dl>
                                     </dd>
                                 </dl>
