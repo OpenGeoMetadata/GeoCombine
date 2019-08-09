@@ -61,6 +61,7 @@ require 'geo_combine/formatting'
 require 'geo_combine/bounding_box'
 
 # Require additional classes
+require 'geo_combine/migrate_dct_references'
 require 'geo_combine/fgdc'
 require 'geo_combine/geoblacklight'
 require 'geo_combine/iso19139'

@@ -1,6 +1,7 @@
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/except'
 require 'open-uri'
+require 'byebug'
 
 module GeoCombine
   class Geoblacklight
@@ -80,6 +81,11 @@ module GeoCombine
 
     def spatial_validate!
       GeoCombine::BoundingBox.from_envelope(metadata['solr_geom']).valid?
+    end
+
+    # Migrates dct_references to new style references
+    def migrate_dct_references!
+      GeoCombine::MigrateDctReferences.new(metadata).migrate
     end
 
     private

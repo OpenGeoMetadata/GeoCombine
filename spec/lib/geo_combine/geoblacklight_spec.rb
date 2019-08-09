@@ -182,4 +182,13 @@ RSpec.describe GeoCombine::Geoblacklight do
       expect(pre_v1_geobl.metadata).to include('layer_slug_s' => 'sde-columbia-esri-arcatlas-snow-ln')
     end
   end
+  describe 'migrate_dct_references!' do
+    it 'Adds new style references and deletes dct references' do
+      doc = full_geobl.migrate_dct_references!
+      expect(doc['webservices_sm']).to be_present
+      expect(doc['downloads_sm']).to be_present
+      expect(doc['metadata_sm']).to be_present
+      expect(doc['dct_references_s']).not_to be_present
+    end
+  end
 end
