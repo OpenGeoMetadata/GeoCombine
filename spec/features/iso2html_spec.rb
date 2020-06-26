@@ -20,31 +20,37 @@ describe 'ISO 19139 to html' do
   describe 'Spatial Reference Information' do
     it 'has sections' do
       expect(page).to have_tag '#iso-spatial-reference-info'
+      expect(page).to have_tag 'h2', text: 'Identification Information'
     end
   end
   describe 'Data Quality Information' do
     it 'has sections' do
       expect(page).to have_tag '#iso-data-quality-info'
+      expect(page).to have_tag 'h2', text: 'Data Quality Information'
     end
   end
   describe 'Distribution Information' do
     it 'has sections' do
       expect(page).to have_tag '#iso-distribution-info'
+      expect(page).to have_tag 'h2', text: 'Distribution Information'
     end
   end
   describe 'Content Information' do
     it 'has sections' do
-      expect(page).to have_tag '#iso-distribution-info'
+      expect(page).to have_tag '#iso-content-info'
+      expect(page).to have_tag 'h2', text: 'Content Information'
     end
   end
   describe 'Spatial Representation Information' do
     it 'has sections' do
       expect(page).to have_tag '#iso-spatial-representation-info'
+      expect(page).to have_tag 'h2', text: 'Spatial Representation Information'
     end
   end
   describe 'Metadata Reference Information' do
     it 'has sections' do
       expect(page).to have_tag '#iso-metadata-reference-info'
+      expect(page).to have_tag 'h2', text: 'Metadata Reference Information'
     end
   end
 end

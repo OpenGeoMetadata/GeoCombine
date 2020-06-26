@@ -56,10 +56,8 @@
   </xsl:template>
   <xsl:template match="gmd:MD_Metadata">
     <div id="iso-identification-info">
+      <h2>Identification Information</h2>
       <dl>
-        <dt>Identification Information</dt>
-        <dd>
-          <dl>
             <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation">
               <dt>Citation</dt>
               <dd>
@@ -546,16 +544,13 @@
                 </dl>
               </dd>
             </xsl:for-each>
-          </dl>
-        </dd>
-      </dl>
+        </dl>
     </div>
     <!-- Spatial Reference Info -->
     <xsl:if test="gmd:referenceSystemInfo">
       <div id="iso-spatial-reference-info">
-        <dt>Spatial Reference Information</dt>
-        <dd>
-          <dl>
+        <h2>Spatial Reference Information</h2>
+        <dl>
             <dt>Reference System Identifier</dt>
             <dd>
               <dl>
@@ -574,15 +569,13 @@
               </dl>
             </dd>
           </dl>
-        </dd>
       </div>
     </xsl:if>
     <!-- Data Quality Info -->
     <xsl:if test="gmd:dataQualityInfo/gmd:DQ_DataQuality">
       <div id="iso-data-quality-info">
-        <dt>Data Quality Information</dt>
-        <dd>
-          <dl>
+        <h2>Data Quality Information</h2>
+        <dl>
             <xsl:if test="gmd:DQ_Scope/gmd:level">
               <dt>Hierarchy Level</dt>
               <dd>
@@ -748,15 +741,13 @@
               </dd>
             </xsl:for-each>
           </dl>
-        </dd>
       </div>
     </xsl:if>
     <!-- Distribution -->
     <xsl:if test="gmd:distributionInfo">
       <div id="iso-distribution-info">
-        <dt>Distribution Information</dt>
-        <dd>
-          <dl>
+        <h2>Distribution Information</h2>
+        <dl>
             <xsl:if test="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format">
               <dt>Format Name</dt>
               <dd>
@@ -801,16 +792,14 @@
                 </dd>
               </xsl:if>
             </xsl:for-each>
-          </dl>
-        </dd>
+        </dl>
       </div>
     </xsl:if>
     <!-- Content Info -->
     <xsl:if test="gmd:contentInfo">
       <div id="iso-content-info">
-        <dt>Content Information</dt>
-        <dd>
-          <dl>
+        <h2>Content Information</h2>
+        <dl>
             <xsl:if test="gmd:contentInfo/gmd:MD_FeatureCatalogueDescription">
               <dt>Feature Catalog Description</dt>
               <dd>
@@ -870,15 +859,13 @@
               </dd>
             </xsl:if>
           </dl>
-        </dd>
       </div>
     </xsl:if>
     <!-- Spatial Representation -->
     <xsl:if test="gmd:spatialRepresentationInfo">
       <div id="iso-spatial-representation-info">
-        <dt>Spatial Representation Information</dt>
-        <dd>
-          <dl>
+        <h2>Spatial Representation Information</h2>
+        <dl>
             <xsl:choose>
               <xsl:when test="gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation">
                 <dt>Vector</dt>
@@ -1008,15 +995,13 @@
                 </dd>
               </xsl:when>
             </xsl:choose>
-          </dl>
-        </dd>
+        </dl>
       </div>
     </xsl:if>
     <!-- Metadata Reference Info -->
     <div id="iso-metadata-reference-info">
-      <dt>Metadata Reference Information</dt>
-      <dd>
-        <dl>
+      <h2>Metadata Reference Information</h2>
+      <dl>
           <dt>Hierarchy Level</dt>
           <dd>
             <xsl:value-of select="gmd:hierarchyLevelName"/>
@@ -1117,7 +1102,6 @@
             </dd>
           </xsl:if>
         </dl>
-      </dd>
     </div>
   </xsl:template>
 </xsl:stylesheet>
