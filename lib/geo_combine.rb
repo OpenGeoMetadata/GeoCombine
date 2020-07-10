@@ -68,6 +68,9 @@ require 'geo_combine/esri_open_data'
 require 'geo_combine/ckan_metadata'
 require 'geo_combine/ogp'
 
+# Require harvesting/indexing files
+require 'geo_combine/geo_blacklight_harvester'
+
 # Require gem files
 require 'geo_combine/version'
 require 'geo_combine/railtie' if defined?(Rails)

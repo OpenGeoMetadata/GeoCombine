@@ -2,6 +2,7 @@ require 'net/http'
 require 'json'
 require 'rsolr'
 require 'find'
+require 'geo_combine/geo_blacklight_harvester'
 
 namespace :geocombine do
   commit_within = (ENV['SOLR_COMMIT_WITHIN'] || 5000).to_i
@@ -59,5 +60,14 @@ namespace :geocombine do
       end
     end
     solr.commit
+  end
+
+  namespace :geoblacklight_harvester do
+    desc 'Harvest documents from a configured GeoBlacklight instance'
+    task :index, [:site] do |_t, args|
+      raise ArgumentError, 'A site argument is required' unless args.site
+
+      GeoCombine::GeoBlacklightHarvester.new(args.site).index
+    end
   end
 end
