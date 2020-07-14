@@ -105,6 +105,10 @@ $ SOLR_COMMIT_WITHIN=100 bundle exec rake geocombine:index
 
 GeoCombine provides a Harvester class and rake task to harvest and index content from GeoBlacklight sites (or any site that follows the Blacklight API format). Given that the configurations can change from consumer to consumer and site to site, the class provides a relatively simple configuration API. This can be configured in an initializer, a wrapping rake task, or any other ruby context where the rake task our class would be invoked.
 
+```sh
+bundle exec rake geocombine:geoblacklight_harvester:index[YOUR_CONFIGURED_SITE_KEY]
+```
+
 #### Harvester configuration
 
 Only the sites themselves are required to be configured but there are various configuration options that can (optionally) be supplied to modify the harvester's behavior.
