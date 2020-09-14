@@ -114,7 +114,7 @@ bundle exec rake geocombine:geoblacklight_harvester:index[YOUR_CONFIGURED_SITE_K
 Only the sites themselves are required to be configured but there are various configuration options that can (optionally) be supplied to modify the harvester's behavior.
 
 ```ruby
-GeoCombine::GeoBlacklightIndexer.configure do
+GeoCombine::GeoBlacklightHarvester.configure do
   {
     commit_within: '10000',
     crawl_delay: 1, # All sites
