@@ -148,7 +148,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
     before do
       allow(RSolr).to receive(:connect).and_return(stub_solr_connection)
       expect(Net::HTTP).to receive(:get).with(
-        URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=2')
+        URI('https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2&format=json')
       ).and_return(second_results_response.to_json)
     end
 
@@ -157,7 +157,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
           { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
           { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
         ],
-        'links' => { 'next' => 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=2' }
+        'links' => { 'next' => 'https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2' }
       }
     end
 

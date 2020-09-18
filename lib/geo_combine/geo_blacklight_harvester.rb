@@ -146,6 +146,7 @@ module GeoCombine
 
           url = response.dig('links', 'next')
           break unless url
+          url = "#{url}&format=json"
           self.page += 1
           puts "Fetching page #{page} @ #{url}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
           begin
