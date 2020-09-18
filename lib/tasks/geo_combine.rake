@@ -64,10 +64,10 @@ namespace :geocombine do
 
   namespace :geoblacklight_harvester do
     desc 'Harvest documents from a configured GeoBlacklight instance'
-    task :index, [:site] do |_t, args|
+    task :index, [:site] => [:environment] do |_t, args|
       raise ArgumentError, 'A site argument is required' unless args.site
 
-      GeoCombine::GeoBlacklightHarvester.new(args.site).index
+      GeoCombine::GeoBlacklightHarvester.new(args.site.to_sym).index
     end
   end
 end
