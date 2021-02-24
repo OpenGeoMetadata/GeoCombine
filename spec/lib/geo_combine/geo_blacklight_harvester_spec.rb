@@ -49,7 +49,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
     describe 'document tranformations' do
       let(:docs) do
         [
-         { layer_slug_s: 'abc-123', _version_: '1', timestamp: '1999-12-31', score: 0.1 },
+         { layer_slug_s: 'abc-123', _version_: '1', timestamp: '1999-12-31', score: 0.1, solr_bboxtype__minX: -87.324704, solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
          { layer_slug_s: 'abc-321', dc_source_s: 'abc-123' }
         ]
       end
@@ -68,7 +68,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
           expect(stub_solr_connection).to receive(:update).with(
             hash_including(
               data: [
-                { layer_slug_s: 'abc-123', timestamp: '1999-12-31', score: 0.1 },
+                { layer_slug_s: 'abc-123', timestamp: '1999-12-31', score: 0.1, solr_bboxtype__minX: -87.324704, solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
                 { layer_slug_s: 'abc-321', dc_source_s: 'abc-123' }
               ].to_json
             )
@@ -79,7 +79,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       end
 
       context 'when no transformer is set' do
-        it 'removes the _version_, timestamp, and score fields' do
+        it 'removes the _version_, timestamp, score, and solr_bboxtype__* fields' do
           expect(stub_solr_connection).to receive(:update).with(
             hash_including(
               data: [
