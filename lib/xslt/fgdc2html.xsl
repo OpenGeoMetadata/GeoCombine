@@ -494,6 +494,12 @@
                         </dl>
                       </dd>
                     </xsl:for-each>
+                    <xsl:for-each select="srccontr">
+                      <dt>Contribution</dt>
+                      <dd>
+                        <xsl:value-of select="." />
+                      </dd>
+                    </xsl:for-each>
                   </dl>
                   <xsl:for-each select="procstep">
                     <dt>Process Step</dt>

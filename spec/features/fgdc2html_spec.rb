@@ -47,11 +47,13 @@ describe 'FGDC to html' do
       expect(page).to have_tag '#fgdc-metadata-reference-info'
     end
   end
+
   describe 'Point of Contact' do
     it 'has contact info' do
       expect(page).to have_tag '#fgdc-identification-info'
     end
   end
+
   context 'with fgdc metadata from another institution' do
     let(:page) { GeoCombine::Fgdc.new(princeton_fgdc).to_html }
 
@@ -82,6 +84,11 @@ describe 'FGDC to html' do
       # Attribute elements are show by default
       expect(page).not_to have_tag 'button'
       expect(page).to have_tag 'dd', text: 'Desert Southwest'
+    end
+
+    it 'has a attribute source contribution' do
+      expect(page).to have_tag 'dt', text: 'Contribution'
+      expect(page).to have_tag 'dd', text: 'Net-Zero America report, 2020'
     end
   end
 end
