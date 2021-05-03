@@ -34,6 +34,10 @@ module GeoCombine
           document.delete('_version_')
           document.delete('score')
           document.delete('timestamp')
+          document.delete('solr_bboxtype__minX')
+          document.delete('solr_bboxtype__minY')
+          document.delete('solr_bboxtype__maxX')
+          document.delete('solr_bboxtype__maxY')
           document
         end
       end
