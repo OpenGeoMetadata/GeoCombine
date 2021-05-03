@@ -74,5 +74,14 @@ describe 'FGDC to html' do
       expect(page).to have_tag 'dt', text: 'Contact Telephone'
       expect(page).to have_tag 'dd', text: '609-258-1097'
     end
+
+    it 'has an attribute description source and a list of values' do
+      expect(page).to have_tag 'dt', text: 'Definition Source'
+      expect(page).to have_tag 'dd', text: 'Andlinger Center/HMEI'
+
+      # Attribute elements are show by default
+      expect(page).not_to have_tag 'button'
+      expect(page).to have_tag 'dd', text: 'Desert Southwest'
+    end
   end
 end

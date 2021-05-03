@@ -1205,6 +1205,12 @@
               <xsl:value-of select="attrdef" />
               <xsl:apply-templates select="attrdomv" />
               <dl>
+                <xsl:for-each select="attrdefs">
+                  <dt>Definition Source</dt>
+                  <dd>
+                    <xsl:value-of select="." />
+                  </dd>
+                </xsl:for-each>
                 <xsl:for-each select="begdatea">
                   <dt>Beginning Date of Attribute Values</dt>
                   <dd>
@@ -1253,9 +1259,7 @@
   </xsl:template>
 
   <xsl:template match="attrdomv[edom]">
-    <br />
-    <button onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display==='none') ? '' : 'none';">show/hide coded values</button>
-    <dl style="display:none">
+    <dl>
       <xsl:for-each select="edom">
         <dt><xsl:value-of select="edomv" /></dt>
         <dd><xsl:value-of select="edomvd" /></dd>
