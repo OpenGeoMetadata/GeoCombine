@@ -64,5 +64,10 @@ describe 'FGDC to html' do
       expect(page).to have_tag 'dt', text: 'Supplemental Information'
       expect(page).to have_tag 'dd', text: /The E\+ scenario/
     end
+
+    it 'has a contact person' do
+      expect(page).to have_tag 'dt', text: 'Contact Person'
+      expect(page).to have_tag 'dd', text: 'Andrew Pascale'
+    end
   end
 end

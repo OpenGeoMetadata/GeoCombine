@@ -250,6 +250,9 @@
                 <dl>
                   <xsl:for-each select="cntinfo/cntperp/cntper">
                     <dt>Contact Person</dt>
+                    <dd>
+                      <xsl:value-of select="." />
+                    </dd>
                   </xsl:for-each>
                   <xsl:for-each select="cntinfo/cntorgp/cntorg">
                     <dt>Contact Organization</dt>
