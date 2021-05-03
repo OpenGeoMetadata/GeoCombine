@@ -59,5 +59,10 @@ describe 'FGDC to html' do
       expect(page).to have_tag 'dt', text: 'Temporal Keyword'
       expect(page).to have_tag 'dd', text: '2030'
     end
+
+    it 'has supplemental information' do
+      expect(page).to have_tag 'dt', text: 'Supplemental Information'
+      expect(page).to have_tag 'dd', text: /The E\+ scenario/
+    end
   end
 end

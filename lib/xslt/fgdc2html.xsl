@@ -93,7 +93,7 @@
                 <xsl:value-of select="." />
               </dd>
             </xsl:for-each>
-            <xsl:for-each select="descrip/supplinf">
+            <xsl:for-each select="descript/supplinf">
               <dt>Supplemental Information</dt>
               <dd>
                 <xsl:value-of select="." />
