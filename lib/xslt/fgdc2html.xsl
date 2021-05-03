@@ -204,6 +204,22 @@
                 </dd>
               </xsl:if>
             </xsl:for-each>
+            <dt>Temporal Keyword</dt>
+            <xsl:for-each select="keywords/temporal/tempkey">
+              <dd>
+                <xsl:value-of select="." />
+              </dd>
+              <xsl:if test="position()=last()">
+                <dd>
+                  <dl>
+                    <dt>Temporal Keyword Thesaurus</dt>
+                    <dd>
+                      <xsl:value-of select="ancestor-or-self::*/tempkt" />
+                    </dd>
+                  </dl>
+                </dd>
+              </xsl:if>
+            </xsl:for-each>
             <xsl:for-each select="accconst">
               <dt>Access Restrictions</dt>
               <dd>

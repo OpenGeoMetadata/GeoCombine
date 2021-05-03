@@ -47,8 +47,17 @@ describe 'FGDC to html' do
       expect(page).to have_tag '#fgdc-metadata-reference-info'
     end
   end
+  describe 'Point of Contact' do
+    it 'has contact info' do
+      expect(page).to have_tag '#fgdc-identification-info'
+    end
+  end
+  context 'with fgdc metadata from another institution' do
+    let(:page) { GeoCombine::Fgdc.new(princeton_fgdc).to_html }
 
-  context 'with another fgdc metadata' do
-    let(:page) {}
+    it 'has temporal keywords' do
+      expect(page).to have_tag 'dt', text: 'Temporal Keyword'
+      expect(page).to have_tag 'dd', text: '2030'
+    end
   end
 end
