@@ -93,7 +93,7 @@
                 <xsl:value-of select="." />
               </dd>
             </xsl:for-each>
-            <xsl:for-each select="descrip/supplinf">
+            <xsl:for-each select="descript/supplinf">
               <dt>Supplemental Information</dt>
               <dd>
                 <xsl:value-of select="." />
@@ -204,6 +204,22 @@
                 </dd>
               </xsl:if>
             </xsl:for-each>
+            <dt>Temporal Keyword</dt>
+            <xsl:for-each select="keywords/temporal/tempkey">
+              <dd>
+                <xsl:value-of select="." />
+              </dd>
+              <xsl:if test="position()=last()">
+                <dd>
+                  <dl>
+                    <dt>Temporal Keyword Thesaurus</dt>
+                    <dd>
+                      <xsl:value-of select="ancestor-or-self::*/tempkt" />
+                    </dd>
+                  </dl>
+                </dd>
+              </xsl:if>
+            </xsl:for-each>
             <xsl:for-each select="accconst">
               <dt>Access Restrictions</dt>
               <dd>
@@ -234,6 +250,9 @@
                 <dl>
                   <xsl:for-each select="cntinfo/cntperp/cntper">
                     <dt>Contact Person</dt>
+                    <dd>
+                      <xsl:value-of select="." />
+                    </dd>
                   </xsl:for-each>
                   <xsl:for-each select="cntinfo/cntorgp/cntorg">
                     <dt>Contact Organization</dt>
@@ -277,31 +296,31 @@
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntvoice">
+                  <xsl:for-each select="cntinfo/cntvoice">
                     <dt>Contact Telephone</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntfax">
+                  <xsl:for-each select="cntinfo/cntfax">
                     <dt>Contact Facsimile Telephone</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntemail">
+                  <xsl:for-each select="cntinfo/cntemail">
                     <dt>Contact Electronic Mail Address</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="hours">
+                  <xsl:for-each select="cntinfo/hours">
                     <dt>Hours of Service</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntinst">
+                  <xsl:for-each select="cntfo/cntinst">
                     <dt>Contact Instructions</dt>
                     <dd>
                       <xsl:value-of select="." />
@@ -473,6 +492,12 @@
                             </dd>
                           </xsl:for-each>
                         </dl>
+                      </dd>
+                    </xsl:for-each>
+                    <xsl:for-each select="srccontr">
+                      <dt>Contribution</dt>
+                      <dd>
+                        <xsl:value-of select="." />
                       </dd>
                     </xsl:for-each>
                   </dl>
@@ -1186,6 +1211,12 @@
               <xsl:value-of select="attrdef" />
               <xsl:apply-templates select="attrdomv" />
               <dl>
+                <xsl:for-each select="attrdefs">
+                  <dt>Definition Source</dt>
+                  <dd>
+                    <xsl:value-of select="." />
+                  </dd>
+                </xsl:for-each>
                 <xsl:for-each select="begdatea">
                   <dt>Beginning Date of Attribute Values</dt>
                   <dd>
@@ -1234,9 +1265,7 @@
   </xsl:template>
 
   <xsl:template match="attrdomv[edom]">
-    <br />
-    <button onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display==='none') ? '' : 'none';">show/hide coded values</button>
-    <dl style="display:none">
+    <dl>
       <xsl:for-each select="edom">
         <dt><xsl:value-of select="edomv" /></dt>
         <dd><xsl:value-of select="edomvd" /></dd>
