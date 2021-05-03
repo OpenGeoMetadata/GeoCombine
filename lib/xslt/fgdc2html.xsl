@@ -296,31 +296,31 @@
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntvoice">
+                  <xsl:for-each select="cntinfo/cntvoice">
                     <dt>Contact Telephone</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntfax">
+                  <xsl:for-each select="cntinfo/cntfax">
                     <dt>Contact Facsimile Telephone</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntemail">
+                  <xsl:for-each select="cntinfo/cntemail">
                     <dt>Contact Electronic Mail Address</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="hours">
+                  <xsl:for-each select="cntinfo/hours">
                     <dt>Hours of Service</dt>
                     <dd>
                       <xsl:value-of select="." />
                     </dd>
                   </xsl:for-each>
-                  <xsl:for-each select="cntinst">
+                  <xsl:for-each select="cntfo/cntinst">
                     <dt>Contact Instructions</dt>
                     <dd>
                       <xsl:value-of select="." />
