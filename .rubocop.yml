@@ -1,0 +1,15 @@
+require:
+  - rubocop-rspec
+
+# inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.7
+  DisplayCopNames: true
+  NewCops: enable
+  Exclude:
+  - 'geo_combine.gemspec'
+  - 'Gemfile'
+  - 'tmp/**/*'
+  - 'Rakefile'
+  - 'lib/tasks/geo_combine.rake'
