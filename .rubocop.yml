@@ -10,5 +10,4 @@ AllCops:
   NewCops: enable
   Exclude:
   - 'geo_combine.gemspec'
-  - 'Gemfile'
   - 'tmp/**/*'
