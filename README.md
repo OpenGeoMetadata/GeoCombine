@@ -61,6 +61,12 @@ You can also specify a single repository:
 $ bundle exec rake geocombine:clone[edu.stanford.purl]
 ```
 
+*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+
+```sh
+$ bundle exec rake geocombine:clone\[edu.stanford.purl\]
+```
+
 #### Update local OpenGeoMetadata repositories
 
 ```sh
@@ -73,6 +79,12 @@ You can also specify a single repository:
 
 ```sh
 $ bundle exec rake geocombine:pull[edu.stanford.purl]
+```
+
+*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+
+```sh
+$ bundle exec rake geocombine:pull\[edu.stanford.purl\]
 ```
 
 #### Index GeoBlacklight documents
