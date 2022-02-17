@@ -10,8 +10,8 @@ module GeoCombine
 
     attr_reader :metadata
 
-    GEOBLACKLIGHT_VERSION = 'v1.1.0'
-    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/geoblacklight/geoblacklight/#{GEOBLACKLIGHT_VERSION}/schema/geoblacklight-schema.json".freeze
+    GEOBLACKLIGHT_VERSION = '1.0'
+    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/geoblacklight/geoblacklight/main/schema/geoblacklight-schema-#{GEOBLACKLIGHT_VERSION}.json".freeze
     DEPRECATED_KEYS_V1 = %w[
       uuid
       georss_polygon_s
@@ -29,7 +29,6 @@ module GeoCombine
     # @param [Hash] fields enhancements to metadata that are merged with @metadata
     def initialize(metadata, fields = {})
       @metadata = JSON.parse(metadata).merge(fields)
-      @schema = nil
     end
 
     ##
@@ -58,8 +57,7 @@ module GeoCombine
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
     def valid?
-      @schema ||= JSON.parse(open(SCHEMA_JSON_URL).read)
-      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer') &&
+      JSON::Validator.validate!(schema, to_json, fragment: '#/definitions/layer') &&
         dct_references_validate! &&
         spatial_validate!
     end
@@ -154,6 +152,10 @@ module GeoCombine
 
       # ensure we have a proper v1 record
       valid?
+    end
+
+    def schema
+      @schema ||= JSON.parse(URI.open(SCHEMA_JSON_URL).read)
     end
   end
 end
