@@ -1,5 +1,6 @@
 require:
   - rubocop-rspec
+  - rubocop-rake
 
 inherit_from: .rubocop_todo.yml
 
@@ -11,5 +12,3 @@ AllCops:
   - 'geo_combine.gemspec'
   - 'Gemfile'
   - 'tmp/**/*'
-  - 'Rakefile'
-  - 'lib/tasks/geo_combine.rake'

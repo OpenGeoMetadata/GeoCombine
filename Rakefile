@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'bundler/gem_tasks'
 
-Dir.glob('lib/tasks/*.rake').each { |r| load r}
+Dir.glob('lib/tasks/*.rake').each { |r| load r }
 
 desc 'Run console for development'
 task :console do
@@ -17,7 +19,7 @@ begin
 
   RSpec::Core::RakeTask.new(:spec)
 
-  task :default => :spec
+  task default: :spec
 rescue LoadError
   # no rspec available
 end
