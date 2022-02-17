@@ -1,9 +1,10 @@
-module XmlDocs
+# frozen_string_literal: true
 
+module XmlDocs
   ##
   # Example XSLT from https://developer.mozilla.org/en-US/docs/XSLT_in_Gecko/Basic_Example
   def simple_xslt
-    <<-xml
+    <<-XML
       <?xml version="1.0"?>
         <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -19,13 +20,13 @@ module XmlDocs
         </xsl:template>
 
         </xsl:stylesheet>
-    xml
+    XML
   end
 
   ##
   # Example XML from https://developer.mozilla.org/en-US/docs/XSLT_in_Gecko/Basic_Example
   def simple_xml
-    <<-xml
+    <<-XML
       <?xml version="1.0"?>
       <?xml-stylesheet type="text/xsl" href="example.xsl"?>
       <Article>
@@ -36,13 +37,13 @@ module XmlDocs
         </Authors>
         <Body>This is my article text.</Body>
       </Article>
-    xml
+    XML
   end
 
   ##
   # Stanford ISO19139 example record from https://github.com/OpenGeoMetadata/edu.stanford.purl/blob/08085d766014ea91e5defb6d172e5633bfd9b1ce/bb/338/jh/0716/iso19139.xml
   def stanford_iso
-    <<-xml
+    <<-XML
       <MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <fileIdentifier>
           <gco:CharacterString>edu.stanford.purl:bb338jh0716</gco:CharacterString>
@@ -694,13 +695,13 @@ module XmlDocs
           </DQ_DataQuality>
         </dataQualityInfo>
       </MD_Metadata>
-    xml
+    XML
   end
 
   ##
   # Example FGDC XML from https://github.com/OpenGeoMetadata/edu.tufts/blob/master/0/108/220/208/fgdc.xml
   def tufts_fgdc
-    <<-xml
+    <<-XML
       <?xml version="1.0" encoding="utf-8" ?><!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd"><metadata>
         <idinfo>
           <citation>
@@ -1676,6 +1677,6 @@ module XmlDocs
       </Esri>
       <mdDateSt Sync="TRUE">20140520</mdDateSt>
       </metadata>
-    xml
+    XML
   end
 end

@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module GeoCombine
   class CkanMetadata
-    MAX_STRING_LENGTH = 32765 # Solr limit
+    MAX_STRING_LENGTH = 32_765 # Solr limit
 
     attr_reader :metadata
+
     def initialize(metadata)
       @metadata = JSON.parse(metadata)
     end
@@ -31,7 +34,7 @@ module GeoCombine
         dc_subject_sm: subjects,
         dct_references_s: external_references.to_json.to_s,
         dc_format_s: downloadable? ? 'ZIP' : nil # TODO: we only allow direct ZIP file downloads
-      }.select { |_k, v| !v.nil? }
+      }.compact
     end
 
     def organization
@@ -54,7 +57,7 @@ module GeoCombine
       begin
         return bbox.to_envelope if bbox.valid?
       rescue GeoCombine::Exceptions::InvalidGeometry
-        return nil
+        nil
       end
     end
 
@@ -66,7 +69,7 @@ module GeoCombine
       begin
         return bbox.to_envelope if bbox.valid?
       rescue GeoCombine::Exceptions::InvalidGeometry
-        return nil
+        nil
       end
     end
 
@@ -87,11 +90,9 @@ module GeoCombine
         'http://schema.org/url' => resource_urls('information').first
       }
 
-      if downloadable?
-        h['http://schema.org/downloadUrl'] = resource_urls('download').first
-      end
+      h['http://schema.org/downloadUrl'] = resource_urls('download').first if downloadable?
 
-      h.select { |_k, v| !v.nil? }
+      h.compact
     end
 
     def downloadable?
@@ -100,6 +101,7 @@ module GeoCombine
 
     def resources(type)
       return [] if @metadata['resources'].nil?
+
       @metadata['resources'].select { |resource| resource['resource_locator_function'] == type }
     end
 

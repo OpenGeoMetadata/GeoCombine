@@ -4,20 +4,21 @@ require 'spec_helper'
 require 'rsolr'
 
 RSpec.describe GeoCombine::GeoBlacklightHarvester do
+  subject(:harvester) { described_class.new(site_key) }
+
   let(:site_key) { :INSTITUTION }
   let(:stub_json_response) { '{}' }
   let(:stub_solr_connection) { double('RSolr::Connection') }
-  subject(:harvester) { described_class.new(site_key) }
 
   before do
     allow(described_class).to receive(:config).and_return({
-      INSTITUTION: {
-        host: 'https://example.com/',
-        params: {
-          f: { dct_provenance_s: ['INSTITUTION'] }
-        }
-      }
-    })
+                                                            INSTITUTION: {
+                                                              host: 'https://example.com/',
+                                                              params: {
+                                                                f: { dct_provenance_s: ['INSTITUTION'] }
+                                                              }
+                                                            }
+                                                          })
   end
 
   describe 'initialization' do
@@ -49,15 +50,16 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
     describe 'document tranformations' do
       let(:docs) do
         [
-         { layer_slug_s: 'abc-123', _version_: '1', timestamp: '1999-12-31', score: 0.1, solr_bboxtype__minX: -87.324704, solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
-         { layer_slug_s: 'abc-321', dc_source_s: 'abc-123' }
+          { layer_slug_s: 'abc-123', _version_: '1', timestamp: '1999-12-31', score: 0.1,
+            solr_bboxtype__minX: -87.324704, solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
+          { layer_slug_s: 'abc-321', dc_source_s: 'abc-123' }
         ]
       end
 
       context 'when a tranformer is set' do
         before do
           expect(described_class).to receive(:document_transformer).at_least(:once).and_return(
-            ->(doc) {
+            lambda { |doc|
               doc.delete('_version_')
               doc
             }
@@ -68,7 +70,8 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
           expect(stub_solr_connection).to receive(:update).with(
             hash_including(
               data: [
-                { layer_slug_s: 'abc-123', timestamp: '1999-12-31', score: 0.1, solr_bboxtype__minX: -87.324704, solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
+                { layer_slug_s: 'abc-123', timestamp: '1999-12-31', score: 0.1, solr_bboxtype__minX: -87.324704,
+                  solr_bboxtype__minY: 40.233691, solr_bboxtype__maxX: -87.174404, solr_bboxtype__maxY: 40.310695 },
                 { layer_slug_s: 'abc-321', dc_source_s: 'abc-123' }
               ].to_json
             )
@@ -125,7 +128,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
     let(:first_docs) {  [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }] }
     let(:second_docs) { [{ 'layer_slug_s' => 'xyz-123' }, { 'layer_slug_s' => 'xyz-321' }] }
     let(:stub_first_response) do
-      { 'response' => { 'docs' => first_docs, 'pages' =>  { 'current_page' => 1, 'total_pages' => 2 } } }
+      { 'response' => { 'docs' => first_docs, 'pages' => { 'current_page' => 1, 'total_pages' => 2 } } }
     end
     let(:stub_second_response) do
       { 'response' => { 'docs' => second_docs, 'pages' => { 'current_page' => 2, 'total_pages' => 2 } } }
@@ -137,7 +140,8 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
           URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=2')
         ).and_return(stub_second_response.to_json)
         base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
-        docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response, base_url: base_url).documents
+        docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
+                                                             base_url: base_url).documents
 
         expect(docs.to_a).to eq([first_docs, second_docs])
       end
@@ -154,19 +158,17 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
     let(:first_results_response) do
       { 'data' => [
-          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
-          { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
-        ],
-        'links' => { 'next' => 'https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2' }
-      }
+        { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+        { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
+      ],
+        'links' => { 'next' => 'https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2' } }
     end
 
     let(:second_results_response) do
       { 'data' => [
-          { 'links' => { 'self' => 'https://example.com/catalog/xyz-123' } },
-          { 'links' => { 'self' => 'https://example.com/catalog/xyz-321' } }
-        ]
-      }
+        { 'links' => { 'self' => 'https://example.com/catalog/xyz-123' } },
+        { 'links' => { 'self' => 'https://example.com/catalog/xyz-321' } }
+      ] }
     end
 
     describe '#documents' do
@@ -178,12 +180,13 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         end
 
         base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
-        docs = described_class::ModernBlacklightResponse.new(response: first_results_response, base_url: base_url).documents
+        docs = described_class::ModernBlacklightResponse.new(response: first_results_response,
+                                                             base_url: base_url).documents
 
         expect(docs.to_a).to eq([
-          [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }],
-          [{ 'layer_slug_s' => 'xyz-123' }, { 'layer_slug_s' => 'xyz-321' }],
-        ])
+                                  [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }],
+                                  [{ 'layer_slug_s' => 'xyz-123' }, { 'layer_slug_s' => 'xyz-321' }]
+                                ])
       end
     end
   end

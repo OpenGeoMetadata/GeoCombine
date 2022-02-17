@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoCombine
   # Data model for ESRI's open data portal metadata
   class EsriOpenData

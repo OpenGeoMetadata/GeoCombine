@@ -30,4 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rspec-html-matchers'
+  spec.add_development_dependency 'rubocop', '~> 1.25'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.8'
+  spec.add_development_dependency 'rubocop-rake'
 end

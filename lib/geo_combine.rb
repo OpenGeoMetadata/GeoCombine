@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'nokogiri'
 require 'json'
 require 'json-schema'
 require 'sanitize'
 
 module GeoCombine
-
   ##
   # TODO: Create a parse method that can interpret the type of metadata being
   # passed in.
@@ -23,7 +24,7 @@ module GeoCombine
     # @param [String] metadata can be a File path
     # "./tmp/edu.stanford.purl/bb/338/jh/0716/iso19139.xml" or a String of XML
     # metadata
-    def initialize metadata
+    def initialize(metadata)
       metadata = File.read metadata if File.readable? metadata
       metadata = Nokogiri::XML(metadata) if metadata.instance_of? String
       @metadata = metadata
@@ -35,7 +36,7 @@ module GeoCombine
     # GeoCombine::Geoblacklight on its instantiation
     # @return [GeoCombine::Geoblacklight] the data transformed into
     # geoblacklight schema, returned as a GeoCombine::Geoblacklight
-    def to_geoblacklight fields = {}
+    def to_geoblacklight(fields = {})
       GeoCombine::Geoblacklight.new(xsl_geoblacklight.apply_to(@metadata), fields)
     end
 

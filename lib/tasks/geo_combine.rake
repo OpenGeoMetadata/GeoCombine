@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 require 'json'
 require 'rsolr'
@@ -19,7 +21,7 @@ namespace :geocombine do
     else
       ogm_api_uri = URI('https://api.github.com/orgs/opengeometadata/repos')
       ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map do |repo|
-        repo['clone_url'] if repo['size'] > 0
+        repo['clone_url'] if (repo['size']).positive?
       end.compact
       ogm_repos.select! { |repo| whitelist.include?(repo) || repo =~ /(edu|org|uk)\..*\.git$/ }
     end
@@ -37,6 +39,7 @@ namespace :geocombine do
             end
     paths.each do |path|
       next unless File.directory?(path)
+
       system "echo #{path} && cd #{path} && git pull origin"
     end
   end
@@ -47,16 +50,15 @@ namespace :geocombine do
     solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
     Find.find(ogm_path) do |path|
       next unless File.basename(path) == 'geoblacklight.json'
+
       doc = JSON.parse(File.read(path))
       [doc].flatten.each do |record|
-        begin
-          puts "Indexing #{record['layer_slug_s']}: #{path}" if $DEBUG
-          solr.update params: { commitWithin: commit_within, overwrite: true },
-                      data: [record].to_json,
-                      headers: { 'Content-Type' => 'application/json' }
-        rescue RSolr::Error::Http => error
-          puts error
-        end
+        puts "Indexing #{record['layer_slug_s']}: #{path}" if $DEBUG
+        solr.update params: { commitWithin: commit_within, overwrite: true },
+                    data: [record].to_json,
+                    headers: { 'Content-Type' => 'application/json' }
+      rescue RSolr::Error::Http => e
+        puts e
       end
     end
     solr.commit

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoCombine
   class Railtie < Rails::Railtie
     rake_tasks do
