@@ -207,7 +207,7 @@ module GeoCombine
       sluggify(filter_name(name))
     end
 
-    SLUG_BLACKLIST = %w[
+    SLUG_STRIP_VALUES = %w[
       SDE_DATA.
       SDE.
       SDE2.
@@ -218,8 +218,8 @@ module GeoCombine
 
     def filter_name(name)
       # strip out schema and usernames
-      SLUG_BLACKLIST.each do |blacklisted|
-        name.sub!(blacklisted, '')
+      SLUG_STRIP_VALUES.each do |strip_val|
+        name.sub!(strip_val, '')
       end
       unless name.size > 1
         # use first word of title is empty name
