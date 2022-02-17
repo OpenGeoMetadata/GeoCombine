@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'thor'
 require 'rake'
 
@@ -17,7 +19,7 @@ module GeoCombine
       Rake::Task['geocombine:pull'].invoke
     end
 
-    desc "index", "Index all of the GeoBlacklight documents"
+    desc 'index', 'Index all of the GeoBlacklight documents'
     def index
       Rake::Task['geocombine:index'].invoke
     end

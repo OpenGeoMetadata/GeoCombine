@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoCombine
   class BoundingBox
     attr_reader :west, :south, :east, :north
@@ -24,11 +26,13 @@ module GeoCombine
     def valid?
       [south, north].map do |coord|
         next if (-90..90).cover?(coord)
+
         raise GeoCombine::Exceptions::InvalidGeometry,
               "#{coord} should be in range -90 90"
       end
       [east, west].map do |coord|
         next if (-180..180).cover?(coord)
+
         raise GeoCombine::Exceptions::InvalidGeometry,
               "#{coord} should be in range -180 180"
       end
@@ -45,7 +49,8 @@ module GeoCombine
 
     def self.from_envelope(envelope)
       return if envelope.nil?
-      envelope = envelope[/.*ENVELOPE\(([^\)]*)/, 1].split(',')
+
+      envelope = envelope[/.*ENVELOPE\(([^)]*)/, 1].split(',')
       new(
         west: envelope[0],
         south: envelope[3],
@@ -59,6 +64,7 @@ module GeoCombine
     # @param [String] delimiter "," or " "
     def self.from_string_delimiter(spatial, delimiter: ',')
       return if spatial.nil?
+
       spatial = spatial.split(delimiter)
       new(
         west: spatial[0],

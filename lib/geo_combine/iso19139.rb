@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module GeoCombine
   class Iso19139 < Metadata
-
     ##
     # Returns a Nokogiri::XSLT object containing the ISO19139 to GeoBlacklight
     # XSL

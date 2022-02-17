@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoCombine
   module GeometryTypes
     def geometry_types
