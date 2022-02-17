@@ -1,6 +1,8 @@
 # GeoCombine
 
-[![Build Status](https://travis-ci.org/OpenGeoMetadata/GeoCombine.svg?branch=master)](https://travis-ci.org/OpenGeoMetadata/GeoCombine) | [![Coverage Status](https://coveralls.io/repos/OpenGeoMetadata/GeoCombine/badge.svg?branch=master)](https://coveralls.io/r/OpenGeoMetadata/GeoCombine?branch=master)
+   ![CI](https://github.com/OpenGeoMetadata/GeoCombine/actions/workflows/ruby.yml/badge.svg)
+| [![Coverage Status](https://img.shields.io/badge/coverage-95%25-brightgreen)]()
+| [![Gem Version](https://img.shields.io/gem/v/geo_combine.svg)](https://github.com/OpenGeoMetadata/GeoCombine/releases)
 
 
 A Ruby toolkit for managing geospatial metadata, including:
