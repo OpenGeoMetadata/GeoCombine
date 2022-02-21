@@ -21,6 +21,10 @@ jobs:
     strategy:
       matrix:
         ruby: [2.7, 3.0, 3.1]
+        faraday_version: [''] # Defaults to whatever's the most recent version.
+        include:
+          - ruby: 2.7
+            faraday_version: '~> 1.0'
     steps:
     - uses: actions/checkout@v2
 
@@ -34,9 +38,13 @@ jobs:
 
     - name: Install dependencies
       run: bundle _2.1.1_ install
+      env:
+        FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Run tests
       run: bundle exec rake spec
+      env:
+        FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Upload coverage artifacts
       uses: actions/upload-artifact@v2
