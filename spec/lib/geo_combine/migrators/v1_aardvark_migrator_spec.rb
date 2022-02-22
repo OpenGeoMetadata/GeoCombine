@@ -5,6 +5,9 @@ require 'spec_helper'
 RSpec.describe GeoCombine::Migrators::V1AardvarkMigrator do
   include JsonDocs
 
+  # TODO: the input fixture doesn't have:
+  #  - dc_source_sm
+  #  - suppressed_b
   describe '#run' do
     it 'migrates keys' do
       input_hash = JSON.parse(full_geoblacklight)
