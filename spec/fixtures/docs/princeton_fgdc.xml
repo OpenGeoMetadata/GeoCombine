@@ -1,0 +1,374 @@
+<?xml version="1.0"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Emily Leslie, Energy Reflections, LLC, Principal</origin>
+        <origin>Andrew Pascale, Andlinger Center, Princeton University, Post-Doctoral Research Associate</origin>
+        <pubdate>20210414</pubdate>
+        <title>Net-Zero America selected renewable resource projects for high-electrification scenario, 2050</title>
+        <geoform>vector digital data</geoform>
+        <onlink>https://figgy.princeton.edu/downloads/8180d3d2-987e-42b5-9429-b846503c81c0/file/d2af93b3-8289-4cc0-b21a-837cbf9b2a9b</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This dataset shows the wind and solar development in the contiguous United States that will be required by 2050 under a net-zero-emissions scenario with high electrification and defined land-use assumptions. For an overview of this "E+" high-electrification scenario and these "base" land-use assumptions, please refer to the "supplemental information" portion of this record.</abstract>
+      <purpose>For visualizing renewable energy using GIS software. A growing number of pledges are being made by major corporations, municipalities, states, and national governments to reach net-zero emissions by 2050 or sooner. As part of the Net-Zero America Project, this dataset provides granular guidance on what getting to net-zero really requires and on actions needed to translate these pledges into tangible progress. </purpose>
+      <supplinf>The E+ scenario, or high-electrification scenario, is one of five defined pathways whereby the United States can become carbon-neutral by 2050, as detailed in the Net-Zero America report of December 2020. Between 2020 and 2050, the E+ scenario assumes: 1) a high degree of end-use electrification in transportation and buildings, 2) a minimum of 10% yearly growth in wind and solar, 3) an 80-year life for 50% of existing nuclear power, 4) no new nuclear power in California, and 5) the ongoing use of fossil fuels. By 2050, the E+ scenario further assumes: 1) carbon dioxide storage of no more than 1.8 Gt/y, 2) carbon dioxide emissions of -0.17 Gt, and 3) a biomass supply limit of 0.7 Gt/y biomass with no new land converted to bioenergy.
+
+Both the "base" land-use assumptions on which this scenario is predicated and the "constrained" alternative stipulate that new renewable-energy sites will be selected based on: 1) numerous environmental, cultural, and economic exclusions, 2) buffers of varying extent around water bodies, urban areas, and certain infrastructure, and 3) slope and population-density limits. The "base" case additionally allows for 1) sites with Theobald Human Modification Index values of 0.082 or more, and 2) wind development on prime farmlands. These assumptions are detailed in the Net-Zero America report.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20200101</begdate>
+          <enddate>20501231</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>Time frame of analysis.</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-127.875418</westbc>
+        <eastbc>-65.703868</eastbc>
+        <northbc>50.315241</northbc>
+        <southbc>23.333530</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>net-zero</themekey>
+        <themekey>solar</themekey>
+        <themekey>wind</themekey>
+        <themekey>offshore</themekey>
+        <themekey>transmission</themekey>
+        <themekey>spur</themekey>
+        <themekey>bulk</themekey>
+        <themekey>renewable energy</themekey>
+        <themekey>transition</themekey>
+        <themekey>energy</themekey>
+        <themekey>infrastructure</themekey>
+        <themekey>electricity</themekey>
+        <themekey>netzeroamerica</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>utilitiesCommunication</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>United States</placekey>
+      </place>
+      <temporal>
+        <tempkt>None</tempkt>
+        <tempkey>2020</tempkey>
+        <tempkey>2025</tempkey>
+        <tempkey>2030</tempkey>
+        <tempkey>2035</tempkey>
+        <tempkey>2040</tempkey>
+        <tempkey>2045</tempkey>
+        <tempkey>2050</tempkey>
+      </temporal>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>This dataset is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. Any non-commercial use is permitted. All uses must credit Princeton University and carry this same license.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Map and Geospatial Information Center, Lewis Library, Princeton University</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <city>Princeton</city>
+          <state>NJ</state>
+          <postal>08544</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>609-258-1097</cntvoice>
+      </cntinfo>
+    </ptcontac>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Andrew Pascale</cntper>
+        </cntperp>
+      </cntinfo>
+    </ptcontac>
+    <datacred>E. Leslie, A. Pascale, J. Jenkins, E. Larson, C. Greig, E. Mayfield, C. Zhang, J. Drossman, R. Williams, S. Pacala, R. Socolow, EJ Baik, R. Birdsey, R. Duke, R. Jones, B. Haley, K. Paustian, A. Swan</datacred>
+    <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.8.1.14362</native>
+  </idinfo>
+  <dataqual>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <pubdate>20201215</pubdate>
+            <title>Net-Zero America: potential pathways, infrastructure, and impacts, interim report</title>
+            <pubinfo>
+              <pubplace>Princeton, NJ, 08544, US</pubplace>
+              <publish>Princeton University</publish>
+            </pubinfo>
+            <onlink>https://netzeroamerica.princeton.edu/img/Princeton_NZA_Interim_Report_15_Dec_2020_FINAL.pdf</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>onLine</typesrc>
+        <srccitea>Net-Zero America: potential pathways, infrastructure, and impacts, interim report</srccitea>
+        <srccontr>Net-Zero America report, 2020</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>The version of 4/14/2021 is an update to the version of 12/15/2020. The 4/14/2021 version removes approximately 40,000 duplicate features introduced during data aggregation, removes features with generation or capacity values of "null" or "zero," and adds the model year 2020 back into the data.</procdesc>
+        <procdate>20210414</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Andrew Pascale</cntper>
+            </cntperp>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>GT-polygon composed of chains</sdtstype>
+        <ptvctcnt>43327</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>NAD 1983 Albers</mapprojn>
+          <albers>
+            <stdparll>29.5</stdparll>
+            <stdparll>45.5</stdparll>
+            <longcm>-96.0</longcm>
+            <latprjo>23.0</latprjo>
+            <feast>0.0</feast>
+            <fnorth>0.0</fnorth>
+          </albers>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.0000000037527980722984474</absres>
+            <ordres>0.0000000037527980722984474</ordres>
+          </coordrep>
+          <plandu>meter</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D North American 1983</horizdn>
+        <ellips>GRS 1980</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>NZAP_renewable_project_sites_v2</enttypl>
+        <enttypd>Polygons representing renewable energy project areas.</enttypd>
+        <enttypds>Andlinger Center for Energy and the Environment/High Meadows Environmental Institute</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>FID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Region</attrlabl>
+        <attrdef>Model region in which the selected project area is located.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>California</edomv>
+          </edom>
+          <edom>
+            <edomv>Desert Southwest</edomv>
+          </edom>
+          <edom>
+            <edomv>Florida</edomv>
+          </edom>
+          <edom>
+            <edomv>Louisiana and Ozarks</edomv>
+          </edom>
+          <edom>
+            <edomv>Lower Midwest</edomv>
+          </edom>
+          <edom>
+            <edomv>Mid-Atlantic and Great Lakes</edomv>
+          </edom>
+          <edom>
+            <edomv>New England</edomv>
+          </edom>
+          <edom>
+            <edomv>New York</edomv>
+          </edom>
+          <edom>
+            <edomv>Pacific Northwest</edomv>
+          </edom>
+          <edom>
+            <edomv>Rocky Mountains</edomv>
+          </edom>
+          <edom>
+            <edomv>Southeast</edomv>
+          </edom>
+          <edom>
+            <edomv>Texas</edomv>
+          </edom>
+          <edom>
+            <edomv>Upper Midwest</edomv>
+          </edom>
+          <edom>
+            <edomv>Utah/Nevada</edomv>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>AnnGenMWh</attrlabl>
+        <attrdef>Annual generation of the Selected Project Area in MWh.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>IncCapMW</attrlabl>
+        <attrdef>Nameplate capacity of the Selected Project Area (AC) in MW.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>year</attrlabl>
+        <attrdef>Year by which the installation is completed.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2020</rdommin>
+            <rdommax>2050</rdommax>
+            <attrmres>5</attrmres>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Technology</attrlabl>
+        <attrdef>Indicates the technology used.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>Solar</edomv>
+            <edomvd>Solar energy.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+          <edom>
+            <edomv>Wind</edomv>
+            <edomvd>Wind energy.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+          <edom>
+            <edomv>OffshoreWind</edomv>
+            <edomvd>Wind energy harvested offshore.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape_Leng</attrlabl>
+        <attrdef>Perimeter of feature.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Positive real numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>scenario</attrlabl>
+        <attrdef>Scenario name.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>E+</edomv>
+            <edomvd>The E+ scenario.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>state</attrlabl>
+        <attrdef>Name of the state in which the Selected Project Area is located.</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>All US states except Alaska and Hawaii, plus the District of Columbia</codesetn>
+            <codesets>United States government</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>LandUseAss</attrlabl>
+        <attrdef>Land use case filter being applied during renewable resource capacity siting step, either Base Land Use Assumptions (BLUA) or Constrained Land Use Assumptions (CLUA).</attrdef>
+        <attrdefs>Andlinger Center/HMEI</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>BLUA</edomv>
+            <edomvd>Base Land Use Assumptions.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+          <edom>
+            <edomv>CLUA</edomv>
+            <edomvd>Constrained Land Use Assumptions.</edomvd>
+            <edomvds>Andlinger Center/HMEI</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape_Area</attrlabl>
+        <attrdef>Area of feature in internal units squared.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Positive real numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <resdesc>Downloadable Data</resdesc>
+  </distinfo>
+  <metainfo>
+    <metd>20210416</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Map and Geospatial Information Center, Lewis Library, Princeton University</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <city>Princeton</city>
+          <state>NJ</state>
+          <postal>08544</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>609-258-1097</cntvoice>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>
