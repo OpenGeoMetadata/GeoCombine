@@ -1,6 +1,8 @@
 # GeoCombine
 
-[![Build Status](https://travis-ci.org/OpenGeoMetadata/GeoCombine.svg?branch=master)](https://travis-ci.org/OpenGeoMetadata/GeoCombine) | [![Coverage Status](https://coveralls.io/repos/OpenGeoMetadata/GeoCombine/badge.svg?branch=master)](https://coveralls.io/r/OpenGeoMetadata/GeoCombine?branch=master)
+   ![CI](https://github.com/OpenGeoMetadata/GeoCombine/actions/workflows/ruby.yml/badge.svg)
+| [![Coverage Status](https://img.shields.io/badge/coverage-95%25-brightgreen)]()
+| [![Gem Version](https://img.shields.io/gem/v/geo_combine.svg)](https://github.com/OpenGeoMetadata/GeoCombine/releases)
 
 
 A Ruby toolkit for managing geospatial metadata, including:
@@ -61,6 +63,12 @@ You can also specify a single repository:
 $ bundle exec rake geocombine:clone[edu.stanford.purl]
 ```
 
+*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+
+```sh
+$ bundle exec rake geocombine:clone\[edu.stanford.purl\]
+```
+
 #### Update local OpenGeoMetadata repositories
 
 ```sh
@@ -73,6 +81,12 @@ You can also specify a single repository:
 
 ```sh
 $ bundle exec rake geocombine:pull[edu.stanford.purl]
+```
+
+*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+
+```sh
+$ bundle exec rake geocombine:pull\[edu.stanford.purl\]
 ```
 
 #### Index GeoBlacklight documents

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # JSON docs that can be included into specs
 module JsonDocs

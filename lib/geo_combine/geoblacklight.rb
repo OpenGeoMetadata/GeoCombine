@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/except'
 require 'open-uri'
@@ -10,8 +12,8 @@ module GeoCombine
 
     attr_reader :metadata
 
-    GEOBLACKLIGHT_VERSION = 'v1.1.0'
-    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/geoblacklight/geoblacklight/#{GEOBLACKLIGHT_VERSION}/schema/geoblacklight-schema.json".freeze
+    GEOBLACKLIGHT_VERSION = '1.0'
+    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/geoblacklight/geoblacklight/main/schema/geoblacklight-schema-#{GEOBLACKLIGHT_VERSION}.json"
     DEPRECATED_KEYS_V1 = %w[
       uuid
       georss_polygon_s
@@ -29,7 +31,6 @@ module GeoCombine
     # @param [Hash] fields enhancements to metadata that are merged with @metadata
     def initialize(metadata, fields = {})
       @metadata = JSON.parse(metadata).merge(fields)
-      @schema = nil
     end
 
     ##
@@ -58,8 +59,7 @@ module GeoCombine
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
     def valid?
-      @schema ||= JSON.parse(open(SCHEMA_JSON_URL).read)
-      JSON::Validator.validate!(@schema, to_json, fragment: '#/properties/layer') &&
+      JSON::Validator.validate!(schema, to_json, fragment: '#/definitions/layer') &&
         dct_references_validate! &&
         spatial_validate!
     end
@@ -69,9 +69,14 @@ module GeoCombine
     # @return [Boolean]
     def dct_references_validate!
       return true unless metadata.key?('dct_references_s') # TODO: shouldn't we require this field?
+
       begin
         ref = JSON.parse(metadata['dct_references_s'])
-        raise GeoCombine::Exceptions::InvalidDCTReferences, 'dct_references must be parsed to a Hash' unless ref.is_a?(Hash)
+        unless ref.is_a?(Hash)
+          raise GeoCombine::Exceptions::InvalidDCTReferences,
+                'dct_references must be parsed to a Hash'
+        end
+
         true
       rescue JSON::ParserError => e
         raise e, "Invalid JSON in dct_references_s: #{e.message}"
@@ -89,6 +94,7 @@ module GeoCombine
     # GeoBlacklight-Schema format
     def translate_formats(key, value)
       return unless key == 'dc_format_s' && formats.include?(value)
+
       metadata[key] = formats[value]
     end
 
@@ -96,6 +102,7 @@ module GeoCombine
     # Enhances the 'layer_geom_type_s' field by translating from known types
     def translate_geometry_type(key, value)
       return unless key == 'layer_geom_type_s' && geometry_types.include?(value)
+
       metadata[key] = geometry_types[value]
     end
 
@@ -104,6 +111,7 @@ module GeoCombine
     # categories
     def enhance_subjects(key, value)
       return unless key == 'dc_subject_sm'
+
       metadata[key] = value.map do |val|
         if subjects.include?(val)
           subjects[val]
@@ -118,11 +126,13 @@ module GeoCombine
     # and ISO8601 (for indexing into Solr)
     def format_proper_date(key, value)
       return unless key == 'layer_modified_dt'
+
       metadata[key] = Time.parse(value).utc.iso8601
     end
 
     def fields_should_be_array(key, value)
       return unless should_be_array.include?(key) && !value.is_a?(Array)
+
       metadata[key] = [value]
     end
 
@@ -154,6 +164,10 @@ module GeoCombine
 
       # ensure we have a proper v1 record
       valid?
+    end
+
+    def schema
+      @schema ||= JSON.parse(URI.open(SCHEMA_JSON_URL).read)
     end
   end
 end

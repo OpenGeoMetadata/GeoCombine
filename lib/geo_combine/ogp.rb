@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/object/blank'
 require 'cgi'
 
@@ -77,15 +79,13 @@ module GeoCombine
     end
 
     def date
-      begin
-        DateTime.rfc3339(metadata['ContentDate'])
-      rescue
-        nil
-      end
+      DateTime.rfc3339(metadata['ContentDate'])
+    rescue StandardError
+      nil
     end
 
     def year
-      date.year unless date.nil?
+      date&.year
     end
 
     ##
@@ -104,9 +104,9 @@ module GeoCombine
     def ogp_formats
       case metadata['DataType']
       when 'Paper Map', 'Raster'
-        return 'GeoTIFF'
+        'GeoTIFF'
       when 'Polygon', 'Point', 'Line'
-        return 'Shapefile'
+        'Shapefile'
       else
         raise ArgumentError, metadata['DataType']
       end
@@ -128,6 +128,7 @@ module GeoCombine
                                  north >= -90 && north <= 90 &&
                                  south >= -90 && south <= 90 &&
                                  west <= east && south <= north
+
       "ENVELOPE(#{west}, #{east}, #{north}, #{south})"
     end
 
@@ -165,6 +166,7 @@ module GeoCombine
 
     def download_uri
       return 'http://schema.org/DownloadAction' if institution == 'Harvard'
+
       'http://schema.org/downloadUrl'
     end
 
@@ -205,7 +207,7 @@ module GeoCombine
       sluggify(filter_name(name))
     end
 
-    SLUG_BLACKLIST = %w[
+    SLUG_STRIP_VALUES = %w[
       SDE_DATA.
       SDE.
       SDE2.
@@ -216,8 +218,8 @@ module GeoCombine
 
     def filter_name(name)
       # strip out schema and usernames
-      SLUG_BLACKLIST.each do |blacklisted|
-        name.sub!(blacklisted, '')
+      SLUG_STRIP_VALUES.each do |strip_val|
+        name.sub!(strip_val, '')
       end
       unless name.size > 1
         # use first word of title is empty name

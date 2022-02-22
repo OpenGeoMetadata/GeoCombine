@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoCombine
   ##
   # Translation dictionary for mime-type to valid GeoBlacklight-Schema formats

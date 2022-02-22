@@ -30,7 +30,7 @@ module GeoCombine
       end
 
       def document_transformer
-        @document_transformer || ->(document) do
+        @document_transformer || lambda do |document|
           document.delete('_version_')
           document.delete('score')
           document.delete('timestamp')
@@ -43,8 +43,8 @@ module GeoCombine
       end
     end
 
-
     attr_reader :site, :site_key
+
     def initialize(site_key)
       @site_key = site_key
       @site = self.class.config[site_key]
@@ -59,7 +59,7 @@ module GeoCombine
 
       response_class.new(response: response, base_url: base_url).documents.each do |docs|
         docs.map! do |document|
-          self.class.document_transformer.call(document) if self.class.document_transformer
+          self.class.document_transformer&.call(document)
         end.compact
 
         puts "Adding #{docs.count} documents to solr" if self.class.config[:debug]
@@ -81,7 +81,8 @@ module GeoCombine
         elsif keys.any? && %w[links data].all? { |param| keys.include?(param) }
           ModernBlacklightResponse
         else
-          raise NotImplementedError, "The following json response was not able to be parsed by the GeoBlacklightHarvester\n#{json}"
+          raise NotImplementedError,
+                "The following json response was not able to be parsed by the GeoBlacklightHarvester\n#{json}"
         end
       end
     end
@@ -89,6 +90,7 @@ module GeoCombine
     class LegacyBlacklightResponse
       attr_reader :base_url
       attr_accessor :response, :page
+
       def initialize(response:, base_url:)
         @base_url = base_url
         @response = response
@@ -98,16 +100,17 @@ module GeoCombine
       def documents
         return enum_for(:documents) unless block_given?
 
-        while current_page && total_pages && (current_page <= total_pages) do
+        while current_page && total_pages && (current_page <= total_pages)
           yield response.dig('response', 'docs')
 
           break if current_page == total_pages
+
           self.page += 1
           puts "Fetching page #{page} @ #{url}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
 
           begin
             self.response = JSON.parse(Net::HTTP.get(URI(url)))
-          rescue => e
+          rescue StandardError => e
             puts "Request for #{url} failed with #{e}"
             self.response = nil
           end
@@ -134,6 +137,7 @@ module GeoCombine
     class ModernBlacklightResponse
       attr_reader :base_url
       attr_accessor :response, :page
+
       def initialize(response:, base_url:)
         @base_url = base_url
         @response = response
@@ -150,12 +154,13 @@ module GeoCombine
 
           url = response.dig('links', 'next')
           break unless url
+
           url = "#{url}&format=json"
           self.page += 1
           puts "Fetching page #{page} @ #{url}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
           begin
             self.response = JSON.parse(Net::HTTP.get(URI(url)))
-          rescue => e
+          rescue StandardError => e
             puts "Request for #{url} failed with #{e}"
             self.response = nil
           end
@@ -167,13 +172,11 @@ module GeoCombine
       def documents_from_urls(urls)
         puts "Fetching #{urls.count} documents for page #{page}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
         urls.map do |url|
-          begin
-            JSON.parse(Net::HTTP.get(URI("#{url}/raw")))
-          rescue => e
-            puts "Fetching \"#{url}/raw\" failed with #{e}"
+          JSON.parse(Net::HTTP.get(URI("#{url}/raw")))
+        rescue StandardError => e
+          puts "Fetching \"#{url}/raw\" failed with #{e}"
 
-            nil
-          end
+          nil
         end.compact
       end
     end

@@ -1,0 +1,53 @@
+name: CI
+
+on: [push]
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+    - name: Install dependencies
+      run: bundle install
+    - name: Run linter
+      run: bundle exec rubocop
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [2.7, 3.0, 3.1]
+        faraday_version: [''] # Defaults to whatever's the most recent version.
+        include:
+          - ruby: 2.7
+            faraday_version: '~> 1.0'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+
+    - name: Install bundler
+      run: gem install bundler -v 2.1.1
+
+    - name: Install dependencies
+      run: bundle _2.1.1_ install
+      env:
+        FARADAY_VERSION: ${{ matrix.faraday_version }}
+
+    - name: Run tests
+      run: bundle exec rake spec
+      env:
+        FARADAY_VERSION: ${{ matrix.faraday_version }}
+
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage/

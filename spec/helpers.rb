@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 require 'json'
 
 module Helpers
   # From https://gist.github.com/ascendbruce/7070951
   def valid_json?(json)
-    begin
-      JSON.parse(json)
-      return true
-    rescue Exception => e
-      return false
-    end
+    JSON.parse(json)
+    true
+  rescue Exception => e
+    false
   end
 
   def trim(text)
-    %r/\A\s+#{text}\s+\Z/
+    /\A\s+#{text}\s+\Z/
   end
 end
