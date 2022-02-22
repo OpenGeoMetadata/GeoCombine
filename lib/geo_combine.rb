@@ -72,6 +72,9 @@ require 'geo_combine/ogp'
 # Require harvesting/indexing files
 require 'geo_combine/geo_blacklight_harvester'
 
+# Migrators
+require 'geo_combine/migrators/v1_aardvark_migrator'
+
 # Require gem files
 require 'geo_combine/version'
 require 'geo_combine/railtie' if defined?(Rails)
