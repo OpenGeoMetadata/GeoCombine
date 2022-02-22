@@ -50,6 +50,7 @@ namespace :geocombine do
     solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
     Find.find(ogm_path) do |path|
       next unless File.basename(path).includes?('.json') && File.basename(path) != 'layers.json'
+
       doc = JSON.parse(File.read(path))
       [doc].flatten.each do |record|
         puts "Indexing #{record['layer_slug_s']}: #{path}" if $DEBUG
