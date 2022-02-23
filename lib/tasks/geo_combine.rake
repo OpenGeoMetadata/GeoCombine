@@ -28,7 +28,7 @@ namespace :geocombine do
       ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map do |repo|
         repo['clone_url'] if (repo['size']).positive?
       end.compact
-      ogm_repos.select! { |repo| !denylist.include?(repo)}
+      ogm_repos.select! { |repo| !denylist.include?(repo) }
     end
     ogm_repos.each do |repo|
       system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
