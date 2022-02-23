@@ -10,8 +10,13 @@ namespace :geocombine do
   commit_within = (ENV['SOLR_COMMIT_WITHIN'] || 5000).to_i
   ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
   solr_url = ENV['SOLR_URL'] || 'http://127.0.0.1:8983/solr/blacklight-core'
-  whitelist = %w[
-    https://github.com/OpenGeoMetadata/big-ten.git
+  denylist = [
+    'https://github.com/OpenGeoMetadata/GeoCombine.git',
+    'https://github.com/OpenGeoMetadata/aardvark.git',
+    'https://github.com/OpenGeoMetadata/metadatarepository.git',
+    'https://github.com/OpenGeoMetadata/ogm_utils-python.git',
+    'https://github.com/OpenGeoMetadata/opengeometadata.github.io.git',
+    'https://github.com/OpenGeoMetadata/opengeometadata-rails.git'
   ]
 
   desc 'Clone OpenGeoMetadata repositories'
@@ -23,10 +28,10 @@ namespace :geocombine do
       ogm_repos = JSON.parse(Net::HTTP.get(ogm_api_uri)).map do |repo|
         repo['clone_url'] if (repo['size']).positive?
       end.compact
-      ogm_repos.select! { |repo| whitelist.include?(repo) || repo =~ /(edu|org|uk)\..*\.git$/ }
+      ogm_repos.reject! { |repo| denylist.include?(repo) }
     end
     ogm_repos.each do |repo|
-      system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
+      Kernel.system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
     end
   end
 
@@ -40,7 +45,7 @@ namespace :geocombine do
     paths.each do |path|
       next unless File.directory?(path)
 
-      system "echo #{path} && cd #{path} && git pull origin"
+      Kernel.system "echo #{path} && cd #{path} && git pull origin"
     end
   end
 

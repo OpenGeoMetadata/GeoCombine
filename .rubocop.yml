@@ -11,3 +11,6 @@ AllCops:
   Exclude:
   - 'geo_combine.gemspec'
   - 'tmp/**/*'
+
+RSpec/DescribeClass:
+  Enabled: false
