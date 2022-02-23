@@ -11,12 +11,12 @@ namespace :geocombine do
   ogm_path = ENV['OGM_PATH'] || 'tmp/opengeometadata'
   solr_url = ENV['SOLR_URL'] || 'http://127.0.0.1:8983/solr/blacklight-core'
   denylist = [
-    "https://github.com/OpenGeoMetadata/GeoCombine.git",
-    "https://github.com/OpenGeoMetadata/aardvark.git",
-    "https://github.com/OpenGeoMetadata/metadatarepository.git",
-    "https://github.com/OpenGeoMetadata/ogm_utils-python.git",
-    "https://github.com/OpenGeoMetadata/opengeometadata.github.io.git",
-    "https://github.com/OpenGeoMetadata/opengeometadata-rails.git"
+    'https://github.com/OpenGeoMetadata/GeoCombine.git',
+    'https://github.com/OpenGeoMetadata/aardvark.git',
+    'https://github.com/OpenGeoMetadata/metadatarepository.git',
+    'https://github.com/OpenGeoMetadata/ogm_utils-python.git',
+    'https://github.com/OpenGeoMetadata/opengeometadata.github.io.git',
+    'https://github.com/OpenGeoMetadata/opengeometadata-rails.git'
   ]
 
   desc 'Clone OpenGeoMetadata repositories'
