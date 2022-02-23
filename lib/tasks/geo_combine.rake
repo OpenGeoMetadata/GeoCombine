@@ -31,7 +31,7 @@ namespace :geocombine do
       ogm_repos.reject! { |repo| denylist.include?(repo) }
     end
     ogm_repos.each do |repo|
-      system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
+      Kernel.system "echo #{repo} && mkdir -p #{ogm_path} && cd #{ogm_path} && git clone --depth 1 #{repo}"
     end
   end
 
@@ -45,7 +45,7 @@ namespace :geocombine do
     paths.each do |path|
       next unless File.directory?(path)
 
-      system "echo #{path} && cd #{path} && git pull origin"
+      Kernel.system "echo #{path} && cd #{path} && git pull origin"
     end
   end
 
