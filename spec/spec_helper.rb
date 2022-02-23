@@ -18,6 +18,10 @@ require 'helpers'
 require 'rspec-html-matchers'
 require 'byebug'
 
+# Setup webmock for specific tests
+require 'webmock/rspec'
+WebMock.allow_net_connect!
+
 RSpec.configure do |config|
   config.include Helpers
   config.include RSpecHtmlMatchers
