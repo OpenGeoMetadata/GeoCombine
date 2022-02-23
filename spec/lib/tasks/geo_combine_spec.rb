@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'rake'
 
 describe 'geocombine rake tasks' do
     describe 'geocombine:clone' do
