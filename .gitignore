@@ -1,4 +1,3 @@
-.byebug_history
 /.bundle/
 /.yardoc
 /Gemfile.lock
@@ -14,3 +13,4 @@
 *.a
 mkmf.log
 .tool-versions
+.byebug_history
