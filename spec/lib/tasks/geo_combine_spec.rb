@@ -10,7 +10,7 @@ describe 'geo_combine.rake' do
 
   describe 'geocombine:clone' do
     before do
-      WebMock.disable_net_connect!(allow_localhost: true)
+      WebMock.disable_net_connect!
     end
 
     after do

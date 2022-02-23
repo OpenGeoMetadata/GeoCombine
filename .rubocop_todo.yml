@@ -78,11 +78,16 @@ RSpec/FilePath:
   Exclude:
     - 'spec/lib/geo_combine_spec.rb'
 
-# Offense count: 23
 # Configuration parameters: .
 # SupportedStyles: have_received, receive
 RSpec/MessageSpies:
-  EnforcedStyle: receive
+  EnforcedStyle: have_received
+  Exclude:
+    - 'spec/lib/geo_combine/esri_open_data_spec.rb'
+    - 'spec/lib/geo_combine/geo_blacklight_harvester_spec.rb'
+    - 'spec/lib/geo_combine/geoblacklight_spec.rb'
+    - 'spec/lib/geo_combine/ogp_spec.rb'
+    - 'spec/lib/geo_combine_spec.rb'
 
 # Offense count: 39
 RSpec/MultipleExpectations:
