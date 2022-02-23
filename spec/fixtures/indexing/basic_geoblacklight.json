@@ -1,0 +1,27 @@
+{
+  "geoblacklight_version":"1.0",
+  "dc_identifier_s":"http://purl.stanford.edu/bb338jh0716",
+  "dc_title_s":"Hydrologic Sub-Area Boundaries: Russian River Watershed, California, 1999",
+  "dc_description_s":"This polygon dataset represents the Hydrologic Sub-Area boundaries for the Russian River basin, as defined by the Calwater 2.2a watershed boundaries. The original CALWATER22 layer (Calwater 2.2a watershed boundaries) was developed as a coverage named calw22a and is administered by the Interagency California Watershed Mapping Committee (ICWMC). ",
+  "dc_rights_s":"Public",
+  "dct_provenance_s":"Stanford",
+  "layer_id_s":"druid:bb338jh0716",
+  "layer_slug_s":"Stanford-bb338jh0716",
+  "layer_geom_type_s":"",
+  "layer_modified_dt":"2014-10-08",
+  "dc_format_s":"application/x-esri-shapefile",
+  "dc_type_s":"Dataset",
+  "dc_subject_sm":[
+    "boundaries",
+    "inlandWaters"
+  ],
+  "dc_spatial_sm":[
+    "Sonoma County (Calif.)",
+    "Mendocino County (Calif.)",
+    "Russian River Watershed (Calif.)"
+  ],
+  "dct_issued_s":"2002-09-01",
+  "dct_temporal_sm":"1999",
+  "solr_geom":"ENVELOPE(-123.387866 38.298024, -122.522658 38.298024, -122.522658 39.399217, -123.387866 39.399217, -123.387866 38.298024)",
+  "solr_year_i":1999
+}

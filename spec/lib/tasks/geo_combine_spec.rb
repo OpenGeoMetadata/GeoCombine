@@ -5,6 +5,8 @@ require 'rake'
 
 describe 'geo_combine.rake' do
   before do
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with('OGM_PATH').and_return(File.join(fixture_dir, "indexing"))
     load('lib/tasks/geo_combine.rake')
   end
 
@@ -22,6 +24,17 @@ describe 'geo_combine.rake' do
       allow(Kernel).to receive(:system)
       Rake::Task['geocombine:clone'].invoke
       expect(Kernel).to have_received(:system).exactly(20).times
+    end
+  end
+
+  describe 'geocombine:index' do
+    it 'only indexes .json files but not layers.json' do
+      rsolr_mock = instance_double('RSolr::Client')
+      allow(rsolr_mock).to receive(:update)
+      allow(rsolr_mock).to receive(:commit)
+      allow(RSolr).to receive(:connect).and_return(rsolr_mock)
+      Rake::Task['geocombine:index'].invoke
+      expect(rsolr_mock).to have_received(:update).exactly(4).times
     end
   end
 end
