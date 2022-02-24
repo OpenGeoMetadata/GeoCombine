@@ -13,7 +13,7 @@ namespace :geocombine do
   denylist = [
     'https://github.com/OpenGeoMetadata/GeoCombine.git',
     'https://github.com/OpenGeoMetadata/aardvark.git',
-    'https://github.com/OpenGeoMetadata/metadatarepository.git',
+    'https://github.com/OpenGeoMetadata/metadata-issues.git',
     'https://github.com/OpenGeoMetadata/ogm_utils-python.git',
     'https://github.com/OpenGeoMetadata/opengeometadata.github.io.git',
     'https://github.com/OpenGeoMetadata/opengeometadata-rails.git'
