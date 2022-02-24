@@ -7,11 +7,12 @@ describe 'geo_combine.rake' do
   before do
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('OGM_PATH').and_return(File.join(fixture_dir, "indexing"))
-    load('lib/tasks/geo_combine.rake')
   end
 
   describe 'geocombine:clone' do
     before do
+      load File.expand_path("../../../../lib/tasks/geo_combine.rake", __FILE__)
+      Rake::Task.define_task(:environment)
       WebMock.disable_net_connect!
     end
 
@@ -34,7 +35,8 @@ describe 'geo_combine.rake' do
       allow(rsolr_mock).to receive(:commit)
       allow(RSolr).to receive(:connect).and_return(rsolr_mock)
       Rake::Task['geocombine:index'].invoke
-      expect(rsolr_mock).to have_received(:update).exactly(4).times
+      #We expect 2 files to index
+      expect(rsolr_mock).to have_received(:update).exactly(2).times
     end
   end
 end
