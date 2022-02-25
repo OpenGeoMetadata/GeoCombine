@@ -49,12 +49,12 @@ namespace :geocombine do
     end
   end
 
-  desc 'Index all of the GeoBlacklight JSON documents'
+  desc 'Index all JSON documents except Layers.json'
   task :index do
     puts "Indexing #{ogm_path} into #{solr_url}"
     solr = RSolr.connect url: solr_url, adapter: :net_http_persistent
     Find.find(ogm_path) do |path|
-      next unless File.basename(path) == 'geoblacklight.json'
+      next unless File.basename(path).include?('.json') && File.basename(path) != 'layers.json'
 
       doc = JSON.parse(File.read(path))
       [doc].flatten.each do |record|

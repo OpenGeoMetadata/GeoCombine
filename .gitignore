@@ -13,3 +13,4 @@
 *.a
 mkmf.log
 .tool-versions
+.byebug_history

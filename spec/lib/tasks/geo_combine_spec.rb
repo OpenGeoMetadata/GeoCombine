@@ -5,11 +5,14 @@ require 'rake'
 
 describe 'geo_combine.rake' do
   before do
-    load('lib/tasks/geo_combine.rake')
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with('OGM_PATH').and_return(File.join(fixture_dir, 'indexing'))
   end
 
   describe 'geocombine:clone' do
     before do
+      load File.expand_path('../../../lib/tasks/geo_combine.rake', __dir__)
+      Rake::Task.define_task(:environment)
       WebMock.disable_net_connect!
     end
 
@@ -22,6 +25,18 @@ describe 'geo_combine.rake' do
       allow(Kernel).to receive(:system)
       Rake::Task['geocombine:clone'].invoke
       expect(Kernel).to have_received(:system).exactly(20).times
+    end
+  end
+
+  describe 'geocombine:index' do
+    it 'only indexes .json files but not layers.json' do
+      rsolr_mock = instance_double('RSolr::Client')
+      allow(rsolr_mock).to receive(:update)
+      allow(rsolr_mock).to receive(:commit)
+      allow(RSolr).to receive(:connect).and_return(rsolr_mock)
+      Rake::Task['geocombine:index'].invoke
+      # We expect 2 files to index
+      expect(rsolr_mock).to have_received(:update).exactly(2).times
     end
   end
 end
