@@ -2,6 +2,10 @@
 
 module GeoCombine
   module Migrators
+    # TODO: WARNING! This class is not fully implemented and should not be used in
+    # production. See https://github.com/OpenGeoMetadata/GeoCombine/issues/121
+    # for remaining work.
+    #
     # migrates the v1 schema to the aardvark schema
     class V1AardvarkMigrator
       attr_reader :v1_hash
@@ -11,12 +15,9 @@ module GeoCombine
         @v1_hash = v1_hash
       end
 
-      # TODO: elements without a crosswalk:
-      # https://github.com/OpenGeoMetadata/opengeometadata.github.io/blob/main/docs/aboutAardvark.md#elements-without-a-crosswalk
       def run
-        # TODO: return unless it's version 1
         v2_hash = convert_keys
-        v2_hash['gbl_mdVersion_s'] = "Aardvark"
+        v2_hash['gbl_mdVersion_s'] = 'Aardvark'
         v2_hash
       end
 
