@@ -4,6 +4,11 @@ require 'spec_helper'
 require 'rake'
 
 describe 'geo_combine.rake' do
+  before(:all) do
+    load File.expand_path('../../../lib/tasks/geo_combine.rake', __dir__)
+    Rake::Task.define_task(:environment)
+  end
+
   before do
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('OGM_PATH').and_return(File.join(fixture_dir, 'indexing'))
@@ -11,8 +16,6 @@ describe 'geo_combine.rake' do
 
   describe 'geocombine:clone' do
     before do
-      load File.expand_path('../../../lib/tasks/geo_combine.rake', __dir__)
-      Rake::Task.define_task(:environment)
       WebMock.disable_net_connect!
     end
 
@@ -24,7 +27,7 @@ describe 'geo_combine.rake' do
       stub_request(:get, 'https://api.github.com/orgs/opengeometadata/repos').to_return(status: 200, body: read_fixture('docs/repos.json'))
       allow(Kernel).to receive(:system)
       Rake::Task['geocombine:clone'].invoke
-      expect(Kernel).to have_received(:system).exactly(20).times
+      expect(Kernel).to have_received(:system).exactly(21).times
     end
   end
 

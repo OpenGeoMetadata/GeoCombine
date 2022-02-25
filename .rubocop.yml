@@ -14,3 +14,7 @@ AllCops:
 
 RSpec/DescribeClass:
   Enabled: false
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'spec/lib/tasks/geo_combine_spec.rb'
