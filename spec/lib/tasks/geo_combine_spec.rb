@@ -4,6 +4,11 @@ require 'spec_helper'
 require 'rake'
 
 describe 'geo_combine.rake' do
+  before(:all) do
+    load File.expand_path('../../../lib/tasks/geo_combine.rake', __dir__)
+    Rake::Task.define_task(:environment)
+  end
+
   before do
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('OGM_PATH').and_return(File.join(fixture_dir, 'indexing'))
@@ -11,8 +16,6 @@ describe 'geo_combine.rake' do
 
   describe 'geocombine:clone' do
     before do
-      load File.expand_path('../../../lib/tasks/geo_combine.rake', __dir__)
-      Rake::Task.define_task(:environment)
       WebMock.disable_net_connect!
     end
 
