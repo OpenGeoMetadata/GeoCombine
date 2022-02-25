@@ -13,7 +13,7 @@ module GeoCombine
     attr_reader :metadata
 
     GEOBLACKLIGHT_VERSION = '1.0'
-    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/geoblacklight/geoblacklight/main/schema/geoblacklight-schema-#{GEOBLACKLIGHT_VERSION}.json"
+    SCHEMA_JSON_URL = "https://raw.githubusercontent.com/OpenGeoMetadata/opengeometadata.github.io/main/schema/geoblacklight-schema-#{GEOBLACKLIGHT_VERSION}.json"
     DEPRECATED_KEYS_V1 = %w[
       uuid
       georss_polygon_s
