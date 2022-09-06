@@ -6,4 +6,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'byebug'
-gem 'faraday', ENV['FARADAY_VERSION'] if ENV['FARADAY_VERSION'].to_s != ''
+gem 'faraday-net_http_persistent', '~> 2.0'

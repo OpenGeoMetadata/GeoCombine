@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'net/http'
 require 'json'
 require 'rsolr'
 require 'find'
 require 'geo_combine/geo_blacklight_harvester'
+require 'faraday/net_http_persistent'
 
 namespace :geocombine do
   desc 'Clone OpenGeoMetadata repositories'
