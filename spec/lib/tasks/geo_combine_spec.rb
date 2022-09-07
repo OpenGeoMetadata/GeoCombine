@@ -33,7 +33,7 @@ describe 'geo_combine.rake' do
 
   describe 'geocombine:index' do
     it 'only indexes .json files but not layers.json' do
-      rsolr_mock = instance_double('RSolr::Client')
+      rsolr_mock = instance_double(RSolr::Client)
       allow(rsolr_mock).to receive(:update)
       allow(rsolr_mock).to receive(:commit)
       allow(RSolr).to receive(:connect).and_return(rsolr_mock)
