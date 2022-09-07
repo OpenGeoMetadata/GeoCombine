@@ -6,4 +6,3 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'byebug'
-gem 'faraday-net_http_persistent', '~> 2.0'
