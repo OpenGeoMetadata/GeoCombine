@@ -20,11 +20,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'rsolr'
-  spec.add_dependency 'net-http-persistent', '~> 2.0' # pin since faraday (rsolr) doesn't work correctly with 3.x
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'json-schema'
   spec.add_dependency 'sanitize'
   spec.add_dependency 'thor'
+  spec.add_dependency 'faraday-net_http_persistent', '~> 2.0'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'

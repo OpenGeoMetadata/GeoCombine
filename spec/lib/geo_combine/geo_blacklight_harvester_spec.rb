@@ -159,9 +159,9 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
     let(:first_results_response) do
       { 'data' => [
-        { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
-        { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
-      ],
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
+        ],
         'links' => { 'next' => 'https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2' } }
     end
 
