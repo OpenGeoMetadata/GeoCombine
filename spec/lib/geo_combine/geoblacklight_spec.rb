@@ -151,8 +151,8 @@ RSpec.describe GeoCombine::Geoblacklight do
       let(:unparseable_json) do
         <<-JSON
           {
-            \"http://schema.org/url\":\"http://example.com/abc123\",,
-            \"http://schema.org/downloadUrl\":\"http://example.com/abc123/data.zip\"
+            "http://schema.org/url":"http://example.com/abc123",,
+            "http://schema.org/downloadUrl":"http://example.com/abc123/data.zip"
           }
         JSON
       end
@@ -184,7 +184,7 @@ RSpec.describe GeoCombine::Geoblacklight do
 
   describe 'spatial_validate!' do
     context 'when valid' do
-      it { full_geobl.spatial_validate! }
+      it { expect { full_geobl.spatial_validate! }.not_to raise_error }
     end
 
     context 'when invalid' do

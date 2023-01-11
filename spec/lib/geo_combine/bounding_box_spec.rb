@@ -15,7 +15,7 @@ RSpec.describe GeoCombine::BoundingBox do
 
   describe '#valid?' do
     context 'when valid' do
-      it { valid.valid? }
+      it { expect(valid.valid?).to be true }
     end
 
     context 'when south > north' do

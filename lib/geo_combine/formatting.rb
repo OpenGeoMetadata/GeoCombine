@@ -30,7 +30,7 @@ module GeoCombine
 
     # slugs should be lowercase and only have a-z, A-Z, 0-9, and -
     def sluggify(slug)
-      slug.gsub(/[^a-zA-Z0-9\-]/, '-').gsub(/-+/, '-').downcase
+      slug.gsub(/[^a-zA-Z0-9-]/, '-').gsub(/-+/, '-').downcase
     end
   end
 end
