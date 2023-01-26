@@ -27,7 +27,7 @@ namespace :geocombine do
   task :index do
     harvester = GeoCombine::Harvester.new
     indexer = GeoCombine::Indexer.new
-    puts "Indexing #{harvester.ogm_path} into #{indexer.solr.url}"
+    puts "Indexing #{harvester.ogm_path} into #{indexer.solr_url}"
     total = indexer.index(harvester.docs_to_index)
     puts "Indexed #{total} documents"
   end
