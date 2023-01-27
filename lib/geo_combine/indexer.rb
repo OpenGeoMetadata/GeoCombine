@@ -16,6 +16,10 @@ module GeoCombine
       @solr = solr
     end
 
+    def solr_url
+      @solr.options[:url]
+    end
+
     # Index everything and return the number of docs successfully indexed
     def index(docs, commit_within: ENV.fetch('SOLR_COMMIT_WITHIN', 5000).to_i)
       indexed_count = 0
