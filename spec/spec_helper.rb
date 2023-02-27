@@ -7,7 +7,6 @@ SimpleCov.start 'rails' do
   add_filter 'lib/tasks/geo_combine.rake'
   add_filter 'lib/geo_combine/version.rb'
   add_filter 'lib/geo_combine/railtie.rb'
-  add_filter 'lib/geo_combine/cli.rb'
   minimum_coverage 95 # When updating this value, update the README badge value
 end
 
