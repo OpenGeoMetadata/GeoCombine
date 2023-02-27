@@ -89,8 +89,9 @@ module GeoCombine
     # List of repository names to harvest
     def repositories
       @repositories ||= JSON.parse(Net::HTTP.get(self.class.ogm_api_uri))
-                            .map { |repo| repo['name'] if (repo['size']).positive? }
-                            .reject { |repo| self.class.denylist.include? repo }
+                            .filter { |repo| repo['size'].positive? }
+                            .map { |repo| repo['name'] }
+                            .reject { |name| self.class.denylist.include? name }
     end
   end
 end
