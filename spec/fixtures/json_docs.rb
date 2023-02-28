@@ -16,6 +16,12 @@ module JsonDocs
   end
 
   ##
+  #  full_geoblacklight fixture converted to the aardvark schema
+  def full_geoblacklight_aardvark
+    File.read(File.join(File.dirname(__FILE__), './docs/full_geoblacklight_aardvark.json'))
+  end
+
+  ##
   # A sample Esri OpenData metadata record
   def esri_opendata_metadata
     File.read(File.join(File.dirname(__FILE__), './docs/esri_open_data.json'))
