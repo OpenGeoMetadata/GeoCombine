@@ -28,6 +28,13 @@
   "dct_spatial_sm":[
     "Uganda"
   ],
+  "dct_isPartOf_sm":[
+    "Uganda GIS Maps and Data, 2000-2010"
+  ],
+  "dc_source_sm": [
+    "stanford-rb371kw9607"
+  ],
   "solr_geom":"ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)",
-  "solr_year_i":2005
+  "solr_year_i":2005,
+  "suppressed_b":false
 }
