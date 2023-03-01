@@ -1,11 +1,11 @@
 # GeoCombine
 
-   ![CI](https://github.com/OpenGeoMetadata/GeoCombine/actions/workflows/ruby.yml/badge.svg)
+![CI](https://github.com/OpenGeoMetadata/GeoCombine/actions/workflows/ruby.yml/badge.svg)
 | [![Coverage Status](https://img.shields.io/badge/coverage-95%25-brightgreen)]()
 | [![Gem Version](https://img.shields.io/gem/v/geo_combine.svg)](https://github.com/OpenGeoMetadata/GeoCombine/releases)
 
-
 A Ruby toolkit for managing geospatial metadata, including:
+
 - tasks for cloning, updating, and indexing OpenGeoMetdata metadata
 - library for converting metadata between standards
 
@@ -43,6 +43,32 @@ Or install it yourself as:
 > iso_metadata.to_html
 ```
 
+### Migrating metadata
+
+You can use the `GeoCombine::Migrators` to migrate metadata from one schema to another.
+
+Currently, the only migrator is `GeoCombine::Migrators::V1AardvarkMigrator` which migrates from the [GeoBlacklight v1 schema](https://github.com/OpenGeoMetadata/opengeometadata.github.io/blob/main/docs/gbl-1.0.md) to the [Aardvark schema](https://github.com/OpenGeoMetadata/opengeometadata.github.io/blob/main/docs/ogm-aardvark.md)
+
+```ruby
+# Load a record in geoblacklight v1 schema
+record = JSON.parse(File.read('.spec/fixtures/docs/full_geoblacklight.json'))
+
+# Migrate it to Aardvark schema
+GeoCombine::Migrators::V1AardvarkMigrator.new(v1_hash: record).run
+```
+
+Some fields cannot be migrated automatically. To handle the migration of collection names to IDs when migrating from v1 to Aardvark, you can provide a mapping of collection names to IDs to the migrator:
+
+```ruby
+# You can store this mapping as a JSON or CSV file and load it into a hash
+id_map = {
+  'My Collection 1' => 'institution:my-collection-1',
+  'My Collection 2' => 'institution:my-collection-2'
+}
+
+GeoCombine::Migrators::V1AardvarkMigrator.new(v1_hash: record, collection_id_map: id_map).run
+```
+
 ### OpenGeoMetadata
 
 #### Clone OpenGeoMetadata repositories locally
@@ -63,7 +89,7 @@ You can also specify a single repository:
 $ bundle exec rake geocombine:clone[edu.stanford.purl]
 ```
 
-*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+_Note: If you are using zsh, you will need to use escape characters in front of the brackets:_
 
 ```sh
 $ bundle exec rake geocombine:clone\[edu.stanford.purl\]
@@ -83,7 +109,7 @@ You can also specify a single repository:
 $ bundle exec rake geocombine:pull[edu.stanford.purl]
 ```
 
-*Note: If you are using zsh, you will need to use escape characters in front of the brackets:*
+_Note: If you are using zsh, you will need to use escape characters in front of the brackets:_
 
 ```sh
 $ bundle exec rake geocombine:pull\[edu.stanford.purl\]
