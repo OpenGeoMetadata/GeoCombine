@@ -75,9 +75,9 @@ RSpec.describe GeoCombine::Harvester do
       harvester.clone(repo_name)
       expect(Git).to have_received(:clone).with(
         repo_url,
-        repo_name, {
+        nil, {
           depth: 1, # shallow clone
-          path: repo_path
+          path: harvester.ogm_path
         }
       )
     end

@@ -73,7 +73,7 @@ module GeoCombine
       return 0 if File.directory? repo_path
 
       repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
-      Git.clone(repo_url, repo, path: repo_path, depth: 1) && 1
+      Git.clone(repo_url, nil, path: ogm_path, depth: 1) && 1
     end
 
     private
