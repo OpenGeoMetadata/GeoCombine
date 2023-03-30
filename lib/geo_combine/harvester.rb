@@ -54,7 +54,7 @@ module GeoCombine
     end
 
     # Update a repository via git
-    # If the repository doesn't exist, clone it. 
+    # If the repository doesn't exist, clone it.
     def pull(repo)
       repo_path = File.join(@ogm_path, repo)
       clone(repo) unless File.directory? repo_path
