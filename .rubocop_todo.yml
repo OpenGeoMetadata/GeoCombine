@@ -153,7 +153,6 @@ Style/Documentation:
     - 'test/**/*'
     - 'lib/geo_combine/bounding_box.rb'
     - 'lib/geo_combine/ckan_metadata.rb'
-    - 'lib/geo_combine/cli.rb'
     - 'lib/geo_combine/geo_blacklight_harvester.rb'
     - 'lib/geo_combine/geoblacklight.rb'
     - 'lib/geo_combine/geometry_types.rb'
