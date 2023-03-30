@@ -12,14 +12,14 @@ namespace :geocombine do
   desc 'Clone OpenGeoMetadata repositories'
   task :clone, [:repo] do |_t, args|
     harvester = GeoCombine::Harvester.new
-    total = harvester.clone(args.repo)
+    total = args[:repo] ? harvester.clone(args.repo) : harvester.clone_all
     puts "Cloned #{total} repositories"
   end
 
   desc '"git pull" OpenGeoMetadata repositories'
   task :pull, [:repo] do |_t, args|
     harvester = GeoCombine::Harvester.new
-    total = harvester.pull(args.repo)
+    total = args[:repo] ? harvester.pull(args.repo) : harvester.pull_all
     puts "Updated #{total} repositories"
   end
 

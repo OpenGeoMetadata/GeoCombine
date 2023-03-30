@@ -53,27 +53,35 @@ module GeoCombine
       end
     end
 
-    # Update a repository via git, or all repositories if none specified.
-    # If the repository doesn't exist, clone it. Return the count of repositories updated.
-    def pull(repo = nil)
-      return repositories.map(&method(:pull)).reduce(:+) unless repo
-
+    # Update a repository via git
+    # If the repository doesn't exist, clone it.
+    def pull(repo)
       repo_path = File.join(@ogm_path, repo)
       clone(repo) unless File.directory? repo_path
 
       Git.open(repo_path).pull && 1
     end
 
-    # Clone a repository via git, or all repositories if none specified.
-    # If the repository already exists, skip it. Return the count of repositories cloned.
-    def clone(repo = nil)
-      return repositories.map(&method(:clone)).reduce(:+) unless repo
+    # Update all repositories
+    # Return the count of repositories updated
+    def pull_all
+      repositories.map(&method(:pull)).reduce(:+)
+    end
 
+    # Clone a repository via git
+    # If the repository already exists, skip it.
+    def clone(repo)
       repo_path = File.join(@ogm_path, repo)
       return 0 if File.directory? repo_path
 
       repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
-      Git.clone(repo_url, repo, path: repo_path, depth: 1) && 1
+      Git.clone(repo_url, nil, path: ogm_path, depth: 1) && 1
+    end
+
+    # Clone all repositories via git
+    # Return the count of repositories cloned.
+    def clone_all
+      repositories.map(&method(:clone)).reduce(:+)
     end
 
     private
