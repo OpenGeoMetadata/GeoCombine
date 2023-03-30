@@ -11,6 +11,7 @@ AllCops:
   Exclude:
   - 'geo_combine.gemspec'
   - 'tmp/**/*'
+  - 'vendor/bundle/**/*'
 
 RSpec/DescribeClass:
   Enabled: false

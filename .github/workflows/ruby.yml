@@ -7,12 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Ruby
+    - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
-    - name: Install dependencies
-      run: bundle install
+        bundler-cache: true
     - name: Run linter
       run: bundle exec rubocop
 
@@ -28,16 +27,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Ruby
+    - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-
-    - name: Install bundler
-      run: gem install bundler -v 2.1.1
-
-    - name: Install dependencies
-      run: bundle _2.1.1_ install
+        bundler-cache: true
       env:
         FARADAY_VERSION: ${{ matrix.faraday_version }}
 
