@@ -17,7 +17,8 @@ module GeoCombine
         'metadata-issues',
         'ogm_utils-python',
         'opengeometadata.github.io',
-        'opengeometadata-rails'
+        'opengeometadata-rails',
+        'gbl-1_to_aardvark'
       ]
     end
 
