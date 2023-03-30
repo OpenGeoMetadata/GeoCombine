@@ -15,7 +15,8 @@ RSpec.describe GeoCombine::Harvester do
     [
       { name: repo_name, size: 100 },
       { name: 'another-institution', size: 100 },
-      { name: 'aardvark', size: 300 } # on denylist
+      { name: 'aardvark', size: 300 }, # on denylist
+      { name: 'empty', size: 0 }       # no data
     ].to_json
   end
 

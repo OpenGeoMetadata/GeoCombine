@@ -59,7 +59,9 @@ module GeoCombine
       repo_path = File.join(@ogm_path, repo)
       clone(repo) unless File.directory? repo_path
 
-      Git.open(repo_path).pull && 1
+      Git.open(repo_path).pull
+      puts "Updated #{repo}"
+      1
     end
 
     # Update all repositories
@@ -72,10 +74,15 @@ module GeoCombine
     # If the repository already exists, skip it.
     def clone(repo)
       repo_path = File.join(@ogm_path, repo)
-      return 0 if File.directory? repo_path
+      if File.directory? repo_path
+        puts "Skipping clone to #{repo_path}; directory exists"
+        return 0
+      end
 
       repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
-      Git.clone(repo_url, nil, path: ogm_path, depth: 1) && 1
+      Git.clone(repo_url, nil, path: ogm_path, depth: 1)
+      puts "Cloned #{repo_url}"
+      1
     end
 
     # Clone all repositories via git
@@ -89,8 +96,9 @@ module GeoCombine
     # List of repository names to harvest
     def repositories
       @repositories ||= JSON.parse(Net::HTTP.get(self.class.ogm_api_uri))
-                            .map { |repo| repo['name'] if (repo['size']).positive? }
-                            .reject { |repo| self.class.denylist.include? repo }
+                            .filter { |repo| repo['size'].positive? }
+                            .map { |repo| repo['name'] }
+                            .reject { |name| self.class.denylist.include? name }
     end
   end
 end
