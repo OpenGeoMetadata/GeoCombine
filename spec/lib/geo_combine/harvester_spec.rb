@@ -107,4 +107,10 @@ RSpec.describe GeoCombine::Harvester do
       expect(harvester.clone_all).to eq(2)
     end
   end
+
+  describe '#ogm_api_uri' do
+    it 'includes a per_page param' do
+      expect(described_class.send('ogm_api_uri').to_s).to include('per_page')
+    end
+  end
 end

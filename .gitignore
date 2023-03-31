@@ -14,3 +14,4 @@
 mkmf.log
 .tool-versions
 .byebug_history
+.ruby-version
