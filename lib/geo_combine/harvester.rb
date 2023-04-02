@@ -24,7 +24,7 @@ module GeoCombine
 
     # GitHub API endpoint for OpenGeoMetadata repositories
     def self.ogm_api_uri
-      URI('https://api.github.com/orgs/opengeometadata/repos')
+      URI('https://api.github.com/orgs/opengeometadata/repos?per_page=1000')
     end
 
     def initialize(
