@@ -15,8 +15,9 @@ RSpec.describe GeoCombine::Harvester do
     [
       { name: repo_name, size: 100 },
       { name: 'another-institution', size: 100 },
-      { name: 'aardvark', size: 300 }, # on denylist
-      { name: 'empty', size: 0 }       # no data
+      { name: 'outdated-institution', size: 100, archived: true }, # archived
+      { name: 'aardvark', size: 300 },                             # on denylist
+      { name: 'empty', size: 0 }                                   # no data
     ].to_json
   end
 
@@ -70,6 +71,11 @@ RSpec.describe GeoCombine::Harvester do
     it 'skips repositories in the denylist' do
       harvester.pull_all
       expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/aardvark.git')
+    end
+
+    it 'skips archived repositories' do
+      harvester.pull_all
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/outdated-institution.git')
     end
   end
 
