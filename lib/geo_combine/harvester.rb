@@ -98,6 +98,7 @@ module GeoCombine
     def repositories
       @repositories ||= JSON.parse(Net::HTTP.get(self.class.ogm_api_uri))
                             .filter { |repo| repo['size'].positive? }
+                            .reject { |repo| repo['archived'] }
                             .map { |repo| repo['name'] }
                             .reject { |name| self.class.denylist.include? name }
     end
