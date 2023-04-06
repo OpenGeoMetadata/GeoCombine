@@ -75,10 +75,15 @@ module GeoCombine
     # If the repository already exists, skip it.
     def clone(repo)
       repo_path = File.join(@ogm_path, repo)
+      repo_info = repository_info(repo)
+
+      # Skip if exists; warn if archived or empty
       if File.directory? repo_path
         puts "Skipping clone to #{repo_path}; directory exists"
         return 0
       end
+      puts "WARNING: repository '#{repo}' is archived" if repo_info['archived']
+      puts "WARNING: repository '#{repo}' is empty" if repo_info['size'].zero?
 
       repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
       Git.clone(repo_url, nil, path: ogm_path, depth: 1)
@@ -101,6 +106,10 @@ module GeoCombine
                             .reject { |repo| repo['archived'] }
                             .map { |repo| repo['name'] }
                             .reject { |name| self.class.denylist.include? name }
+    end
+
+    def repository_info(repo_name)
+      JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/opengeometadata/#{repo_name}")))
     end
   end
 end

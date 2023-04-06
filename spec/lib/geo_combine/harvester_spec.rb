@@ -18,11 +18,22 @@ RSpec.describe GeoCombine::Harvester do
       { name: 'outdated-institution', size: 100, archived: true }, # archived
       { name: 'aardvark', size: 300 },                             # on denylist
       { name: 'empty', size: 0 }                                   # no data
-    ].to_json
+    ]
   end
 
   before do
-    allow(Net::HTTP).to receive(:get).with(described_class.ogm_api_uri).and_return(stub_gh_api)
+    # stub github API requests
+    # use the whole org response, or just a portion for particular repos
+    allow(Net::HTTP).to receive(:get) do |uri|
+      if uri == described_class.ogm_api_uri
+        stub_gh_api.to_json
+      else
+        repo_name = uri.path.split('/').last.gsub('.git', '')
+        stub_gh_api.find { |repo| repo[:name] == repo_name }.to_json
+      end
+    end
+
+    # stub git commands
     allow(Git).to receive(:open).and_return(stub_repo)
     allow(Git).to receive(:clone).and_return(stub_repo)
     allow(stub_repo).to receive(:pull).and_return(stub_repo)
@@ -95,6 +106,20 @@ RSpec.describe GeoCombine::Harvester do
       allow(File).to receive(:directory?).with(repo_path).and_return(true)
       harvester.clone(repo_name)
       expect(Git).not_to have_received(:clone)
+    end
+
+    it 'warns if a repository is empty' do
+      allow(Net::HTTP).to receive(:get).with('https://api.github.com/repos/opengeometadata/empty').and_return('{"size": 0}')
+      expect do
+        harvester.clone('empty')
+      end.to output(/repository 'empty' is empty/).to_stdout
+    end
+
+    it 'warns if a repository is archived' do
+      allow(Net::HTTP).to receive(:get).with('https://api.github.com/repos/opengeometadata/empty').and_return('{"archived": true}')
+      expect do
+        harvester.clone('outdated-institution')
+      end.to output(/repository 'outdated-institution' is archived/).to_stdout
     end
   end
 
