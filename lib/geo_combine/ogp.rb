@@ -75,7 +75,7 @@ module GeoCombine
         dc_publisher_s: metadata['Publisher'],
         dc_subject_sm: subjects,
         dc_type_s: 'Dataset'
-      }.delete_if { |_k, v| v.nil? }
+      }.compact
     end
 
     def date
