@@ -3,6 +3,7 @@
 require 'json'
 require 'find'
 require 'git'
+require 'net/http'
 
 module GeoCombine
   # Harvests Geoblacklight documents from OpenGeoMetadata for indexing
