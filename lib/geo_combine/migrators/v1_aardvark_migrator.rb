@@ -97,7 +97,6 @@ module GeoCombine
         'Dataset' => ['Datasets'],
         'Image' => ['Imagery'],
         'InteractiveResource' => ['Websites'],
-        'PhysicalObject' => ['Maps'],
         'Service' => ['Web services'],
         'StillImage' => ['Imagery']
       }.freeze
@@ -109,8 +108,7 @@ module GeoCombine
         'Line' => ['Line data'],
         'Polygon' => ['Polygon data'],
         'Raster' => ['Raster data'],
-        'ScannedMap' => ['Raster data'],
-        'Image' => ['Raster data']
+        'Table' => ['Table data']
       }.freeze
     end
   end
