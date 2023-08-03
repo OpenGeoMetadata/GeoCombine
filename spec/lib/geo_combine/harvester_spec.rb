@@ -34,8 +34,7 @@ RSpec.describe GeoCombine::Harvester do
     end
 
     # stub git commands
-    allow(Git).to receive(:open).and_return(stub_repo)
-    allow(Git).to receive(:clone).and_return(stub_repo)
+    allow(Git).to receive_messages(open: stub_repo, clone: stub_repo)
     allow(stub_repo).to receive(:pull).and_return(stub_repo)
   end
 
