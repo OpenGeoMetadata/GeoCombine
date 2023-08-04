@@ -51,16 +51,16 @@ module GeoCombine
       def convert_non_crosswalked_fields
         # Keys may or may not include whitespace, so we normalize them.
         # Resource class is required so we default to "Other"; resource type is not required.
-        @v2_hash['gbl_resourceClass_s'] = RESOURCE_CLASS_MAP[@v1_hash['dc_type_s'].gsub(/\s+/, '')] || ['Other']
-        resource_type = RESOURCE_TYPE_MAP[@v1_hash['layer_geom_type_s'].gsub(/\s+/, '')]
+        @v2_hash['gbl_resourceClass_s'] = RESOURCE_CLASS_MAP[@v1_hash['dc_type_s']&.gsub(/\s+/, '')] || ['Other']
+        resource_type = RESOURCE_TYPE_MAP[@v1_hash['layer_geom_type_s']&.gsub(/\s+/, '')]
         @v2_hash['gbl_resourceType_s'] = resource_type unless resource_type.nil?
 
         # If the user specified a collection id map, use it to convert the collection names to ids
         is_part_of = @v1_hash['dct_isPartOf_sm']&.map { |name| @collection_id_map[name] }&.compact
-        if is_part_of.empty?
-          @v2_hash.delete('dct_isPartOf_sm')
-        else
+        if is_part_of.present?
           @v2_hash['dct_isPartOf_sm'] = is_part_of
+        else
+          @v2_hash.delete('dct_isPartOf_sm')
         end
       end
 
