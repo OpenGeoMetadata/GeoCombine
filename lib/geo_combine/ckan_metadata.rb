@@ -44,7 +44,8 @@ module GeoCombine
     def envelope
       return envelope_from_bbox unless envelope_from_bbox.nil?
       return envelope_from_spatial(',') unless envelope_from_spatial(',').nil?
-      return envelope_from_spatial(' ') unless envelope_from_spatial(' ').nil?
+
+      envelope_from_spatial(' ') unless envelope_from_spatial(' ').nil?
     end
 
     def envelope_from_bbox
@@ -55,7 +56,7 @@ module GeoCombine
         north: extras('bbox-north-lat')
       )
       begin
-        return bbox.to_envelope if bbox.valid?
+        bbox.to_envelope if bbox.valid?
       rescue GeoCombine::Exceptions::InvalidGeometry
         nil
       end
@@ -67,7 +68,7 @@ module GeoCombine
         delimiter: delimiter
       )
       begin
-        return bbox.to_envelope if bbox.valid?
+        bbox.to_envelope if bbox.valid?
       rescue GeoCombine::Exceptions::InvalidGeometry
         nil
       end
