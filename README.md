@@ -32,18 +32,32 @@ $ gem install geo_combine
 ## Usage
 
 ### Converting metadata
-
+#### Converting metadata into GeoBlacklight JSON
+GeoCombine provides several classes representing different metadata standards that implement the `#to_geoblacklight` method for generating records in the [GeoBlacklight JSON format](https://opengeometadata.org/reference/):
+```ruby
+GeoCombine::Iso19139 # ISO 19139 XML
+GeoCombine::OGP # OpenGeoPortal JSON
+GeoCombine::Fgdc # FGDC XML
+GeoCombine::EsriOpenData # Esri Open Data Portal JSON
+GeoCombine::CkanMetadata # CKAN JSON
+```
+An example for converting an ISO 19139 XML record:
 ```ruby
 # Create a new ISO19139 object
 > iso_metadata =  GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
 
-# Convert ISO to GeoBlacklight
+# Convert to GeoBlacklight's metadata format
 > iso_metadata.to_geoblacklight
 
-# Convert that to JSON
+# Output it as JSON instead of a Ruby hash
 > iso_metadata.to_geoblacklight.to_json
+```
+Some formats also support conversion into HTML for display in a web browser:
+```ruby
+# Create a new ISO19139 object
+> iso_metadata =  GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
 
-# Convert ISO (or FGDC) to HTML
+# Convert ISO to HTML
 > iso_metadata.to_html
 ```
 
@@ -73,7 +87,7 @@ id_map = {
 GeoCombine::Migrators::V1AardvarkMigrator.new(v1_hash: record, collection_id_map: id_map).run
 ```
 
-### OpenGeoMetadata
+### Downloading metadata from OpenGeoMetadata
 
 #### Logging
 
@@ -142,6 +156,13 @@ You can also set a the Solr instance URL using `SOLR_URL`:
 
 ```sh
 $ SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
+```
+
+By default, GeoCombine will index only records using the Aardvark metadata format. If you instead want to index records using an older format (e.g. because your GeoBlacklight instance is version 3 or older), you can set the `SCHEMA_VERSION` environment variable:
+
+```sh
+# Only index schema version 1.0 records
+$ SCHEMA_VERSION=1.0 bundle exec rake geocombine:index
 ```
 
 ### Harvesting and indexing documents from GeoBlacklight sites
