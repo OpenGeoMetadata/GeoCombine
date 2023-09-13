@@ -43,7 +43,7 @@
   "dct_source_sm": [
     "stanford-rb371kw9607"
   ],
-  "solr_geom":"ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)",
+  "dcat_bbox":"ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)",
   "gbl_indexYear_im":[
     2005
   ],

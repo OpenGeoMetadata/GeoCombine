@@ -78,6 +78,7 @@ module GeoCombine
         'dc_publisher_s' => 'dct_publisher_sm', # new namespace; single to multi-valued
         'dct_provenance_s' => 'schema_provider_s', # new URI name
         'dc_subject_sm' => 'dct_subject_sm', # new namespace
+        'solr_geom' => 'dcat_bbox', # new URI name
         'solr_year_i' => 'gbl_indexYear_im', # new URI name; single to multi-valued
         'dc_source_sm' => 'dct_source_sm', # new namespace
         'dc_rights_s' => 'dct_accessRights_s', # new URI name
