@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext'
+
 module GeoCombine
   module Migrators
     # migrates the v1 schema to the aardvark schema
@@ -53,7 +55,7 @@ module GeoCombine
         # Resource class is required so we default to "Other"; resource type is not required.
         @v2_hash['gbl_resourceClass_s'] = RESOURCE_CLASS_MAP[@v1_hash['dc_type_s']&.gsub(/\s+/, '')] || ['Other']
         resource_type = RESOURCE_TYPE_MAP[@v1_hash['layer_geom_type_s']&.gsub(/\s+/, '')]
-        @v2_hash['gbl_resourceType_s'] = resource_type unless resource_type.nil?
+        @v2_hash['gbl_resourceType_sm'] = resource_type unless resource_type.nil?
 
         # If the user specified a collection id map, use it to convert the collection names to ids
         is_part_of = @v1_hash['dct_isPartOf_sm']&.map { |name| @collection_id_map[name] }&.compact
