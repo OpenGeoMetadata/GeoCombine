@@ -42,6 +42,7 @@ module GeoCombine
       metadata.each do |key, value|
         translate_formats(key, value)
         enhance_subjects(key, value)
+        infer_geometry_type_from_subject(key, value)
         format_proper_date(key, value)
         fields_should_be_array(key, value)
         translate_geometry_type(key, value)
@@ -104,6 +105,17 @@ module GeoCombine
       return unless key == 'layer_geom_type_s' && geometry_types.include?(value)
 
       metadata[key] = geometry_types[value]
+    end
+
+    ##
+    # Enhances empty 'layer_geom_type_s' field by populating from related subject
+    def infer_geometry_type_from_subject(key, value)
+      return unless key == 'layer_geom_type_s' && value.blank?
+
+      # If any subjects match a known geometry type, use the first that does as the geometry type
+      metadata['dc_subject_sm'].find { |subject| geometry_types.value?(subject.capitalize) }&.tap do |subject|
+        metadata[key] = subject.capitalize
+      end
     end
 
     ##
