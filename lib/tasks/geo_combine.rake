@@ -12,24 +12,20 @@ namespace :geocombine do
   desc 'Clone OpenGeoMetadata repositories'
   task :clone, [:repo] do |_t, args|
     harvester = GeoCombine::Harvester.new
-    total = args[:repo] ? harvester.clone(args.repo) : harvester.clone_all
-    puts "Cloned #{total} repositories"
+    args[:repo] ? harvester.clone(args.repo) : harvester.clone_all
   end
 
   desc '"git pull" OpenGeoMetadata repositories'
   task :pull, [:repo] do |_t, args|
     harvester = GeoCombine::Harvester.new
-    total = args[:repo] ? harvester.pull(args.repo) : harvester.pull_all
-    puts "Updated #{total} repositories"
+    args[:repo] ? harvester.pull(args.repo) : harvester.pull_all
   end
 
   desc 'Index all JSON documents except Layers.json'
   task :index do
     harvester = GeoCombine::Harvester.new
     indexer = GeoCombine::Indexer.new
-    puts "Indexing #{harvester.ogm_path} into #{indexer.solr_url}"
-    total = indexer.index(harvester.docs_to_index)
-    puts "Indexed #{total} documents"
+    indexer.index(harvester.docs_to_index)
   end
 
   namespace :geoblacklight_harvester do

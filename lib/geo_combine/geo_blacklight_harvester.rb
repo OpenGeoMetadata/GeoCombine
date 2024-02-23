@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'geo_combine/logger'
+
 module GeoCombine
   ##
   # A class to harvest and index results from GeoBlacklight sites
@@ -45,24 +47,25 @@ module GeoCombine
 
     attr_reader :site, :site_key
 
-    def initialize(site_key)
+    def initialize(site_key, logger: GeoCombine::Logger.logger)
       @site_key = site_key
       @site = self.class.config[site_key]
+      @logger = logger
 
       raise ArgumentError, "Site key #{@site_key.inspect} is not configured for #{self.class.name}" unless @site
     end
 
     def index
-      puts "Fetching page 1 @ #{base_url}&page=1" if self.class.config[:debug]
+      @logger.debug "fetching page 1 @ #{base_url}&page=1"
       response = JSON.parse(Net::HTTP.get(URI("#{base_url}&page=1")))
       response_class = BlacklightResponseVersionFactory.call(response)
 
-      response_class.new(response: response, base_url: base_url).documents.each do |docs|
+      response_class.new(response:, base_url:, logger: @logger).documents.each do |docs|
         docs.map! do |document|
           self.class.document_transformer&.call(document)
         end.compact
 
-        puts "Adding #{docs.count} documents to solr" if self.class.config[:debug]
+        @logger.debug "adding #{docs.count} documents to solr"
         solr_connection.update params: { commitWithin: commit_within, overwrite: true },
                                data: docs.to_json,
                                headers: { 'Content-Type' => 'application/json' }
@@ -91,10 +94,11 @@ module GeoCombine
       attr_reader :base_url
       attr_accessor :response, :page
 
-      def initialize(response:, base_url:)
+      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger)
         @base_url = base_url
         @response = response
         @page = 1
+        @logger = logger
       end
 
       def documents
@@ -106,12 +110,12 @@ module GeoCombine
           break if current_page == total_pages
 
           self.page += 1
-          puts "Fetching page #{page} @ #{url}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
+          @logger.debug "fetching page #{page} @ #{url}"
 
           begin
             self.response = JSON.parse(Net::HTTP.get(URI(url)))
           rescue StandardError => e
-            puts "Request for #{url} failed with #{e}"
+            @logger.error "request for #{url} failed with #{e}"
             self.response = nil
           end
         end
@@ -138,10 +142,11 @@ module GeoCombine
       attr_reader :base_url
       attr_accessor :response, :page
 
-      def initialize(response:, base_url:)
+      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger)
         @base_url = base_url
         @response = response
         @page = 1
+        @logger = logger
       end
 
       def documents
@@ -157,11 +162,11 @@ module GeoCombine
 
           url = "#{url}&format=json"
           self.page += 1
-          puts "Fetching page #{page} @ #{url}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
+          @logger.debug "fetching page #{page} @ #{url}"
           begin
             self.response = JSON.parse(Net::HTTP.get(URI(url)))
           rescue StandardError => e
-            puts "Request for #{url} failed with #{e}"
+            @logger.error "Request for #{url} failed with #{e}"
             self.response = nil
           end
         end
@@ -170,11 +175,11 @@ module GeoCombine
       private
 
       def documents_from_urls(urls)
-        puts "Fetching #{urls.count} documents for page #{page}" if GeoCombine::GeoBlacklightHarvester.config[:debug]
+        @logger.debug "fetching #{urls.count} documents for page #{page}"
         urls.map do |url|
           JSON.parse(Net::HTTP.get(URI("#{url}/raw")))
         rescue StandardError => e
-          puts "Fetching \"#{url}/raw\" failed with #{e}"
+          @logger.error "fetching \"#{url}/raw\" failed with #{e}"
 
           nil
         end.compact
