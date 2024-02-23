@@ -65,7 +65,7 @@ module GeoCombine
     def envelope_from_spatial(delimiter)
       bbox = GeoCombine::BoundingBox.from_string_delimiter(
         extras('spatial'),
-        delimiter: delimiter
+        delimiter:
       )
       begin
         bbox.to_envelope if bbox.valid?

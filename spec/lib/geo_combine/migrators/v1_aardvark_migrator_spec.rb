@@ -38,7 +38,7 @@ RSpec.describe GeoCombine::Migrators::V1AardvarkMigrator do
       it 'converts the collection names to ids' do
         input_hash = JSON.parse(full_geoblacklight)
         collection_id_map = { 'Uganda GIS Maps and Data, 2000-2010' => 'stanford-rb371kw9607' }
-        output = described_class.new(v1_hash: input_hash, collection_id_map: collection_id_map).run
+        output = described_class.new(v1_hash: input_hash, collection_id_map:).run
         expect(output['dct_isPartOf_sm']).to eq(['stanford-rb371kw9607'])
       end
     end
