@@ -6,7 +6,7 @@
 
 A Ruby toolkit for managing geospatial metadata, including:
 
-- tasks for cloning, updating, and indexing OpenGeoMetdata metadata
+- tasks for cloning, updating, and indexing OpenGeoMetadata metadata
 - library for converting metadata between standards
 
 ## Installation
@@ -19,11 +19,15 @@ gem 'geo_combine'
 
 And then execute:
 
-    $ bundle install
+```sh
+$ bundle install
+```
 
 Or install it yourself as:
 
-    $ gem install geo_combine
+```sh
+$ gem install geo_combine
+```
 
 ## Usage
 
@@ -70,6 +74,14 @@ GeoCombine::Migrators::V1AardvarkMigrator.new(v1_hash: record, collection_id_map
 ```
 
 ### OpenGeoMetadata
+
+#### Logging
+
+Some of the tools and scripts in this gem use Ruby's `Logger` class to print information to `$stderr`. By default, the log level is set to `Logger::INFO`. For more verbose information, you can set the `LOG_LEVEL` environment variable to `DEBUG`:
+
+```sh
+$ LOG_LEVEL=DEBUG bundle exec rake geocombine:clone
+```
 
 #### Clone OpenGeoMetadata repositories locally
 
@@ -124,21 +136,12 @@ To index into Solr, GeoCombine requires a Solr instance that is running the
 $ bundle exec rake geocombine:index
 ```
 
-Indexes the `geoblacklight.json` files in cloned repositories to a Solr index running at http://127.0.0.1:8983/solr
+If Blacklight is installed in the ruby environment and a solr index is configured, the rake task will use the solr index configured in the Blacklight application (this is the case when invoking GeoCombine from your GeoBlacklight installation). If Blacklight is unavailable, the rake task will try to find a Solr instance running at `http://localhost:8983/solr/blacklight-core`.
 
-##### Custom Solr location
-
-Solr location can also be specified by an environment variable `SOLR_URL`.
+You can also set a the Solr instance URL using `SOLR_URL`:
 
 ```sh
 $ SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
-```
-
-Depending on your Solr instance's performance characteristics, you may want to
-change the [`commitWithin` parameter](https://lucene.apache.org/solr/guide/6_6/updatehandlers-in-solrconfig.html) (in milliseconds):
-
-```sh
-$ SOLR_COMMIT_WITHIN=100 bundle exec rake geocombine:index
 ```
 
 ### Harvesting and indexing documents from GeoBlacklight sites
@@ -185,10 +188,6 @@ Crawl delays can be configured (in seconds) either globally for all sites or on 
 ##### Solr's commitWithin (default: 5000 milliseconds)
 
 Solr's commitWithin option can be configured (in milliseconds) by passing a value under the commit_within key.
-
-##### Debugging (default: false)
-
-The harvester and indexer will only `puts` content when errors happen. It is possible to see some progress information by setting the debug configuration option.
 
 #### Transforming Documents
 
