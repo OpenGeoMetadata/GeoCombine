@@ -22,7 +22,7 @@ require 'webmock/rspec'
 WebMock.allow_net_connect!
 
 # include the spec support files
-Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
+Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.include Helpers
