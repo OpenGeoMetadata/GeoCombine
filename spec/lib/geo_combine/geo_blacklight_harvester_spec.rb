@@ -5,8 +5,9 @@ require 'spec_helper'
 require 'rsolr'
 
 RSpec.describe GeoCombine::GeoBlacklightHarvester do
-  subject(:harvester) { described_class.new(site_key) }
+  subject(:harvester) { described_class.new(site_key, logger:) }
 
+  let(:logger) { instance_double(Logger, warn: nil, info: nil, error: nil, debug: nil) }
   let(:site_key) { :INSTITUTION }
   let(:stub_json_response) { '{}' }
   let(:stub_solr_connection) { double('RSolr::Connection') }
@@ -40,7 +41,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
     let(:docs) { [{ layer_slug_s: 'abc-123' }, { layer_slug_s: 'abc-321' }] }
     let(:stub_json_response) do
-      { response: { docs: docs, pages: { current_page: 1, total_pages: 1 } } }.to_json
+      { response: { docs:, pages: { current_page: 1, total_pages: 1 } } }.to_json
     end
 
     it 'adds documents returned to solr' do
@@ -142,7 +143,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         ).and_return(stub_second_response.to_json)
         base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
         docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
-                                                             base_url: base_url).documents
+                                                             base_url:).documents
 
         expect(docs.to_a).to eq([first_docs, second_docs])
       end
@@ -182,7 +183,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
         base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
         docs = described_class::ModernBlacklightResponse.new(response: first_results_response,
-                                                             base_url: base_url).documents
+                                                             base_url:).documents
 
         expect(docs.to_a).to eq([
                                   [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }],

@@ -4,6 +4,7 @@ require 'json'
 require 'find'
 require 'git'
 require 'net/http'
+require 'geo_combine/logger'
 
 module GeoCombine
   # Harvests Geoblacklight documents from OpenGeoMetadata for indexing
@@ -30,26 +31,37 @@ module GeoCombine
 
     def initialize(
       ogm_path: ENV.fetch('OGM_PATH', 'tmp/opengeometadata'),
-      schema_version: ENV.fetch('SCHEMA_VERSION', '1.0')
+      schema_version: ENV.fetch('SCHEMA_VERSION', '1.0'),
+      logger: GeoCombine::Logger.logger
     )
       @ogm_path = ogm_path
       @schema_version = schema_version
+      @logger = logger
     end
 
     # Enumerable of docs to index, for passing to an indexer
     def docs_to_index
       return to_enum(:docs_to_index) unless block_given?
 
+      @logger.info "loading documents from #{ogm_path}"
       Find.find(@ogm_path) do |path|
         # skip non-json and layers.json files
-        next unless File.basename(path).include?('.json') && File.basename(path) != 'layers.json'
+        if File.basename(path) == 'layers.json' || !File.basename(path).end_with?('.json')
+          @logger.debug "skipping #{path}; not a geoblacklight JSON document"
+          next
+        end
 
         doc = JSON.parse(File.read(path))
         [doc].flatten.each do |record|
           # skip indexing if this record has a different schema version than what we want
           record_schema = record['gbl_mdVersion_s'] || record['geoblacklight_version']
-          next unless record_schema == @schema_version
+          record_id = record['layer_slug_s'] || record['dc_identifier_s']
+          if record_schema != @schema_version
+            @logger.debug "skipping #{record_id}; schema version #{record_schema} doesn't match #{@schema_version}"
+            next
+          end
 
+          @logger.debug "found record #{record_id} at #{path}"
           yield record, path
         end
       end
@@ -62,14 +74,16 @@ module GeoCombine
       clone(repo) unless File.directory? repo_path
 
       Git.open(repo_path).pull
-      puts "Updated #{repo}"
-      1
+      @logger.info "updated #{repo}"
+      repo
     end
 
     # Update all repositories
-    # Return the count of repositories updated
+    # Return the names of repositories updated
     def pull_all
-      repositories.map(&method(:pull)).reduce(:+)
+      updated = repositories.map(&method(:pull)).compact
+      @logger.info "updated #{updated.size} repositories"
+      updated
     end
 
     # Clone a repository via git
@@ -77,25 +91,27 @@ module GeoCombine
     def clone(repo)
       repo_path = File.join(@ogm_path, repo)
       repo_info = repository_info(repo)
+      repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
 
       # Skip if exists; warn if archived or empty
       if File.directory? repo_path
-        puts "Skipping clone to #{repo_path}; directory exists"
-        return 0
+        @logger.warn "skipping clone to #{repo_path}; directory exists"
+        return nil
       end
-      puts "WARNING: repository '#{repo}' is archived" if repo_info['archived']
-      puts "WARNING: repository '#{repo}' is empty" if repo_info['size'].zero?
+      @logger.warn "repository is archived: #{repo_url}" if repo_info['archived']
+      @logger.warn "repository is empty: #{repo_url}" if repo_info['size'].zero?
 
-      repo_url = "https://github.com/OpenGeoMetadata/#{repo}.git"
       Git.clone(repo_url, nil, path: ogm_path, depth: 1)
-      puts "Cloned #{repo_url}"
-      1
+      @logger.info "cloned #{repo_url} to #{repo_path}"
+      repo
     end
 
     # Clone all repositories via git
-    # Return the count of repositories cloned.
+    # Return the names of repositories cloned.
     def clone_all
-      repositories.map(&method(:clone)).reduce(:+)
+      cloned = repositories.map(&method(:clone)).compact
+      @logger.info "cloned #{cloned.size} repositories"
+      cloned
     end
 
     private

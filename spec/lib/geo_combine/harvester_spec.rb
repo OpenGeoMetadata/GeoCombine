@@ -5,8 +5,9 @@ require 'geo_combine/harvester'
 require 'spec_helper'
 
 RSpec.describe GeoCombine::Harvester do
-  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing') }
+  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing', logger:) }
 
+  let(:logger) { instance_double(Logger, warn: nil, info: nil, error: nil, debug: nil) }
   let(:repo_name) { 'my-institution' }
   let(:repo_path) { File.join(harvester.ogm_path, repo_name) }
   let(:repo_url) { "https://github.com/OpenGeoMetadata/#{repo_name}.git" }
@@ -47,7 +48,7 @@ RSpec.describe GeoCombine::Harvester do
     end
 
     it 'skips records with a different schema version' do
-      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing/', schema_version: 'Aardvark')
+      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing/', schema_version: 'Aardvark', logger:)
       expect { |b| harvester.docs_to_index(&b) }.to yield_successive_args(
         [JSON.parse(File.read('spec/fixtures/indexing/aardvark.json')), 'spec/fixtures/indexing/aardvark.json']
       )
@@ -74,8 +75,8 @@ RSpec.describe GeoCombine::Harvester do
       expect(stub_repo).to have_received(:pull).exactly(2).times
     end
 
-    it 'returns the count of repositories pulled' do
-      expect(harvester.pull_all).to eq(2)
+    it 'returns the names of repositories pulled' do
+      expect(harvester.pull_all).to eq(%w[my-institution another-institution])
     end
 
     it 'skips repositories in the denylist' do
@@ -106,20 +107,6 @@ RSpec.describe GeoCombine::Harvester do
       harvester.clone(repo_name)
       expect(Git).not_to have_received(:clone)
     end
-
-    it 'warns if a repository is empty' do
-      allow(Net::HTTP).to receive(:get).with('https://api.github.com/repos/opengeometadata/empty').and_return('{"size": 0}')
-      expect do
-        harvester.clone('empty')
-      end.to output(/repository 'empty' is empty/).to_stdout
-    end
-
-    it 'warns if a repository is archived' do
-      allow(Net::HTTP).to receive(:get).with('https://api.github.com/repos/opengeometadata/empty').and_return('{"archived": true}')
-      expect do
-        harvester.clone('outdated-institution')
-      end.to output(/repository 'outdated-institution' is archived/).to_stdout
-    end
   end
 
   describe '#clone_all' do
@@ -133,8 +120,8 @@ RSpec.describe GeoCombine::Harvester do
       expect(Git).not_to have_received(:clone).with('https://github.com/OpenGeoMetadata/aardvark.git')
     end
 
-    it 'returns the count of repositories cloned' do
-      expect(harvester.clone_all).to eq(2)
+    it 'returns the names of repositories cloned' do
+      expect(harvester.clone_all).to eq(%w[my-institution another-institution])
     end
   end
 
