@@ -50,12 +50,16 @@ module GeoCombine
       end
 
       # Convert non-crosswalked fields via lookup tables
+      # rubocop:disable Metrics/PerceivedComplexity
       def convert_non_crosswalked_fields
         # Keys may or may not include whitespace, so we normalize them.
         # Resource class is required so we default to "Other"; resource type is not required.
         @v2_hash['gbl_resourceClass_sm'] = RESOURCE_CLASS_MAP[@v1_hash['dc_type_s']&.gsub(/\s+/, '')] || ['Other']
         resource_type = RESOURCE_TYPE_MAP[@v1_hash['layer_geom_type_s']&.gsub(/\s+/, '')]
         @v2_hash['gbl_resourceType_sm'] = resource_type unless resource_type.nil?
+
+        # If locn_geometry is in the ENVELOPE format, also add it as dcat_bbox
+        @v2_hash['dcat_bbox'] = @v2_hash['locn_geometry'] if @v2_hash['locn_geometry']&.match?(/ENVELOPE/)
 
         # If the user specified a collection id map, use it to convert the collection names to ids
         is_part_of = @v1_hash['dct_isPartOf_sm']&.map { |name| @collection_id_map[name] }&.compact
@@ -65,6 +69,7 @@ module GeoCombine
           @v2_hash.delete('dct_isPartOf_sm')
         end
       end
+      # rubocop:enable Metrics/PerceivedComplexity
 
       # Remove fields that are no longer used
       def remove_deprecated_fields
@@ -80,7 +85,7 @@ module GeoCombine
         'dc_publisher_s' => 'dct_publisher_sm', # new namespace; single to multi-valued
         'dct_provenance_s' => 'schema_provider_s', # new URI name
         'dc_subject_sm' => 'dct_subject_sm', # new namespace
-        'solr_geom' => 'dcat_bbox', # new URI name
+        'solr_geom' => 'locn_geometry', # new URI name
         'solr_year_i' => 'gbl_indexYear_im', # new URI name; single to multi-valued
         'dc_source_sm' => 'dct_source_sm', # new namespace
         'dc_rights_s' => 'dct_accessRights_s', # new URI name
