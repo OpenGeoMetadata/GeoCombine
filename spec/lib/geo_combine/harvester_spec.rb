@@ -5,7 +5,7 @@ require 'geo_combine/harvester'
 require 'spec_helper'
 
 RSpec.describe GeoCombine::Harvester do
-  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing', logger:) }
+  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0') }
 
   let(:logger) { instance_double(Logger, warn: nil, info: nil, error: nil, debug: nil) }
   let(:repo_name) { 'my-institution' }
