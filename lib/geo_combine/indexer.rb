@@ -41,7 +41,7 @@ module GeoCombine
           batch << [doc, path]
         else
           total_indexed += index_batch(batch)
-          batch = []
+          batch = [[doc, path]]
         end
       end
       total_indexed += index_batch(batch) unless batch.empty?
