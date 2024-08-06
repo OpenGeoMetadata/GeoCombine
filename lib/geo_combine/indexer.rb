@@ -35,16 +35,10 @@ module GeoCombine
       start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
       # Index in batches; set batch size via BATCH_SIZE
-      batch = []
-      docs.each do |doc, path|
-        if batch.size < @batch_size
-          batch << [doc, path]
-        else
-          total_indexed += index_batch(batch)
-          batch = [[doc, path]]
-        end
+      docs.each_slice(@batch_size) do |slice|
+        batch = slice.map { |doc, path| [doc, path] }
+        total_indexed += index_batch(batch)
       end
-      total_indexed += index_batch(batch) unless batch.empty?
 
       # Issue a commit to make sure all documents are indexed
       @solr.commit
