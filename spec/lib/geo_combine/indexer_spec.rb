@@ -96,6 +96,18 @@ RSpec.describe GeoCombine::Indexer do
       )
     end
 
+    context 'when the number of docs is greater than batch size' do
+      before do
+        stub_const('ENV', 'SOLR_BATCH_SIZE' => 10)
+      end
+
+      let(:docs) { (1..40).map { |n| [{ 'id' => n }, "path/to/record#{n}.json"] } }
+
+      it 'indexes the correct number of documents' do
+        expect(indexer.index(docs)).to eq 40
+      end
+    end
+
     it 'commits changes to solr after indexing' do
       indexer.index(docs)
       expect(solr).to have_received(:commit).once
