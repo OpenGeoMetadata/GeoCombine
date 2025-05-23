@@ -32,7 +32,7 @@ module GeoCombine
         layer_slug_s: @metadata['name'],
         solr_geom: envelope,
         dc_subject_sm: subjects,
-        dct_references_s: external_references.to_json.to_s,
+        dct_references_s: external_references.to_json,
         dc_format_s: downloadable? ? 'ZIP' : nil # TODO: we only allow direct ZIP file downloads
       }.compact
     end

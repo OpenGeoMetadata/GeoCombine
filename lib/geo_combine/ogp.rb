@@ -123,7 +123,7 @@ module GeoCombine
     # Builds a Solr Envelope using CQL syntax
     # @return [String]
     def envelope
-      raise ArgumentError unless west >= -180 && west <= 180 &&
+      raise ArgumentError unless west.between?(-180, 180) &&
                                  east >= -180 && east <= 180 &&
                                  north >= -90 && north <= 90 &&
                                  south >= -90 && south <= 90 &&
@@ -143,6 +143,15 @@ module GeoCombine
     def fgdc
       GeoCombine::Fgdc.new(metadata['FgdcText']) if metadata['FgdcText']
     end
+
+    SLUG_STRIP_VALUES = %w[
+      SDE_DATA.
+      SDE.
+      SDE2.
+      GISPORTAL.GISOWNER01.
+      GISDATA.
+      MORIS.
+    ].freeze
 
     private
 
@@ -206,15 +215,6 @@ module GeoCombine
                                               !name.downcase.start_with?(institution.downcase)
       sluggify(filter_name(name))
     end
-
-    SLUG_STRIP_VALUES = %w[
-      SDE_DATA.
-      SDE.
-      SDE2.
-      GISPORTAL.GISOWNER01.
-      GISDATA.
-      MORIS.
-    ].freeze
 
     def filter_name(name)
       # strip out schema and usernames
