@@ -6,7 +6,7 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
@@ -22,7 +22,7 @@ jobs:
         ruby: [3.1, 3.2, 3.3]
         faraday_version: ['', '~> 1.0'] # Defaults to whatever's the most recent version.
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
@@ -32,13 +32,13 @@ jobs:
       env:
         FARADAY_VERSION: ${{ matrix.faraday_version }}
 
-    - name: Run tests
+    - name: "Run tests for Ruby ${{ matrix.ruby }} and Faraday ${{ matrix.faraday_version == '~> 1.0' && '1.x' || 'latest' }}"
       run: bundle exec rake spec
       env:
         FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Upload coverage artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: coverage
+        name: "coverage-${{ matrix.ruby }}-${{ matrix.faraday_version == '~> 1.0' && 'faraday-1.x' || 'faraday-latest' }}"
         path: coverage/
