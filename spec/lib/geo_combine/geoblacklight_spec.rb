@@ -60,6 +60,12 @@ RSpec.describe GeoCombine::Geoblacklight do
     it 'formats the geometry type field' do
       expect(enhanced_geobl.metadata['layer_geom_type_s']).to eq 'Polygon'
     end
+
+    it 'populates the geometry type field from the subject field if not set' do
+      enhanced_from_subject_geobl = described_class.new(basic_geoblacklight, 'dc_subject_sm' => ['polygon'])
+      enhanced_from_subject_geobl.enhance_metadata
+      expect(enhanced_from_subject_geobl.metadata['layer_geom_type_s']).to eq 'Polygon'
+    end
   end
 
   describe '#valid?' do
