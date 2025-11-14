@@ -5,4 +5,5 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in geo_combine.gemspec
 gemspec
 
-gem 'byebug'
+gem 'byebug', require: false
+gem 'rdbg', require: false
