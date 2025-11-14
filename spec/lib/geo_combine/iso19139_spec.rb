@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe GeoCombine::Iso19139 do
   include XmlDocs
+
   let(:iso_object) { described_class.new(stanford_iso) }
 
   describe '#initialize' do
