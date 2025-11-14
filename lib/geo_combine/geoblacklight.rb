@@ -55,20 +55,29 @@ module GeoCombine
       metadata.to_json(options)
     end
 
+    # True if the GeoBlacklight-Schema document is valid
+    # @return [Boolean]
+    def valid?
+      validate!
+      true
+    rescue StandardError
+      false
+    end
+
     ##
     # Validates a GeoBlacklight-Schema json document
     # @return [Boolean]
-    def valid?
-      JSON::Validator.validate!(schema, to_json, fragment: '#/definitions/layer') &&
-        dct_references_validate! &&
-        spatial_validate!
+    def validate!
+      JSON::Validator.validate!(schema, to_json, fragment: '#/definitions/layer')
+      validate_references!
+      validate_spatial!
     end
 
     ##
     # Validate dct_references_s
     # @return [Boolean]
-    def dct_references_validate!
-      return true unless metadata.key?('dct_references_s') # TODO: shouldn't we require this field?
+    def validate_references!
+      return unless metadata.key?('dct_references_s') # Not required
 
       begin
         ref = JSON.parse(metadata['dct_references_s'])
@@ -83,8 +92,8 @@ module GeoCombine
       end
     end
 
-    def spatial_validate!
-      GeoCombine::BoundingBox.from_envelope(metadata['solr_geom']).valid?
+    def validate_spatial!
+      raise GeoCombine::Exceptions::InvalidGeometry unless GeoCombine::BoundingBox.from_envelope(metadata['solr_geom']).valid?
     end
 
     private
@@ -163,7 +172,7 @@ module GeoCombine
       metadata.except!(*DEPRECATED_KEYS_V1)
 
       # ensure we have a proper v1 record
-      valid?
+      validate!
     end
 
     def schema

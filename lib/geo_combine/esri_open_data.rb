@@ -4,6 +4,7 @@ module GeoCombine
   # Data model for ESRI's open data portal metadata
   class EsriOpenData
     include GeoCombine::Formatting
+
     attr_reader :metadata
 
     ##

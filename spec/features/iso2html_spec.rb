@@ -5,6 +5,7 @@ require 'spec_helper'
 # TODO: Provide additional expectations on html structure
 describe 'ISO 19139 to html' do
   include XmlDocs
+
   let(:page) { GeoCombine::Iso19139.new(stanford_iso).to_html }
 
   describe 'Identification Information' do

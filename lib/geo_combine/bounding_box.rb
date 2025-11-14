@@ -48,8 +48,6 @@ module GeoCombine
     end
 
     def self.from_envelope(envelope)
-      return if envelope.nil?
-
       envelope = envelope[/.*ENVELOPE\(([^)]*)/, 1].split(',')
       new(
         west: envelope[0],
@@ -63,8 +61,6 @@ module GeoCombine
     # @param [String] spatial w,s,e,n or w s e n
     # @param [String] delimiter "," or " "
     def self.from_string_delimiter(spatial, delimiter: ',')
-      return if spatial.nil?
-
       spatial = spatial.split(delimiter)
       new(
         west: spatial[0],

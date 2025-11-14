@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe GeoCombine::CkanMetadata do
   include JsonDocs
+
   let(:ckan_sample) { described_class.new(ckan_metadata) }
 
   describe '#to_geoblacklight' do

@@ -5,6 +5,7 @@ require 'spec_helper'
 # TODO: Provide additional expectations on html structure
 describe 'FGDC to html' do
   include XmlDocs
+
   let(:page) { GeoCombine::Fgdc.new(tufts_fgdc).to_html }
 
   describe 'Identification Information' do

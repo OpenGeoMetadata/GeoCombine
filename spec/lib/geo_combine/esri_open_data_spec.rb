@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe GeoCombine::EsriOpenData do
   include JsonDocs
+
   let(:esri_sample) { described_class.new(esri_opendata_metadata) }
   let(:metadata) { esri_sample.instance_variable_get(:@metadata) }
 

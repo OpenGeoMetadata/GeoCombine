@@ -8,6 +8,7 @@ module GeoCombine
   class OGP
     class InvalidMetadata < RuntimeError; end
     include GeoCombine::Formatting
+
     attr_reader :metadata
 
     ##

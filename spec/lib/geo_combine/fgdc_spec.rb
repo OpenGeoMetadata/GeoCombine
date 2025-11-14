@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe GeoCombine::Fgdc do
   include XmlDocs
+
   let(:fgdc_object) { described_class.new(tufts_fgdc) }
 
   describe '#initialize' do
@@ -32,7 +33,7 @@ RSpec.describe GeoCombine::Fgdc do
     end
 
     it 'is not valid due to bad modification date but valid otherwise' do
-      expect { fgdc_geobl.valid? }.to raise_error(JSON::Schema::ValidationError, /layer_modified_dt/)
+      expect { fgdc_geobl.validate! }.to raise_error(JSON::Schema::ValidationError, /layer_modified_dt/)
       fgdc_geobl.metadata.delete 'layer_modified_dt'
       expect(fgdc_geobl).to be_valid
     end
