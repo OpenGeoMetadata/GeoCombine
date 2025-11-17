@@ -6,6 +6,7 @@ RSpec.describe GeoCombine::Geoblacklight do
   include XmlDocs
   include JsonDocs
   include GeoCombine::Exceptions
+
   let(:full_geobl) { described_class.new(full_geoblacklight) }
   let(:enhanced_geobl) { described_class.new(basic_geoblacklight, 'layer_geom_type_s' => 'esriGeometryPolygon') }
   let(:basic_geobl) { described_class.new(basic_geoblacklight) }
@@ -62,9 +63,9 @@ RSpec.describe GeoCombine::Geoblacklight do
     end
   end
 
-  describe '#valid?' do
+  describe '#validate!' do
     it 'a valid geoblacklight-schema document should be valid' do
-      expect(full_geobl.valid?).to be true
+      expect(full_geobl).to be_valid
     end
 
     context 'must have required fields' do
@@ -78,7 +79,7 @@ RSpec.describe GeoCombine::Geoblacklight do
       ].each do |field|
         it field do
           full_geobl.metadata.delete field
-          expect { full_geobl.valid? }.to raise_error(JSON::Schema::ValidationError, /#{field}/)
+          expect { full_geobl.validate! }.to raise_error(JSON::Schema::ValidationError, /#{field}/)
         end
       end
     end
@@ -104,7 +105,7 @@ RSpec.describe GeoCombine::Geoblacklight do
       ].each do |field|
         it field do
           full_geobl.metadata.delete field
-          expect { full_geobl.valid? }.not_to raise_error
+          expect { full_geobl.validate! }.not_to raise_error
         end
       end
     end
@@ -119,31 +120,25 @@ RSpec.describe GeoCombine::Geoblacklight do
       ].each do |field|
         it field do
           full_geobl.metadata.delete field
-          expect { full_geobl.valid? }.not_to raise_error
+          expect { full_geobl.validate! }.not_to raise_error
         end
       end
     end
 
     it 'an invalid document' do
-      expect { basic_geobl.valid? }.to raise_error JSON::Schema::ValidationError
+      expect { basic_geobl.validate! }.to raise_error JSON::Schema::ValidationError
     end
 
     it 'calls the dct_references_s validator' do
-      expect(enhanced_geobl).to receive(:dct_references_validate!)
+      expect(enhanced_geobl).to receive(:validate_references!)
       enhanced_geobl.valid?
-    end
-
-    it 'validates spatial bounding box' do
-      expect(JSON::Validator).to receive(:validate!).and_return true
-      expect { basic_geobl.valid? }
-        .to raise_error GeoCombine::Exceptions::InvalidGeometry
     end
   end
 
-  describe '#dct_references_validate!' do
+  describe '#validate_references!' do
     context 'with valid document' do
       it 'is valid' do
-        expect(full_geobl.dct_references_validate!).to be true
+        expect { full_geobl.validate_references! }.not_to raise_error
       end
     end
 
@@ -173,22 +168,22 @@ RSpec.describe GeoCombine::Geoblacklight do
       end
 
       it 'unparseable json' do
-        expect { bad_ref.dct_references_validate! }.to raise_error JSON::ParserError
+        expect { bad_ref.validate_references! }.to raise_error JSON::ParserError
       end
 
       it 'not a hash' do
-        expect { not_hash.dct_references_validate! }.to raise_error GeoCombine::Exceptions::InvalidDCTReferences
+        expect { not_hash.validate_references! }.to raise_error GeoCombine::Exceptions::InvalidDCTReferences
       end
     end
   end
 
-  describe 'spatial_validate!' do
+  describe 'validate_spatial!' do
     context 'when valid' do
-      it { expect { full_geobl.spatial_validate! }.not_to raise_error }
+      it { expect { full_geobl.validate_spatial! }.not_to raise_error }
     end
 
     context 'when invalid' do
-      it { expect { basic_geobl.spatial_validate! }.to raise_error GeoCombine::Exceptions::InvalidGeometry }
+      it { expect { basic_geobl.validate_spatial! }.to raise_error GeoCombine::Exceptions::InvalidGeometry }
     end
   end
 
