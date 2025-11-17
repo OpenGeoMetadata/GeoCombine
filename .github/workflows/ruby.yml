@@ -10,7 +10,7 @@ jobs:
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.1
+        ruby-version: 3.2
         bundler-cache: true
     - name: Run linter
       run: bundle exec rubocop
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [3.1, 3.2, 3.3]
+        ruby: [3.2, 3.3, 3.4]
         faraday_version: ['', '~> 1.0'] # Defaults to whatever's the most recent version.
     steps:
     - uses: actions/checkout@v4
