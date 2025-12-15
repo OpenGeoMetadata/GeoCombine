@@ -38,7 +38,7 @@ jobs:
         FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Upload coverage artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: "coverage-${{ matrix.ruby }}-${{ matrix.faraday_version == '~> 1.0' && 'faraday-1.x' || 'faraday-latest' }}"
         path: coverage/
