@@ -22,8 +22,10 @@ namespace :geocombine do
   end
 
   desc 'Index all JSON documents except Layers.json'
-  task :index do
-    harvester = GeoCombine::Harvester.new
+  task :index, [:ogm_path] do |_t, args|
+    ogm_path = args.ogm_path || ARGV[1] || nil
+    harvester = ogm_path ?
+                  GeoCombine::Harvester.new(ogm_path: ogm_path) : GeoCombine::Harvester.new
     indexer = GeoCombine::Indexer.new
     indexer.index(harvester.docs_to_index)
   end

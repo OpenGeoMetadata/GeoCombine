@@ -164,6 +164,15 @@ By default, GeoCombine will index only records using the Aardvark metadata forma
 # Only index schema version 1.0 records
 $ SCHEMA_VERSION=1.0 bundle exec rake geocombine:index
 ```
+### Indexing local documents
+
+To index an arbitrary collection of records in a custom directory, run one of the following:
+
+```sh
+rake geocombine:index /path/to/your/files 
+rake geocombine:index\[/path/to/your/files\]
+OGM_PATH=/path/to/your/files rake geocombine:index
+```
 
 ### Harvesting and indexing documents from GeoBlacklight sites
 
