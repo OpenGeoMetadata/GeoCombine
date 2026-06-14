@@ -152,7 +152,7 @@ $ bundle exec rake geocombine:index
 
 If Blacklight is installed in the ruby environment and a solr index is configured, the rake task will use the solr index configured in the Blacklight application (this is the case when invoking GeoCombine from your GeoBlacklight installation). If Blacklight is unavailable, the rake task will try to find a Solr instance running at `http://localhost:8983/solr/blacklight-core`.
 
-You can also set a the Solr instance URL using `SOLR_URL`:
+You can also set the Solr instance URL using `SOLR_URL`:
 
 ```sh
 $ SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
@@ -169,10 +169,20 @@ $ SCHEMA_VERSION=1.0 bundle exec rake geocombine:index
 To index an arbitrary collection of records in a custom directory, run one of the following:
 
 ```sh
-rake geocombine:index /path/to/your/files 
 rake geocombine:index\[/path/to/your/files\]
 OGM_PATH=/path/to/your/files rake geocombine:index
 ```
+
+### Indexing a single document
+
+To index a single arbitrary record, run one of the following:
+
+```sh
+rake geocombine:index\[/path/to/your/file.json\]
+OGM_PATH=/path/to/your/file.json rake geocombine:index
+```
+
+
 
 ### Harvesting and indexing documents from GeoBlacklight sites
 

@@ -30,7 +30,7 @@ module GeoCombine
     end
 
     def initialize(
-      ogm_path: ENV.fetch('OGM_PATH', 'tmp/opengeometadata'),
+      ogm_path:,
       schema_version: ENV.fetch('SCHEMA_VERSION', 'Aardvark'),
       logger: GeoCombine::Logger.logger
     )
