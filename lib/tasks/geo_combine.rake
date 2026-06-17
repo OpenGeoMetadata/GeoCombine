@@ -26,7 +26,7 @@ namespace :geocombine do
   end
 
   desc 'Index all JSON documents except Layers.json'
-  task :index, [:ogm_path] do |_t, args|
+  task :index, [:ogm_path] => [:environment] do |_t, args|
     ogm_path = args.ogm_path || ENV.fetch('OGM_PATH', 'tmp/opengeometadata')
 
     indexer = GeoCombine::Indexer.new
