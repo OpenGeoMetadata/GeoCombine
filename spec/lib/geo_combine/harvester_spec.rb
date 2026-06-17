@@ -5,7 +5,7 @@ require 'geo_combine/harvester'
 require 'spec_helper'
 
 RSpec.describe GeoCombine::Harvester do
-  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0') }
+  subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/indexing', logger: logger) }
 
   let(:logger) { instance_double(Logger, warn: nil, info: nil, error: nil, debug: nil) }
   let(:repo_name) { 'my-institution' }
@@ -14,11 +14,12 @@ RSpec.describe GeoCombine::Harvester do
   let(:stub_repo) { instance_double(Git::Base) }
   let(:stub_gh_api) do
     [
-      { name: repo_name, size: 100 },
-      { name: 'another-institution', size: 100 },
-      { name: 'outdated-institution', size: 100, archived: true }, # archived
-      { name: 'aardvark', size: 300 },                             # on denylist
-      { name: 'empty', size: 0 }                                   # no data
+      { name: repo_name, size: 100, custom_properties: { supported_schemas: ['Aardvark'] } },
+      { name: 'another-institution', size: 100, custom_properties: { supported_schemas: ['Aardvark', '1.0'] } }, # multiple schemas
+      { name: 'v1-institution', size: 300, custom_properties: { supported_schemas: ['1.0'] } }, # schema mismatch
+      { name: 'outdated-institution', size: 100, custom_properties: { supported_schemas: ['Aardvark'] }, archived: true }, # archived
+      { name: 'empty', size: 0, custom_properties: { supported_schemas: ['Aardvark'] } }, # no data
+      { name: 'tool', size: 50 } # not a metadata repository
     ]
   end
 
@@ -42,15 +43,15 @@ RSpec.describe GeoCombine::Harvester do
   describe '#docs_to_index' do
     it 'yields each JSON record with its path, skipping layers.JSON' do
       expect { |b| harvester.docs_to_index(&b) }.to yield_successive_args(
-        [JSON.parse(File.read('spec/fixtures/indexing/basic_geoblacklight.json')), 'spec/fixtures/indexing/basic_geoblacklight.json'],
-        [JSON.parse(File.read('spec/fixtures/indexing/geoblacklight.json')), 'spec/fixtures/indexing/geoblacklight.json']
+        [JSON.parse(File.read('spec/fixtures/indexing/aardvark.json')), 'spec/fixtures/indexing/aardvark.json']
       )
     end
 
-    it 'skips records with a different schema version' do
-      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing/', schema_version: 'Aardvark', logger:)
+    it 'can yield JSON records for a different schema version' do
+      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing/', schema_version: '1.0', logger:)
       expect { |b| harvester.docs_to_index(&b) }.to yield_successive_args(
-        [JSON.parse(File.read('spec/fixtures/indexing/aardvark.json')), 'spec/fixtures/indexing/aardvark.json']
+        [JSON.parse(File.read('spec/fixtures/indexing/basic_geoblacklight.json')), 'spec/fixtures/indexing/basic_geoblacklight.json'],
+        [JSON.parse(File.read('spec/fixtures/indexing/geoblacklight.json')), 'spec/fixtures/indexing/geoblacklight.json']
       )
     end
   end
@@ -79,14 +80,19 @@ RSpec.describe GeoCombine::Harvester do
       expect(harvester.pull_all).to eq(%w[my-institution another-institution])
     end
 
-    it 'skips repositories in the denylist' do
+    it 'skips repositories with no schema declared' do
       harvester.pull_all
-      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/aardvark.git')
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/tool.git')
     end
 
     it 'skips archived repositories' do
       harvester.pull_all
       expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/outdated-institution.git')
+    end
+
+    it 'skips repositories with no data' do
+      harvester.pull_all
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/empty.git')
     end
   end
 
@@ -115,9 +121,19 @@ RSpec.describe GeoCombine::Harvester do
       expect(Git).to have_received(:clone).exactly(2).times
     end
 
-    it 'skips repositories in the denylist' do
+    it 'skips repositories with no schema declared' do
       harvester.clone_all
-      expect(Git).not_to have_received(:clone).with('https://github.com/OpenGeoMetadata/aardvark.git')
+      expect(Git).not_to have_received(:clone).with('https://github.com/OpenGeoMetadata/tool.git')
+    end
+
+    it 'skips archived repositories' do
+      harvester.clone_all
+      expect(Git).not_to have_received(:clone).with('https://github.com/OpenGeoMetadata/outdated-institution.git')
+    end
+
+    it 'skips repositories with no data' do
+      harvester.clone_all
+      expect(Git).not_to have_received(:clone).with('https://github.com/OpenGeoMetadata/empty.git')
     end
 
     it 'returns the names of repositories cloned' do
