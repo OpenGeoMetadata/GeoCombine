@@ -52,7 +52,7 @@ RSpec.describe GeoCombine::Fgdc do
       end
 
       it 'dc_description_s' do
-        expect(fgdc_geobl.metadata['dc_description_s']).to match(/Ecuador created from/)
+        expect(fgdc_geobl.metadata['dc_description_s']).to match('Ecuador created from')
       end
 
       it 'dc_rights_s' do
