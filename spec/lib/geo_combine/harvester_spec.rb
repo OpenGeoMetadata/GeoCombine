@@ -94,6 +94,13 @@ RSpec.describe GeoCombine::Harvester do
       harvester.pull_all
       expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/empty.git')
     end
+
+    it 'skips repositories that are on the skip list' do
+      stub_const('ENV', ENV.to_h.merge('OGM_SKIP_REPOS' => 'my-institution,another-institution'))
+      harvester.pull_all
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/my-institution.git')
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/another-institution.git')
+    end
   end
 
   describe '#clone' do
@@ -138,6 +145,13 @@ RSpec.describe GeoCombine::Harvester do
 
     it 'returns the names of repositories cloned' do
       expect(harvester.clone_all).to eq(%w[my-institution another-institution])
+    end
+
+    it 'skips repositories that are on the skip list' do
+      stub_const('ENV', ENV.to_h.merge('OGM_SKIP_REPOS' => 'my-institution,another-institution'))
+      harvester.pull_all
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/my-institution.git')
+      expect(Git).not_to have_received(:open).with('https://github.com/OpenGeoMetadata/another-institution.git')
     end
   end
 
