@@ -32,8 +32,11 @@ $ gem install geo_combine
 ## Usage
 
 ### Converting metadata
+
 #### Converting metadata into GeoBlacklight JSON
+
 GeoCombine provides several classes representing different metadata standards that implement the `#to_geoblacklight` method for generating records in the [GeoBlacklight JSON format](https://opengeometadata.org/reference/):
+
 ```ruby
 GeoCombine::Iso19139 # ISO 19139 XML
 GeoCombine::OGP # OpenGeoPortal JSON
@@ -41,7 +44,9 @@ GeoCombine::Fgdc # FGDC XML
 GeoCombine::EsriOpenData # Esri Open Data Portal JSON
 GeoCombine::CkanMetadata # CKAN JSON
 ```
+
 An example for converting an ISO 19139 XML record:
+
 ```ruby
 # Create a new ISO19139 object
 > iso_metadata =  GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
@@ -52,7 +57,9 @@ An example for converting an ISO 19139 XML record:
 # Output it as JSON instead of a Ruby hash
 > iso_metadata.to_geoblacklight.to_json
 ```
+
 Some formats also support conversion into HTML for display in a web browser:
+
 ```ruby
 # Create a new ISO19139 object
 > iso_metadata =  GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
@@ -94,7 +101,16 @@ GeoCombine::Migrators::V1AardvarkMigrator.new(v1_hash: record, collection_id_map
 Some of the tools and scripts in this gem use Ruby's `Logger` class to print information to `$stderr`. By default, the log level is set to `Logger::INFO`. For more verbose information, you can set the `LOG_LEVEL` environment variable to `DEBUG`:
 
 ```sh
-$ LOG_LEVEL=DEBUG bundle exec rake geocombine:clone
+$ export LOG_LEVEL=DEBUG
+```
+
+#### Schema version
+
+By default, GeoCombine will only fetch and index records using the current schema version. If you instead want to index records using an older schema (e.g. because your GeoBlacklight instance is an older version), you can set the `SCHEMA_VERSION` environment variable:
+
+```sh
+# Only fetch and index schema version 1.0 records
+$ export SCHEMA_VERSION=1.0
 ```
 
 #### Clone OpenGeoMetadata repositories locally
@@ -103,7 +119,7 @@ $ LOG_LEVEL=DEBUG bundle exec rake geocombine:clone
 $ bundle exec rake geocombine:clone
 ```
 
-Will clone all `edu.*`,` org.*`, and `uk.*` OpenGeoMetadata repositories into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
+Will clone all OpenGeoMetadata repositories containing metadata matching the `SCHEMA_VERSION` into `./tmp/opengeometadata`. Location of the OpenGeoMetadata repositories can be configured using the `OGM_PATH` environment variable.
 
 ```sh
 $ OGM_PATH='my/custom/location' bundle exec rake geocombine:clone
@@ -158,12 +174,6 @@ You can also set the Solr instance URL using `SOLR_URL`:
 $ SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
 ```
 
-By default, GeoCombine will index only records using the Aardvark metadata format. If you instead want to index records using an older format (e.g. because your GeoBlacklight instance is version 3 or older), you can set the `SCHEMA_VERSION` environment variable:
-
-```sh
-# Only index schema version 1.0 records
-$ SCHEMA_VERSION=1.0 bundle exec rake geocombine:index
-```
 ### Indexing local documents
 
 To index an arbitrary collection of records in a custom directory, run one of the following:
@@ -181,8 +191,6 @@ To index a single arbitrary record, run one of the following:
 rake geocombine:index\[/path/to/your/file.json\]
 OGM_PATH=/path/to/your/file.json rake geocombine:index
 ```
-
-
 
 ### Harvesting and indexing documents from GeoBlacklight sites
 
