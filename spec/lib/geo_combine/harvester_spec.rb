@@ -54,6 +54,40 @@ RSpec.describe GeoCombine::Harvester do
         [JSON.parse(File.read('spec/fixtures/indexing/geoblacklight.json')), 'spec/fixtures/indexing/geoblacklight.json']
       )
     end
+
+    # Collect the titles of every record yielded, regardless of schema field
+    def yielded_titles(harvester)
+      harvester.docs_to_index.map { |record, _path| record['dct_title_s'] || record['dc_title_s'] }
+    end
+
+    context 'when skip_restricted is true (the default)' do
+      it 'skips records with restricted access rights' do
+        expect(yielded_titles(harvester)).not_to include('Property Lot, Arlington County, VA ')
+      end
+
+      it 'skips gbl1 records with restricted access rights' do
+        harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0', logger:)
+        expect(yielded_titles(harvester)).not_to include('Global Navigation and Planning Chart, Sheet 21 W ')
+      end
+    end
+
+    context 'when skip_restricted is false' do
+      it 'yields records with restricted access rights' do
+        harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', skip_restricted: false, logger:)
+        expect(yielded_titles(harvester)).to include('Property Lot, Arlington County, VA ')
+      end
+
+      it 'yields gbl1 records with restricted access rights' do
+        harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0', skip_restricted: false, logger:)
+        expect(yielded_titles(harvester)).to include('Global Navigation and Planning Chart, Sheet 21 W ')
+      end
+
+      it 'can read from the OGM_SKIP_RESTRICTED environment variable' do
+        stub_const('ENV', ENV.to_h.merge('OGM_SKIP_RESTRICTED' => 'false'))
+        harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', logger:)
+        expect(yielded_titles(harvester)).to include('Property Lot, Arlington County, VA ')
+      end
+    end
   end
 
   describe '#pull' do

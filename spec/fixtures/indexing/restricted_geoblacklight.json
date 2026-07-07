@@ -1,0 +1,42 @@
+{
+  "dc_creator_sm": [
+    "United States. Defense Mapping Agency"
+  ],
+  "dc_description_s": "This raster layer is an image of a 1:5,000,000 scale aeronautical chart sheet that projects to Lambert Conformal Conic. The National Geospatial-Intelligence Agency and its legacy organizations (Defense Mapping Agency, National Imagery and Mapping Agency) originally published the series, and all sheets are in English. East View Geospatial has completed digitization, georeferencing, and electronic archiving services. To see the map index for this chart series, refer to the Derived Data layer.",
+  "dc_format_s": "WorldImage TIFF",
+  "dc_identifier_s": "http://hdl.handle.net/2451/38709",
+  "dc_language_s": "English",
+  "dc_publisher_s": "East View Cartographic, Inc.",
+  "dc_rights_s": "Restricted",
+  "dc_subject_sm": [
+    "Aeronautical charts"
+  ],
+  "dc_title_s": "Global Navigation and Planning Chart, Sheet 21 W ",
+  "dc_type_s": "Dataset",
+  "dct_isPartOf_sm": [
+    "EVG Open Data Package"
+  ],
+  "dct_issued_s": "5/31/2016",
+  "dct_provenance_s": "NYU",
+  "dct_references_s": "{\"http://schema.org/url\":\"http://hdl.handle.net/2451/38709\",\"http://schema.org/downloadUrl\":\"https://archive.nyu.edu/retrieve/84050/nyu_2451_38709.zip\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"https://maps-restricted.geo.nyu.edu/geoserver/sdr/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"https://maps-restricted.geo.nyu.edu/geoserver/sdr/wms\"}",
+  "dct_source_sm": [
+    "nyu-2451-38715"
+  ],
+  "dct_spatial_sm": [
+
+  ],
+  "dct_temporal_sm": [
+    "2016"
+  ],
+  "geoblacklight_version": "1.0",
+  "layer_geom_type_s": "Raster",
+  "layer_id_s": "sdr:nyu_2451_38709",
+  "layer_modified_dt": "2018-01-16T15:11:26Z",
+  "layer_slug_s": "nyu-2451-38709",
+  "nyu_addl_dspace_s": "39708",
+  "nyu_addl_format_sm": [
+    "WorldImage TIFF"
+  ],
+  "solr_geom": "ENVELOPE(-179.99999999999994, -177.98915207217718, -39.99974999999998, -75.0037465617225)",
+  "solr_year_i": 2016
+}

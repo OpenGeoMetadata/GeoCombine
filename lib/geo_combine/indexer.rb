@@ -10,12 +10,19 @@ module GeoCombine
   class Indexer
     attr_reader :solr
 
-    def initialize(solr: nil, logger: GeoCombine::Logger.logger)
+    # Initialize a new indexer
+    # @param solr [RSolr::Client] an existing RSolr client
+    # @param solr_url [String] the URL of the Solr instance to connect to
+    # @param logger [Logger] a logger instance for logging messages
+    def initialize(
+      solr: nil,
+      solr_url: ENV.fetch('SOLR_URL', nil),
+      logger: GeoCombine::Logger.logger
+    )
       @logger = logger
       @batch_size = ENV.fetch('SOLR_BATCH_SIZE', 100).to_i
 
       # If SOLR_URL is set, use it; if in a Geoblacklight app, use its solr core
-      solr_url = ENV.fetch('SOLR_URL', nil)
       solr_url ||= Blacklight.default_index.connection.base_uri.to_s if defined? Blacklight
 
       # If neither, warn and try to use local Blacklight default solr core
@@ -24,6 +31,7 @@ module GeoCombine
         solr_url = 'http://localhost:8983/solr/blacklight-core'
       end
 
+      # If solr connection was provided directly, use it; otherwise connect now
       @solr = solr || RSolr.connect(client, url: solr_url)
     end
 

@@ -1,0 +1,34 @@
+{
+  "dc_publisher_s": "",
+  "dc_type_s": "Dataset",
+  "dct_title_s": "Property Lot, Arlington County, VA ",
+  "dct_description_sm": [
+    "This polygon represents property lot in Arlington County, VA"
+  ],
+  "schema_provider_s": "GMU",
+  "gbl_resourceType_sm": [
+    "Polygon"
+  ],
+  "dct_subject_sm": [
+    "Property"
+  ],
+  "gbl_indexYear_im": [
+    1
+  ],
+  "locn_geometry": "ENVELOPE(-77.1735, -77.0305, 38.9349, 38.8268)",
+  "dct_accessRights_s": "Restricted",
+  "dct_format_s": "Shapefile",
+  "gbl_wxsIdentifier_s": ":arlington_2004_lot_poly",
+  "id": "gmu-arlington-2004-lot-poly",
+  "dct_identifier_sm": [
+    "GMU.arlington_2004_lot_poly"
+  ],
+  "gbl_mdVersion_s": "Aardvark",
+  "dct_temporal_sm": [
+    "0001-01-01 01:01:01+00:00"
+  ],
+  "dct_spatial_sm": [
+    "virginia"
+  ],
+  "dct_references_s": "{\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"http://localhost:8080/secure-geoserver/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"http://localhost:8080/secure-geoserver/wms\"}"
+}
