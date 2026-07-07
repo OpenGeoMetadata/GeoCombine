@@ -16,13 +16,20 @@ module GeoCombine
       URI('https://api.github.com/orgs/opengeometadata/repos?per_page=1000')
     end
 
+    # Initialize a new harvester
+    # @param ogm_path [String] path to the directory where repositories will be cloned
+    # @param skip_repos [Array<String>] list of repository names to skip
+    # @param schema_version [String] schema version to filter repositories by
+    # @param logger [Logger] logger to use for logging messages
     def initialize(
       ogm_path:,
+      skip_repos: ENV.fetch('OGM_SKIP_REPOS', '').split(',').map(&:strip),
       schema_version: ENV.fetch('SCHEMA_VERSION', 'Aardvark'),
       logger: GeoCombine::Logger.logger
     )
       @ogm_path = ogm_path
       @schema_version = schema_version
+      @skip_repos = skip_repos
       @logger = logger
     end
 
@@ -117,9 +124,11 @@ module GeoCombine
                             .filter { |repo| Array(repo.dig('custom_properties', 'supported_schemas')).include? @schema_version }
                             .filter { |repo| repo['size'].positive? }
                             .reject { |repo| repo['archived'] }
+                            .reject { |repo| @skip_repos.include?(repo['name']) }
                             .map { |repo| repo['name'] }
     end
 
+    # Fetch repository metadata from GitHub API
     def repository_info(repo_name)
       JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/opengeometadata/#{repo_name}")))
     end
