@@ -19,21 +19,25 @@ module GeoCombine
     # Initialize a new harvester
     # @param ogm_path [String] path to the directory where repositories will be cloned
     # @param skip_repos [Array<String>] list of repository names to skip
+    # @param skip_restricted [Boolean] whether to skip indexing restricted documents
     # @param schema_version [String] schema version to filter repositories by
     # @param logger [Logger] logger to use for logging messages
     def initialize(
       ogm_path:,
       skip_repos: ENV.fetch('OGM_SKIP_REPOS', '').split(',').map(&:strip),
+      skip_restricted: ENV.fetch('OGM_SKIP_RESTRICTED', 'true') == 'true',
       schema_version: ENV.fetch('SCHEMA_VERSION', 'Aardvark'),
       logger: GeoCombine::Logger.logger
     )
       @ogm_path = ogm_path
       @schema_version = schema_version
       @skip_repos = skip_repos
+      @skip_restricted = skip_restricted
       @logger = logger
     end
 
     # Enumerable of docs to index, for passing to an indexer
+    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def docs_to_index
       return to_enum(:docs_to_index) unless block_given?
 
@@ -49,6 +53,7 @@ module GeoCombine
         [doc].flatten.each do |record|
           record_schema = record['gbl_mdVersion_s'] || record['geoblacklight_version']
           record_id = record['layer_slug_s'] || record['dc_identifier_s']
+          record_rights = record['dct_accessRights_s'] || record['dc_rights_s']
 
           # skip indexing if no identifiable schema version
           unless record_schema
@@ -62,11 +67,18 @@ module GeoCombine
             next
           end
 
+          # skip indexing if this record is restricted and we want to skip restricted records
+          if @skip_restricted && record_rights == 'Restricted'
+            @logger.debug "skipping #{record_id}; access rights are restricted"
+            next
+          end
+
           @logger.debug "found record #{record_id} at #{path}"
           yield record, path
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     # Update a repository via git
     # If the repository doesn't exist, clone it.
