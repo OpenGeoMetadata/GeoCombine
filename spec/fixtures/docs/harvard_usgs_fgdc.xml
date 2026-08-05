@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Geological Survey (U.S.)</origin>
+        <origin>Chirico, Pete.</origin>
+        <origin>United States. Agency for International Development</origin>
+        <pubdate>20020409</pubdate>
+        <title>Physiography : Isobathes, Puerto Barrios Region, Guatemala, 1988</title>
+        <geoform>vector digital data</geoform>
+        <pubinfo>
+          <pubplace>Reston, Va.</pubplace>
+          <publish>US Geological Survey, Hurricane Mitch Program</publish>
+        </pubinfo>
+        <onlink>https://hgl.harvard.edu/catalog/harvard-usgs-gt-puerto-barrios-phlb</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Geological Survey (U.S.)</origin>
+            <origin>Chirico, Pete.</origin>
+            <origin>United States. Agency for International Development.</origin>
+            <pubdate>20020409</pubdate>
+            <title>Municipal GIS Database of Guatemala</title>
+            <edition>Release 2</edition>
+            <geoform>digital data</geoform>
+            <serinfo>
+              <sername>U.S. Geological Survey open-file report</sername>
+              <issue>02-306J</issue>
+            </serinfo>
+            <pubinfo>
+              <pubplace>Reston, Va.</pubplace>
+              <publish>US Geological Survey, Hurricane Mitch Program</publish>
+            </pubinfo>
+            <othercit>Vol. 10, Puerto Barrios, Guatemala</othercit>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Physiography : isobathes (depths in meters) for the Puerto Barrios region, Guatemala. This layer was vectorized from original hard copy 1:50,000 topographic maps produced from the early 1970s to the mid 1980s.
+
+Hurricane Mitch devastated Central America during the months of October-November of 1998. From 1998 to 2001 the US Geological Survey was involved along with other federal agencies in the reconstruction effort. The source CD consists of a compilation of GIS data layers and computer applications focused on hazard prevention and useful in municipal planning. Each dataset includes layers for a base area of one hundred square kilometers around the urban center of each municipality in the Hurricane Mitch project.</abstract>
+      <purpose>Provide support to hazard prevention activities and basic level GIS data for municipalities involved in the Mitch reconstruction efforts and to support the municipalities planning efforts.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>19760401</begdate>
+          <enddate>19880401</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>source map publication date</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-88.631688</westbc>
+        <eastbc>-88.585388</eastbc>
+        <northbc>15.745613</northbc>
+        <southbc>15.694790</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>LCSH</themekt>
+        <themekey>Bodies of water</themekey>
+        <themekey>Bathymetric maps</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>elevation</themekey>
+        <themekey>oceans</themekey>
+      </theme>
+      <place>
+        <placekt>GNS</placekt>
+        <placekey>Guatemala</placekey>
+        <placekey>Izabal, Departamento de</placekey>
+        <placekey>Puerto Barrios</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>None</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Peter G. Chirico</cntper>
+          <cntorg>USGS Eastern Earth Surface Process Team</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>12201 Sunrise Valley Drive</address>
+          <address>MS 926A</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>703-648-6950</cntvoice>
+        <cntfax>703-648-6953</cntfax>
+        <cntemail>pchirico@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <native>ESRI ArcGIS 9.3</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Unknown</attraccr>
+    </attracc>
+    <logic>Unknown</logic>
+    <complete>Unknown</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Unknown</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Geological Survey (U.S.)</origin>
+            <origin>Chirico, Pete.</origin>
+            <origin>United States. Agency for International Development.</origin>
+            <pubdate>20020409</pubdate>
+            <title>Municipal GIS Database of Guatemala</title>
+            <edition>Release 2</edition>
+            <geoform>digital data</geoform>
+            <serinfo>
+              <sername>U.S. Geological Survey open-file report</sername>
+              <issue>02-306J</issue>
+            </serinfo>
+            <pubinfo>
+              <pubplace>Reston, Va.</pubplace>
+              <publish>US Geological Survey, Hurricane Mitch Program</publish>
+            </pubinfo>
+            <othercit>Vol. 10, Puerto Barrios, Guatemala</othercit>
+          </citeinfo>
+        </srccite>
+        <srcscale>50000</srcscale>
+        <typesrc>external hard drive</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>2002</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>USGS hard drive</srccitea>
+        <srccontr>USGS source data layers</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>All vector layers were vectorized from original hard copy 1:50,000 topographic maps produced in the early 1970s to the mid 1980s.</procdesc>
+        <procdate>Unknown</procdate>
+        <srcprod>USGS hard drive</srcprod>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Peter G. Chirico</cntper>
+              <cntorg>USGS Eastern Earth Surface Process Team</cntorg>
+            </cntperp>
+            <cntaddr>
+              <addrtype>mailing and physical address</addrtype>
+              <address>12201 Sunrise Valley Drive</address>
+              <address>MS 926A</address>
+              <city>Reston</city>
+              <state>VA</state>
+              <postal>20192</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>703-648-6950</cntvoice>
+            <cntfax>703-648-6953</cntfax>
+            <cntemail>pchirico@usgs.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>This shapefile was downloaded from an external hard drive provided by the USGS. It was then loaded into an ArcSDE 9.3.1 database via command line using the SDE command SDElayer 'create'.</procdesc>
+        <srcused>USGS hard drive</srcused>
+        <procdate>2010</procdate>
+        <srcprod>HGL SDE layer</srcprod>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Harvard Geospatial Library</cntorg>
+            </cntorgp>
+            <cntpos>GIS Technician</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical address</addrtype>
+              <address>Harvard University Library</address>
+              <address>Office for Information Systems</address>
+              <address>90 Mount Auburn Street</address>
+              <city>Cambridge</city>
+              <state>MA</state>
+              <postal>02138</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>617-495-2417</cntvoice>
+            <cntfax>617-496-0440</cntfax>
+            <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+            <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>String</sdtstype>
+        <ptvctcnt>6</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>0.000001</latres>
+        <longres>0.000001</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>D_WGS_1984</horizdn>
+        <ellips>WGS_1984</ellips>
+        <semiaxis>6378137.000000</semiaxis>
+        <denflat>298.257224</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>USGS_GT_PUERTO_BARRIOS_PHLB</enttypl>
+        <enttypd>Physiography : Isobathes, Puerto Barrios region, Guatemala</enttypd>
+        <enttypds>USGS</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>FNODE_</attrlabl>
+        <attrdef>From node</attrdef>
+        <attrdefs>None</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>TNODE_</attrlabl>
+        <attrdef>To node</attrdef>
+        <attrdefs>None</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>LPOLY_</attrlabl>
+        <attrdef>Left polygon</attrdef>
+        <attrdefs>None</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>RPOLY_</attrlabl>
+        <attrdef>Right polygon</attrdef>
+        <attrdefs>None</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>LENGTH</attrlabl>
+      </attr>
+      <attr>
+        <attrlabl>PHLB_DD_</attrlabl>
+        <attrdef>Feature Identification Number</attrdef>
+        <attrdefs>None</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>PHLB_DD_ID</attrlabl>
+        <attrdef>Feature Identification Number</attrdef>
+        <attrdefs>None</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>PHLB_CODE</attrlabl>
+        <attrdef>Code of map object</attrdef>
+        <attrdefs>USGS</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>205100</edomv>
+            <edomvd>Line of equal depth (isobath)</edomvd>
+            <edomvds>USGS</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>PHLB_DEP</attrlabl>
+        <attrdef>Line of depth [meters]</attrdef>
+        <attrdefs>USGS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>SHAPE</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SHAPE.LEN</attrlabl>
+        <attrdef>Feature length.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>SHAPE.FID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Harvard Geospatial Library</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>Harvard University Library</address>
+          <address>Office For Information Systems</address>
+          <address>90 Mount Auburn Street</address>
+          <city>Cambridge</city>
+          <state>MA</state>
+          <postal>02138</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>617-495-2417</cntvoice>
+        <cntfax>617-496-0440</cntfax>
+        <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+        <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+      </cntinfo>
+    </distrib>
+    <resdesc>Downloadable Data</resdesc>
+    <distliab>Although this data is being re-distributed by Harvard University, no warranty expressed or implied is made by the University as to the accuracy of the data and related materials. The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the University in the use of this data, or related materials.
+
+This data were originally prepared by an agency of the United States Government. Neither the United States Government nor any agency thereof, nor any of their employees, make any warranty, expressed or implied, or assume any legal liability or responsibility for the accuracy, completeness, or usefulness of any information apparatus, product or process disclosed in this report, and represents that its use would not infringe privately owned rights. The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the USGS in the use of this data or related materials. Reference therein to any specific commercial product, process, or related service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or any agency thereof.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Shapefile</formname>
+          <filedec>ZIP</filedec>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>http://hgl.harvard.edu/</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+      <ordering>Web-based distribution only</ordering>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20110511</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Harvard Geospatial Library</cntorg>
+        </cntorgp>
+        <cntpos>Geospatial Resources Cataloger</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>Harvard University Library</address>
+          <address>Office For Information Systems</address>
+          <address>90 Mount Auburn Street</address>
+          <city>Cambridge</city>
+          <state>MA</state>
+          <postal>02138</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>617-495-2417</cntvoice>
+        <cntfax>617-496-0440</cntfax>
+        <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+        <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>

@@ -141,6 +141,7 @@ RSpec/VerifiedDoubles:
 Security/Open:
   Exclude:
     - 'lib/geo_combine/geoblacklight.rb'
+    - 'lib/geo_combine/geoblacklight_aardvark.rb'
 
 # Offense count: 6
 # Configuration parameters: AllowedConstants.
@@ -152,6 +153,7 @@ Style/Documentation:
     - 'lib/geo_combine/ckan_metadata.rb'
     - 'lib/geo_combine/geo_blacklight_harvester.rb'
     - 'lib/geo_combine/geoblacklight.rb'
+    - 'lib/geo_combine/geoblacklight_aardvark.rb'
     - 'lib/geo_combine/geometry_types.rb'
     - 'lib/geo_combine/iso19139.rb'
 
