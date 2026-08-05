@@ -141,6 +141,26 @@ RSpec.describe GeoCombine::Indexer do
         total = indexer.index(docs)
         expect(total).to eq 1
       end
+
+      it 'logs the status and the message solr returned' do
+        indexer.index(docs)
+        expect(logger).to have_received(:error).with(/400 Bad Request - error message/).at_least(:once)
+      end
+    end
+
+    context 'when solr returns an error that is not JSON' do
+      let(:solr_error_msg) { +'<html>Bad Gateway</html>' }
+      let(:solr_response) { { status: '502', body: solr_error_msg } }
+
+      before do
+        allow(solr).to receive(:update).and_raise(error)
+        allow(solr).to receive(:add).and_raise(error)
+      end
+
+      it 'logs the status rather than raising an error while parsing' do
+        expect { indexer.index(docs) }.not_to raise_error
+        expect(logger).to have_received(:error).with(/502 Bad Gateway$/).at_least(:once)
+      end
     end
   end
 end

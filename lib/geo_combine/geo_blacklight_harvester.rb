@@ -128,11 +128,11 @@ module GeoCombine
       end
 
       def current_page
-        response.dig('response', 'pages', 'current_page')
+        response&.dig('response', 'pages', 'current_page')
       end
 
       def total_pages
-        response.dig('response', 'pages', 'total_pages')
+        response&.dig('response', 'pages', 'total_pages')
       end
     end
 

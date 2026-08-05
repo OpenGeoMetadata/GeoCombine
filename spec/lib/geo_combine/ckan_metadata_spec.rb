@@ -13,6 +13,50 @@ RSpec.describe GeoCombine::CkanMetadata do
     end
   end
 
+  describe 'solr_geom' do
+    def record_with(extras)
+      described_class.new(
+        { 'id' => 'x', 'title' => 'Test', 'name' => 'test', 'organization' => { 'title' => 'Org' },
+          'extras' => extras.map { |k, v| { 'key' => k, 'value' => v } } }.to_json
+      )
+    end
+
+    let(:out_of_range_bbox) do
+      { 'bbox-west-long' => '-10', 'bbox-south-lat' => '-20',
+        'bbox-east-long' => '30', 'bbox-north-lat' => '200' }
+    end
+
+    it 'uses the bbox extras' do
+      record = record_with('bbox-west-long' => '-10', 'bbox-south-lat' => '-20',
+                           'bbox-east-long' => '30', 'bbox-north-lat' => '40',
+                           'spatial' => '1,2,3,4')
+      expect(record.geoblacklight_terms[:solr_geom]).to eq 'ENVELOPE(-10.0, 30.0, 40.0, -20.0)'
+    end
+
+    it 'can falls back to a comma delimited spatial extra when the bbox is out of range' do
+      record = record_with(out_of_range_bbox.merge('spatial' => '-10,-20,30,40'))
+      expect(record.geoblacklight_terms[:solr_geom]).to eq 'ENVELOPE(-10.0, 30.0, 40.0, -20.0)'
+    end
+
+    it 'can fall back to a space delimited spatial extra when the bbox is out of range' do
+      record = record_with(out_of_range_bbox.merge('spatial' => '10 20 30 40'))
+      expect(record.geoblacklight_terms[:solr_geom]).to eq 'ENVELOPE(10.0, 30.0, 40.0, 20.0)'
+    end
+
+    it 'omits solr_geom when neither the bbox nor the spatial extra is valid' do
+      record = record_with(out_of_range_bbox.merge('spatial' => '300,400,500,600'))
+      expect(record.geoblacklight_terms).not_to have_key(:solr_geom)
+    end
+
+    it 'reads missing extras as empty' do
+      record = described_class.new(
+        { 'id' => 'x', 'title' => 'Test', 'name' => 'test', 'organization' => { 'title' => 'Org' } }.to_json
+      )
+      expect(record.geoblacklight_terms[:dc_subject_sm]).to eq []
+      expect(record.geoblacklight_terms[:solr_geom]).to eq 'ENVELOPE(0.0, 0.0, 0.0, 0.0)'
+    end
+  end
+
   describe '#geoblacklight_terms' do
     describe 'builds a hash which maps metadata' do
       let(:metadata) { ckan_sample.instance_variable_get(:@metadata) }

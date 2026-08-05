@@ -92,6 +92,43 @@ RSpec.describe GeoCombine::OGP do
     end
   end
 
+  describe '#year' do
+    let(:minimal_ogp) do
+      {
+        'Access' => 'Public', 'Institution' => 'MORIS', 'LayerDisplayName' => 'Coastal Zone Boundaries',
+        'LayerId' => 'MORIS.COASTAL', 'Name' => 'MORIS.COASTAL',
+        'MinX' => -73.5, 'MinY' => 41.2, 'MaxX' => -69.9, 'MaxY' => 42.9
+      }
+    end
+
+    it 'returns the year when ContentDate parses' do
+      record = described_class.new(minimal_ogp.merge('ContentDate' => '2011-01-01T00:00:00Z').to_json)
+      expect(record.year).to eq 2011
+    end
+
+    it 'returns nil when ContentDate cannot be parsed' do
+      record = described_class.new(minimal_ogp.merge('ContentDate' => 'not a date').to_json)
+      expect(record.year).to be_nil
+    end
+
+    it 'returns nil when ContentDate is absent' do
+      expect(described_class.new(minimal_ogp.to_json).year).to be_nil
+    end
+  end
+
+  describe 'layer_slug_s' do
+    it 'falls back to the first word of the display name' do
+      record = described_class.new(
+        {
+          'Access' => 'Public', 'Institution' => 'MORIS', 'LayerDisplayName' => 'Shoreline Change Rates',
+          'LayerId' => 'MORIS.S', 'Name' => 'MORIS.S', 'Location' => '{}', 'DataType' => 'Line',
+          'MinX' => -73.5, 'MinY' => 41.2, 'MaxX' => -69.9, 'MaxY' => 42.9
+        }.to_json
+      )
+      expect(record.geoblacklight_terms).to include(layer_slug_s: 'shoreline')
+    end
+  end
+
   describe '#ogp_geom' do
     it 'when Paper Map use Raster' do
       expect(ogp.ogp_geom).to eq 'Raster'

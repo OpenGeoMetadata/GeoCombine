@@ -60,6 +60,12 @@ RSpec.describe GeoCombine::Harvester do
       harvester.docs_to_index.map { |record, _path| record['dct_title_s'] || record['dc_title_s'] }
     end
 
+    it 'skips records that have no schema version' do
+      expect(yielded_titles(harvester)).not_to include('Record With No Schema Version')
+      expect(logger).to have_received(:debug)
+        .with(%r{skipping spec/fixtures/indexing/no_schema.json; no schema version declared in record})
+    end
+
     context 'when skip_restricted is true (the default)' do
       it 'skips records with restricted access rights' do
         expect(yielded_titles(harvester)).not_to include('Property Lot, Arlington County, VA ')
@@ -153,6 +159,12 @@ RSpec.describe GeoCombine::Harvester do
       allow(File).to receive(:directory?).with(repo_path).and_return(true)
       harvester.clone(repo_name)
       expect(Git).not_to have_received(:clone)
+    end
+
+    it 'skips a repository whose declared schemas do not include the requested version' do
+      harvester.clone('v1-institution')
+      expect(Git).not_to have_received(:clone)
+      expect(logger).to have_received(:warn).with(/don't include schema version Aardvark \(found 1.0\)/)
     end
   end
 

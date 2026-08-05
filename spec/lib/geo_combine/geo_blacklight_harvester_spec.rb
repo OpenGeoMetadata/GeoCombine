@@ -23,6 +23,26 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
                                                           })
   end
 
+  describe '.configure' do
+    around do |example|
+      previous = described_class.instance_variable_get(:@config)
+      example.run
+      described_class.instance_variable_set(:@config, previous)
+    end
+
+    before { allow(described_class).to receive(:config).and_call_original }
+
+    it 'defaults to an empty hash' do
+      described_class.instance_variable_set(:@config, nil)
+      expect(described_class.config).to eq({})
+    end
+
+    it 'stores what the block returns' do
+      described_class.configure { { SITE: { host: 'https://example.com/' } } }
+      expect(described_class.config).to eq(SITE: { host: 'https://example.com/' })
+    end
+  end
+
   describe 'initialization' do
     context 'when an unconfigured site is sent in' do
       let(:site_key) { 'unknown' }
@@ -147,6 +167,16 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
         expect(docs.to_a).to eq([first_docs, second_docs])
       end
+
+      it 'stops paging and logs when a request fails' do
+        allow(Net::HTTP).to receive(:get).and_raise(SocketError, 'no route to host')
+        base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
+        docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
+                                                             base_url:, logger:).documents
+
+        expect(docs.to_a).to eq([first_docs])
+        expect(logger).to have_received(:error).with(/failed with no route to host/)
+      end
     end
   end
 
@@ -189,6 +219,65 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
                                   [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }],
                                   [{ 'layer_slug_s' => 'xyz-123' }, { 'layer_slug_s' => 'xyz-321' }]
                                 ])
+      end
+    end
+  end
+
+  describe 'ModernBlacklightResponse errors' do
+    subject(:documents) do
+      described_class::ModernBlacklightResponse.new(response:, base_url:, logger:).documents.to_a
+    end
+
+    let(:base_url) { 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100' }
+    let(:next_url) { 'https://example.com/catalog.json?page=2' }
+
+    before { allow(RSolr).to receive(:connect).and_return(stub_solr_connection) }
+
+    context 'when fetching an individual document fails' do
+      let(:response) do
+        { 'data' => [
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
+        ] }
+      end
+
+      before do
+        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-123/raw'))
+                                         .and_return({ 'layer_slug_s' => 'abc-123' }.to_json)
+        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-321/raw'))
+                                         .and_raise(SocketError, 'connection reset')
+      end
+
+      it 'drops that document and keeps the rest' do
+        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+      end
+
+      it 'logs which document failed' do
+        documents
+        expect(logger).to have_received(:error).with(%r{catalog/abc-321/raw" failed with connection reset})
+      end
+    end
+
+    context 'when fetching the next page fails' do
+      let(:response) do
+        { 'data' => [{ 'links' => { 'self' => 'https://example.com/catalog/abc-123' } }],
+          'links' => { 'next' => next_url } }
+      end
+
+      before do
+        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-123/raw'))
+                                         .and_return({ 'layer_slug_s' => 'abc-123' }.to_json)
+        allow(Net::HTTP).to receive(:get).with(URI("#{next_url}&format=json"))
+                                         .and_raise(SocketError, 'no route to host')
+      end
+
+      it 'stops paging and returns what it already had' do
+        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+      end
+
+      it 'logs the failure' do
+        documents
+        expect(logger).to have_received(:error).with(/failed with no route to host/)
       end
     end
   end

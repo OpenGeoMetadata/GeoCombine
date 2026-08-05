@@ -1,7 +1,7 @@
 # GeoCombine
 
 ![CI](https://github.com/OpenGeoMetadata/GeoCombine/actions/workflows/ruby.yml/badge.svg)
-[![Coverage Status](https://img.shields.io/badge/coverage-95%25-brightgreen)]()
+[![Coverage Status](https://img.shields.io/badge/coverage-100%25-brightgreen)]()
 [![Gem Version](https://img.shields.io/gem/v/geo_combine.svg)](https://github.com/OpenGeoMetadata/GeoCombine/releases)
 
 A Ruby toolkit for managing geospatial metadata, including:
