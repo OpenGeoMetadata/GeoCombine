@@ -11,7 +11,7 @@ RSpec.describe GeoCombine::Harvester do
   let(:repo_name) { 'my-institution' }
   let(:repo_path) { File.join(harvester.ogm_path, repo_name) }
   let(:repo_url) { "https://github.com/OpenGeoMetadata/#{repo_name}.git" }
-  let(:stub_repo) { instance_double(Git::Base) }
+  let(:stub_repo) { instance_double(Git::Repository) }
   let(:stub_gh_api) do
     [
       { name: repo_name, size: 100, custom_properties: { supported_schemas: ['Aardvark'] } },
