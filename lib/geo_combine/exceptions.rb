@@ -7,5 +7,8 @@ module GeoCombine
 
     class InvalidGeometry < StandardError
     end
+
+    class InvalidSchemaVersion < StandardError
+    end
   end
 end

@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+  Hand-authored fixture. No record in the wild (yet) uses the GBL controlled
+  thesaurus names in <themekt>, but they are the priority-1 source for
+  gbl_resourceClass_sm, gbl_resourceType_sm and dcat_theme_sm in the
+  FGDC -> Aardvark crosswalk.
+
+  The <geoform> and <sdtstype> values below deliberately DISAGREE with the
+  explicit keywords so that the specs can prove the keywords win:
+
+    geoform  "vector digital data" would infer Datasets, but
+             themekt "GBL Resource Class" says Maps
+    sdtstype "G-polygon"           would infer Polygon data, but
+             themekt "GBL Resource Type"  says Image data
+-->
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>OpenGeoMetadata</origin>
+        <pubdate>2025</pubdate>
+        <title>GBL Controlled Keyword Test Record</title>
+        <geoform>vector digital data</geoform>
+        <pubinfo>
+          <pubplace>Cambridge, Massachusetts</pubplace>
+          <publish>OpenGeoMetadata</publish>
+        </pubinfo>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Fixture record used to exercise the GBL controlled keyword branches of the FGDC to Aardvark crosswalk.</abstract>
+      <purpose>Verify that explicit themekt/themekey encoding takes precedence over geoform and spdoinfo inference.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>2025</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>Ground condition</current>
+    </timeperd>
+    <spdom>
+      <bounding>
+        <westbc>-71.191155</westbc>
+        <eastbc>-70.986365</eastbc>
+        <northbc>42.402462</northbc>
+        <southbc>42.227925</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>GBL Resource Class</themekt>
+        <themekey>Maps</themekey>
+      </theme>
+      <theme>
+        <themekt>GBL Resource Type</themekt>
+        <themekey>Image data</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO GBL Theme</themekt>
+        <themekey>Imagery and Base Maps</themekey>
+      </theme>
+      <theme>
+        <themekt>LCSH</themekt>
+        <themekey>Cartography</themekey>
+        <themekey>Geospatial data</themekey>
+      </theme>
+      <place>
+        <placekt>LCNAF</placekt>
+        <placekey>Boston (Mass.)</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>No restrictions on use.</useconst>
+  </idinfo>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>G-polygon</sdtstype>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>OpenGeoMetadata</cntorg>
+        </cntorgp>
+      </cntinfo>
+    </distrib>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Shapefile</formname>
+        </digtinfo>
+      </digform>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20250101</metd>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

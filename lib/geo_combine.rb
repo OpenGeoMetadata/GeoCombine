@@ -41,10 +41,31 @@ module GeoCombine
     end
 
     ##
+    # Perform an XSLT transformation on metadata using an object's Aardvark XSL
+    # @param [Hash] fields additional Aardvark fields to be passed
+    # @return [GeoCombine::GeoblacklightAardvark] the data transformed into the
+    # OGM Aardvark schema
+    def to_aardvark(fields = {})
+      GeoCombine::GeoblacklightAardvark.new(
+        xsl_aardvark.apply_to(@metadata, aardvark_xsl_params(fields)),
+        fields
+      )
+    end
+
+    ##
     # Perform an XSLT transformation to HTML using an object's XSL
     # @return [String] the xml transformed to an HTML String
     def to_html
       xsl_html.transform(@metadata).to_html
+    end
+
+    private
+
+    def aardvark_xsl_params(fields)
+      Nokogiri::XSLT.quote_params(
+        'provider' => fields['schema_provider_s'].to_s,
+        'id' => fields['id'].to_s
+      )
     end
   end
 end
@@ -64,6 +85,7 @@ require 'geo_combine/bounding_box'
 # Require additional classes
 require 'geo_combine/fgdc'
 require 'geo_combine/geoblacklight'
+require 'geo_combine/geoblacklight_aardvark'
 require 'geo_combine/iso19139'
 require 'geo_combine/esri_open_data'
 require 'geo_combine/ckan_metadata'

@@ -250,6 +250,51 @@ Some formats also support conversion into HTML for display in a web browser:
 > iso_metadata.to_html
 ```
 
+#### Converting metadata into Aardvark JSON
+
+`GeoCombine::Fgdc` also implements `#to_aardvark`, which converts FGDC XML into the [OGM Aardvark schema](https://opengeometadata.org/ogm-aardvark/) and returns a `GeoCombine::GeoblacklightAardvark`:
+
+```ruby
+# Create a new Fgdc object
+> fgdc_metadata = GeoCombine::Fgdc.new('./tmp/opengeometadata/edu.tufts/0/108/220/208/fgdc.xml')
+
+# Convert to the Aardvark schema
+> aardvark = fgdc_metadata.to_aardvark
+
+# Validate it against the Aardvark JSON schema
+> aardvark.valid?
+=> true
+
+# Output it as JSON instead of a Ruby hash
+> aardvark.to_json
+```
+
+Aardvark defines several fields that FGDC has no source for, such as `dct_references_s`, `gbl_wxsIdentifier_s` and `gbl_suppressed_b`. Pass those in and they are merged into the transformed record:
+
+```ruby
+> fgdc_metadata.to_aardvark(
+    'id' => 'tufts-ecuador-drilling-towers',
+    'schema_provider_s' => 'Tufts',
+    'dct_references_s' => { 'http://schema.org/url' => 'https://example.edu/catalog/tufts-1' }.to_json
+  )
+```
+
+Note about `schema_provider_s` and `id`:
+
+```ruby
+# Without a provider, id and provider are derived from the record
+> fgdc_metadata.to_aardvark.metadata['id']
+=> "tufts-university-gis-center-ecuador50kdrillingtower11"
+
+# With one, the provider is used as the id prefix
+> fgdc_metadata.to_aardvark('schema_provider_s' => 'Tufts').metadata['id']
+=> "tufts-ecuador50kdrillingtower11"
+
+# Or set the id yourself
+> fgdc_metadata.to_aardvark('id' => 'tufts-ecuador-drilling-towers').metadata['id']
+=> "tufts-ecuador-drilling-towers"
+```
+
 ### Migrating metadata
 
 You can use the `GeoCombine::Migrators` to migrate metadata from one schema to another.
