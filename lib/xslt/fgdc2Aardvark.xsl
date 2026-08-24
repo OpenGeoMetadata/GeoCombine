@@ -462,19 +462,19 @@
       <xsl:choose>
         <xsl:when test="string(number(substring(normalize-space(idinfo/timeperd/timeinfo/sngdate/caldate), 1, 4))) != 'NaN'">
           <xsl:text>,</xsl:text>
-          <xsl:value-of select="substring(normalize-space(idinfo/timeperd/timeinfo/sngdate/caldate), 1, 4)"/>
+          <xsl:value-of select="format-number(number(substring(normalize-space(idinfo/timeperd/timeinfo/sngdate/caldate), 1, 4)), '0')"/>
         </xsl:when>
         <xsl:when test="string(number(substring(normalize-space(idinfo/timeperd/timeinfo/mdattim/sngdate[1]/caldate), 1, 4))) != 'NaN'">
           <xsl:text>,</xsl:text>
-          <xsl:value-of select="substring(normalize-space(idinfo/timeperd/timeinfo/mdattim/sngdate[1]/caldate), 1, 4)"/>
+          <xsl:value-of select="format-number(number(substring(normalize-space(idinfo/timeperd/timeinfo/mdattim/sngdate[1]/caldate), 1, 4)), '0')"/>
         </xsl:when>
         <xsl:when test="string(number(substring(normalize-space(idinfo/timeperd/timeinfo/rngdates/begdate), 1, 4))) != 'NaN'">
           <xsl:text>,</xsl:text>
-          <xsl:value-of select="substring(normalize-space(idinfo/timeperd/timeinfo/rngdates/begdate), 1, 4)"/>
+          <xsl:value-of select="format-number(number(substring(normalize-space(idinfo/timeperd/timeinfo/rngdates/begdate), 1, 4)), '0')"/>
         </xsl:when>
         <xsl:when test="string(number(normalize-space(idinfo/keywords/temporal/tempkey[1]))) != 'NaN'">
           <xsl:text>,</xsl:text>
-          <xsl:value-of select="normalize-space(idinfo/keywords/temporal/tempkey[1])"/>
+          <xsl:value-of select="format-number(number(normalize-space(idinfo/keywords/temporal/tempkey[1])), '0')"/>
         </xsl:when>
       </xsl:choose>
     </xsl:variable>

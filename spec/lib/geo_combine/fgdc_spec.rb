@@ -415,6 +415,23 @@ RSpec.describe GeoCombine::Fgdc do
         end
       end
 
+      describe 'a record with a zero padded year' do
+        let(:record) { described_class.new(harvard_euratlas_fgdc).to_aardvark }
+
+        it 'is valid' do
+          expect(record).to be_valid
+        end
+
+        # JSON does not allow leading zeros in numbers
+        it 'emits gbl_indexYear_im without the padding' do
+          expect(record.metadata['gbl_indexYear_im']).to eq [1]
+        end
+
+        it 'keeps the padding in dct_temporal_sm, which is a string' do
+          expect(record.metadata['dct_temporal_sm']).to eq ['0001']
+        end
+      end
+
       describe 'a record using GBL controlled keywords' do
         let(:record) { described_class.new(gbl_keywords_fgdc).to_aardvark }
 
