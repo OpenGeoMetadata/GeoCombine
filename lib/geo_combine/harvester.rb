@@ -37,7 +37,7 @@ module GeoCombine
     end
 
     # Enumerable of docs to index, for passing to an indexer
-    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable-next Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def docs_to_index
       return to_enum(:docs_to_index) unless block_given?
 
@@ -78,7 +78,6 @@ module GeoCombine
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     # Update a repository via git
     # If the repository doesn't exist, clone it.

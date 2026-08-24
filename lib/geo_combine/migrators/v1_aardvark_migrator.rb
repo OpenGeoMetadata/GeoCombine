@@ -50,7 +50,7 @@ module GeoCombine
       end
 
       # Convert non-crosswalked fields via lookup tables
-      # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable-next Metrics/PerceivedComplexity
       def convert_non_crosswalked_fields
         # Keys may or may not include whitespace, so we normalize them.
         # Resource class is required so we default to "Other"; resource type is not required.
@@ -69,7 +69,6 @@ module GeoCombine
           @v2_hash.delete('dct_isPartOf_sm')
         end
       end
-      # rubocop:enable Metrics/PerceivedComplexity
 
       # Remove fields that are no longer used
       def remove_deprecated_fields
