@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Euratlas-Nussli</origin>
+        <origin>Nussli, Christos</origin>
+        <origin>Nussli, Marc-Antoine</origin>
+        <pubdate>2010</pubdate>
+        <title>Cities, Europe, Year 1</title>
+        <geoform>vector digital data</geoform>
+        <pubinfo>
+          <pubplace>Yverdon-les-Bains, Switzerland</pubplace>
+          <publish>Euratlas-Nussli</publish>
+        </pubinfo>
+        <onlink>https://hgl.harvard.edu/catalog/harvard-euratlas-cities-0</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>EurAtlas-Nussli</origin>
+            <origin>Nussli, Christos</origin>
+            <origin>Nussli, Marc-Antoine</origin>
+            <pubdate>2010</pubdate>
+            <title>Euratlas Georeferenced Historical Vector Data</title>
+            <geoform>vector digital data</geoform>
+            <pubinfo>
+              <pubplace>Yverdon-les-Bains, Switzerland</pubplace>
+              <publish>Euratlas-Nussli</publish>
+            </pubinfo>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This shapefile represents cities of Europe for the year 1.
+
+Cities represents all inhabited places. The cities are ranked in 5 categories according to their importance. Big towns get number 5 and small villages number 1. 
+
+This layer is part of the Euratlas Georeferenced Vector Data collection that is composed of 21 maps, one for each century from year 1 to year 2000. These maps depict the detailed political situation of Europe at the first day of each centennial year C.E. from year 1 to 2000. Each map is composed of two kinds of layers: physical features layers, such as seas and rivers, and political features layers, such as states and cities. Some layers also cover adjacent portions of North Africa and the Middle East.</abstract>
+      <purpose>This layer is intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for basic applications such as viewing, querying, and map output production, or to provide a basemap to support graphical overlays and analysis with other spatial data.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>0001</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-9.715603</westbc>
+        <eastbc>50.882518</eastbc>
+        <northbc>54.897831</northbc>
+        <southbc>21.540233</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>LCSH</themekt>
+        <themekey>Cities and towns</themekey>
+        <themekey>Villages</themekey>
+        <themekey>Human settlements</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>location</themekey>
+      </theme>
+      <place>
+        <placekt>LCSH</placekt>
+        <placekey>Europe</placekey>
+      </place>
+    </keywords>
+    <accconst>Access is granted to Harvard University Affiliates only.  Affiliates are limited to current faculty, staff and students.</accconst>
+    <useconst>SITE LICENSE AGREEMENT for Euratlas, SWITZERLAND Georeferenced Historical Vector Data
+
+This is a legal Agreement between 
+-Christos Nussli ("Licensor") holder of the trademark Euratlas, author of Euratlas Periodis, periodical historical atlas of Europe, and owner of the proprietary rights in this work and in the Georeferenced Historical Vector Data, that is a part of Euratlas Periodis 
+
+A. The Licensee acknowledges that the Georeferenced Historical Vector Data are original works protected by intellectual property legislation. 
+The Licensee will not acquire any ownership in the Data. Rather, he has a non-exclusive, non-transferable, limited license to install and to use the digital data, subject to the terms and conditions of this Agreement. The Licensee owns the physical media on which the Data are recorded, but the Licensor retains all ownership interests in the Data. 
+
+
+B. The licensee may install and use the Georeferenced Historical Vector Data on the Institution's network or on the computers within the Institution while acknowledging the data source from Euratlas. 
+The Licensee may give Authorized Users only access to the Georeferenced Historical Vector Data. Authorized Users are individuals at the Institution who are faculty, staff, students or on-site-users of the Institution?s library and campus computer network. 
+The Licensee agree to inform all Authorized Users about the Terms and Conditions of the Utilisation License below. 
+The Authorized Users may use the Georeferenced Historical Vector Data for teaching and research purposes only. At no time is commercial use authorized. 
+
+
+C. The Licensee undertakes himself to respect and to require the respect from the Authorized Users of the Utilisation License below. 
+
+
+UTILISATION LICENSE 
+
+A. Rights Conferred by the License 
+
+1. The Licensee and the Authorized Users are authorised to use the vectorial data, alone or combined with other data, for the illustration of books, booklets and publications on paper and to disseminate them on these media. 
+
+They are authorised to use the vectorial data for the creation of geographical maps or other graphic media as raster images (bitmap), capable of being disseminated on CD-ROMs. 
+They may also offer these documents, for purely illustrative purposes, on an Internet site. 
+
+
+B. Limitations on the Granted Rights 
+
+2. Regardless of the medium (non-digital or digital as raster images) only representations as indicated under clause 1 above, may be disseminated and in no case the vectorial data themselves. Moreover, these representations should not constitute the essence of the contents of the product (derived work) that will be disseminated, or of the contents of the Internet site on which they will be offered. Lastly, any modifications and additions made should not contain any obviously illegal, humanly discriminatory or scientifically erroneous elements. 
+
+All the rights conferred under clause 1 above are subject to the limitations appearing under clauses 3 and 4 below and to the respect of the obligatory mention indicated under clause 5 below. 
+
+3. The Licensee and the Authorized Users may not entrust the vectorial data to an outsider. In no case may the rights conferred on the Licensee be yielded to an outsider. 
+
+The Licensee and the Authorized Users shall not authorize or allow any third party to duplicate or reproduce the Data, in whole or in part, in any form or format whatsoever without the prior written consent of the Licensor, nor sell, loan, lease, distribute, transfer or sublicense the Data or otherwise assign any rights under this Agreement to any third party without the prior written consent of the Licensor. 
+
+4. The Licensee and the Authorized Users may not disseminate a work, on any medium whatsoever, that could be an entire or substantial reconstitution of the Euratlas maps (Euratlas Periodis) from the vectorial data, e.g. for the publication of an historic atlas of Europe. To be authorised, any work derived from the vectorial data must deal with a subject different from that of the Euratlas Periodis and any additions or modifications made must exceed 50% of the derived work both in the general presentation and in its content. Moreover, the title of the derived work should not, whether alone or in combination, contain the expression "Periodical Historical Atlas of Europe" nor the names Euratlas and Periodis. 
+
+D. Obligatory Mention 
+
+5. (a) Any graphical representation established from the Data as envisaged in clause 1, whatever the medium, must comprise the following mention: 
+"? Copyright 2008, Christos Nussli, Euratlas ? www.euratlas.com, reproduction prohibited, license of (date of this agreement)" 
+
+(b) When the modifications or additions made to the original work are, in the general presentation or its components, less than 70% of the derived work, the documentation accompanying the derived work will have to mention the original work and the Licensor?s rights, for example, in the following form: 
+"map drawn with the Euratlas Georeferenced Historical Vector Data ? Copyright 2008, Christos Nussli, Euratlas ? www.euratlas.com, reproduction prohibited, license of (date of this agreement)" 
+
+E. Guarantees and Responsibilities 
+
+6. The Licensor has devoted its best efforts to collecting and preparing the vectorial data but it does not provide any guarantee or assurance, either express or tacit, deriving from the law or other sources, as to the exactness, utility, innovation, validity, extent, precision or adequacy of the data for a particular purpose. The Licensor will not be liable in any event for any loss of profits, breaking-off of an agreement, or any loss arising as a result of the inaccuracy or incompleteness in the Data. 
+
+7. The Licensor will not be liable to the Licensee in any respect for any claims, loss or injury alleged to have relsult from use or detention of the Data or of derived work. 
+
+F. Application and Possible Litigation 
+
+8. This agreement is effective as of the date and time the Institution download the Georeferenced Historical Vector Data and shall apply throughout the duration of the legal copyright protection and without any territorial limitation. 
+
+This Agreement shall be interpreted in accordance with the laws in force in Switzerland. The court having jurisdiction is at Yverdon-les-Bains, Vaud.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Euratlas-Nussli</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>Milieu 30</address>
+          <city>Yverdon-les-Bains</city>
+          <postal>1400</postal>
+          <country>Switzerland</country>
+        </cntaddr>
+        <cntvoice>0041 24 426 13 50</cntvoice>
+        <cntemail>webmaster@euratlas.net</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>See Use Constraints.</datacred>
+    <native>ArcGIS 9.3</native>
+    <crossref>
+      <citeinfo>
+        <origin>Euratlas-Nussli</origin>
+        <origin>Nussli, Christos</origin>
+        <origin>Nussli, Marc-Antoine</origin>
+        <pubdate>2009</pubdate>
+        <title>Bibliography for Georeferenced Historical Vector Data 1</title>
+        <geoform>Text</geoform>
+        <pubinfo>
+          <pubplace>Yverdon-les-Bains, Switzerland</pubplace>
+          <publish>Euratlas-Nussli</publish>
+        </pubinfo>
+        <onlink>http://nrs.harvard.edu/urn-3:FHCL:011477185_4725393</onlink>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Unknown</attraccr>
+    </attracc>
+    <logic>Unknown</logic>
+    <complete>Unknown</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Unknown</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>EurAtlas-Nussli</origin>
+            <origin>Nussli, Christos</origin>
+            <origin>Nussli, Marc-Antoine</origin>
+            <pubdate>2010</pubdate>
+            <title>Euratlas Georeferenced Historical Vector Data</title>
+            <geoform>vector digital data</geoform>
+            <pubinfo>
+              <pubplace>Yverdon-les-Bains, Switzerland</pubplace>
+              <publish>Euratlas-Nussli</publish>
+            </pubinfo>
+          </citeinfo>
+        </srccite>
+        <srcscale>Unknown</srcscale>
+        <typesrc>online</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>2010</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>euratlas</srccitea>
+        <srccontr>Source dataset</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>This vector shapefile was downloaded from the publisher in March of 2010.  The shapefiles were exported to an ESRI ArcSDE 9.3.1 database with the ArcCatalog 9.3 "Feature Class to Feature Class" tool.</procdesc>
+        <srcused>euratlas</srcused>
+        <procdate>2010</procdate>
+        <srcprod>SDE vector</srcprod>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Harvard Geospatial Library</cntorg>
+            </cntorgp>
+            <cntpos>GIS Technician</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical address</addrtype>
+              <address>Harvard University Library</address>
+              <address>Office for Information Systems</address>
+              <address>90 Mount Auburn Street</address>
+              <city>Cambridge</city>
+              <state>MA</state>
+              <postal>02138</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>617-495-2417</cntvoice>
+            <cntfax>617-496-0440</cntfax>
+            <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+            <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>2432</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>Mercator</mapprojn>
+          <mercator>
+            <stdparll>0.000000</stdparll>
+            <longcm>0.000000</longcm>
+            <feast>0.000000</feast>
+            <fnorth>0.000000</fnorth>
+          </mercator>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.000100</absres>
+            <ordres>0.000100</ordres>
+          </coordrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D_WGS_1984</horizdn>
+        <ellips>WGS_1984</ellips>
+        <semiaxis>6378137.000000</semiaxis>
+        <denflat>298.257224</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>EurAtlas_cities_0</enttypl>
+        <enttypd>Europe Cities year 1</enttypd>
+        <enttypds>Euratlas</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>OBJECTID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>YEAR</attrlabl>
+        <attrdef>Year the data represents</attrdef>
+        <attrdefs>None</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>ID</attrlabl>
+        <attrdef>unique ID for the city, same across the years</attrdef>
+        <attrdefs>Euratlas</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>SIZE_</attrlabl>
+        <attrdef>importance/size of the city between 1 and 5</attrdef>
+        <attrdefs>Euratlas</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>NAME</attrlabl>
+        <attrdef>Name of the city</attrdef>
+        <attrdefs>Euratlas</attrdefs>
+        <attrdomv>
+          <udom>Text</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>VARIANTS</attrlabl>
+        <attrdef>Other usual or modern name of the city</attrdef>
+        <attrdefs>Euratlas</attrdefs>
+        <attrdomv>
+          <udom>Text</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>SHAPE</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>Names are encoded in UTF8.
+
+Data model
+ 
+Euratlas georeferenced vector data is also a database containing much non-geographical information about political relationships between the various kinds of territories. Thus, it is important to know how this database is structured in order to be able to use the whole information [all the layers] contained in it. 
+
+States and administrative divisions 
+
+The states and administrative divisions form a hierarchy of territories which is completely defined from the 2nd-level administrative divisions. Thus, the territory of a sovereign state is defined as the union of all its owned 2nd level divisions. Similarly, a 1st level division is the union of all its composing 2nd level divisions. However, 1st level divisions are optional and thus, not all 2nd level divisions are part of a 1st level divisions. 
+
+Thus, each 2nd level division has a reference on its owner sovereign state and on its potential parent 1st level division. Note also that 1st level divisions also have a reference on their owner state and this owner is the same than the one of their composing 2nd level divisions except in few cases with dependent states (explained below) 
+ 
+Dependent states 
+
+Each 2nd level division may optionally have a reference on another state called its holder state. This happens in the case of dependent state (see political description). In such case, a 2nd level division has both a sovereign state (its owner) and a dependent state (its holder). 
+
+Thus, this holder reference is used to generate the sovereign and dependent states layer. This layer has been built by grouping 2nd level divisions having the same owner state and the same holder state (if any). Thus, resulting features may be associated to two states, an owner (or sovereign) state and possibly, a holder (dependent) state. Also, on this layer, a state may appear as several features. For example, if a state owns a part without holder and another part with a holder, then it will appear as 2 features in this layer.
+
+Also, it is possible for a state to have both a sovereign (owned) part and a dependent (holded) part.
+ 
+In very few cases, it happens that a 2nd level division and its parent 1st level division are not owned by the same state. In such cases, the owner of the 1st level division is actually the holder of the 2nd level division. For this reason, 2nd level divisions have another optional reference to those so-called holder 1st level division. Note however that only one 1st level parent will be defined for a 2nd level division, either for its owner state, or for its holder state. 
+
+Supranational entities 
+
+Supranational entities are also defined in a similar way from the 2nd level divisions, which also contains an optional reference to a supranational entity. Although it would seem more natural to have supranational entities defined as unions of states, it is not so because it may happen, in the case of the Holy Roman Empire, that only parts of states belong to a supranational entity. 
+
+Independent layers 
+
+Autonomous peoples are not related to this hierarchy. They form an independent layer. 
+
+Uncertain borders are a set of polygons covering some borders with a high level of uncertainty due to lack of information. However, they also are an independent layer and thus are not directly linked to any political entity. Moreover, it may happen that an uncertain border polygon covers more than just two political territories. 
+
+Cities are also independent. They are defined in a year-independent manner by a unique point location. Each city has also name and size information for every century for which the city exists. 
+
+Political entities IDs 
+
+States, supranational entities, autonomous peoples and cities are all identified by a unique integer ID (generally owner_id or entity_id). These IDs are unique between political territories. This means that a state cannot have the same ID than an autonomous people or a supranational entity in the same year. Cities form a separated set of IDs which overlaps with those of the political territories. Finally, all these IDs are consistent throughout the years. Thus, a state which is present on several years, like Roman Empire, will have the same ID in every year. The same is also true for cities. Moreover, some states are present as autonomous people in a year and as state, with the same ID, in another year. 
+
+1st and 2nd level administrative divisions are defined on a year-dependent manner. Thus, it is not possible to make any correspondence between administrative divisions of one year with the ones of another year.</eaover>
+      <eadetcit>Euratlas. (2010). Georeferenced Vector Data Description. Retrieved November 18, 2010, from http://shop.euratlas.com/maps_gis/data_description.pdf</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Harvard Geospatial Library</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>Harvard University Library</address>
+          <address>Office For Information Systems</address>
+          <address>90 Mount Auburn Street</address>
+          <city>Cambridge</city>
+          <state>MA</state>
+          <postal>02138</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>617-495-2417</cntvoice>
+        <cntfax>617-496-0440</cntfax>
+        <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+        <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+      </cntinfo>
+    </distrib>
+    <resdesc>Downloadable Data</resdesc>
+    <distliab>Although this data is being distributed by Harvard University, no warranty expressed or implied is made by the University as to the accuracy of the data and related materials. The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the University in the use of this data, or related materials.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Shapefile</formname>
+          <filedec>ZIP</filedec>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>http://hgl.harvard.edu/</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+      <ordering>Web-based distribution only</ordering>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20101206</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Harvard Geospatial Library</cntorg>
+        </cntorgp>
+        <cntpos>Geospatial Resources Cataloger</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>Harvard University Library</address>
+          <address>Office For Information Systems</address>
+          <address>90 Mount Auburn Street</address>
+          <city>Cambridge</city>
+          <state>MA</state>
+          <postal>02138</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>617-495-2417</cntvoice>
+        <cntfax>617-496-0440</cntfax>
+        <cntemail>hgl_ref@hulmail.harvard.edu</cntemail>
+        <hours>Monday - Friday, 9:00 am - 4:00 pm EST-USA</hours>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>

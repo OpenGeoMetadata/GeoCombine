@@ -69,6 +69,12 @@ module XmlDocs
   end
 
   ##
+  # Vector point dataset whose content date is the zero-padded year 0001.
+  def harvard_euratlas_fgdc
+    File.read(File.join(File.dirname(__FILE__), './docs/harvard_euratlas_fgdc.xml'))
+  end
+
+  ##
   # Hand-authored record whose themekt values use the GBL controlled
   # thesaurus names, and whose geoform/sdtstype deliberately disagree with them
   def gbl_keywords_fgdc
