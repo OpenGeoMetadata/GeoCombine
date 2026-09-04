@@ -90,19 +90,87 @@
     <xsl:text>"</xsl:text>
   </xsl:template>
 
-  <!-- Return "key": [ ... ], for a set of nodes -->
-  <xsl:template name="string-array">
-    <xsl:param name="key"/>
+  <xsl:template name="value-list">
     <xsl:param name="nodes"/>
-    <xsl:variable name="items">
-      <xsl:for-each select="$nodes">
-        <xsl:if test="normalize-space(.)">
-          <xsl:text>,</xsl:text>
-          <xsl:call-template name="json-string">
-            <xsl:with-param name="text" select="."/>
+    <xsl:for-each select="$nodes">
+      <xsl:if test="normalize-space(.)">
+        <xsl:value-of select="concat('&#10;', normalize-space(.))"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="dedupe-values">
+    <xsl:param name="values"/>
+    <xsl:param name="seen" select="'&#10;'"/>
+    <xsl:variable name="list" select="string($values)"/>
+    <xsl:if test="$list != ''">
+      <xsl:variable name="rest" select="substring($list, 2)"/>
+      <xsl:variable name="head">
+        <xsl:choose>
+          <xsl:when test="contains($rest, '&#10;')">
+            <xsl:value-of select="substring-before($rest, '&#10;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$rest"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="tail" select="substring($list, string-length($head) + 2)"/>
+      <xsl:choose>
+        <xsl:when test="contains($seen, concat('&#10;', string($head), '&#10;'))">
+          <xsl:call-template name="dedupe-values">
+            <xsl:with-param name="values" select="$tail"/>
+            <xsl:with-param name="seen" select="$seen"/>
           </xsl:call-template>
-        </xsl:if>
-      </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('&#10;', string($head))"/>
+          <xsl:call-template name="dedupe-values">
+            <xsl:with-param name="values" select="$tail"/>
+            <xsl:with-param name="seen" select="concat($seen, string($head), '&#10;')"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="json-items">
+    <xsl:param name="values"/>
+    <xsl:variable name="list" select="string($values)"/>
+    <xsl:if test="$list != ''">
+      <xsl:variable name="rest" select="substring($list, 2)"/>
+      <xsl:variable name="head">
+        <xsl:choose>
+          <xsl:when test="contains($rest, '&#10;')">
+            <xsl:value-of select="substring-before($rest, '&#10;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$rest"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:text>,</xsl:text>
+      <xsl:call-template name="json-string">
+        <xsl:with-param name="text" select="string($head)"/>
+      </xsl:call-template>
+      <xsl:call-template name="json-items">
+        <xsl:with-param name="values" select="substring($list, string-length($head) + 2)"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="emit-values-array">
+    <xsl:param name="key"/>
+    <xsl:param name="values"/>
+    <xsl:variable name="unique">
+      <xsl:call-template name="dedupe-values">
+        <xsl:with-param name="values" select="$values"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="items">
+      <xsl:call-template name="json-items">
+        <xsl:with-param name="values" select="$unique"/>
+      </xsl:call-template>
     </xsl:variable>
     <xsl:call-template name="emit-array">
       <xsl:with-param name="key" select="$key"/>
@@ -110,7 +178,30 @@
     </xsl:call-template>
   </xsl:template>
 
-  <!-- Return "key": [ ... ] from a comma-prefixed item list. -->
+  <xsl:template name="string-array">
+    <xsl:param name="key"/>
+    <xsl:param name="nodes"/>
+    <xsl:variable name="values">
+      <xsl:call-template name="value-list">
+        <xsl:with-param name="nodes" select="$nodes"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:call-template name="emit-values-array">
+      <xsl:with-param name="key" select="$key"/>
+      <xsl:with-param name="values" select="$values"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="vocab-value">
+    <xsl:param name="vocab"/>
+    <xsl:param name="value"/>
+    <xsl:variable name="key"
+      select="concat('|', translate(normalize-space($value), $upper, $lower), '=')"/>
+    <xsl:if test="contains($vocab, $key)">
+      <xsl:value-of select="substring-before(substring-after($vocab, $key), '|')"/>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template name="emit-array">
     <xsl:param name="key"/>
     <xsl:param name="items"/>
@@ -229,16 +320,255 @@
   </xsl:variable>
 
   <!-- Keywords with GBL controlled vocabulary values. -->
+  <xsl:variable name="resourceClassVocab">
+    <xsl:text>|collections=Collections</xsl:text>
+    <xsl:text>|datasets=Datasets</xsl:text>
+    <xsl:text>|imagery=Imagery</xsl:text>
+    <xsl:text>|maps=Maps</xsl:text>
+    <xsl:text>|web services=Web services</xsl:text>
+    <xsl:text>|websites=Websites</xsl:text>
+    <xsl:text>|</xsl:text>
+  </xsl:variable>
+
+  <xsl:variable name="resourceTypeVocab">
+    <xsl:text>|annotations=Annotations</xsl:text>
+    <xsl:text>|basemaps=Basemaps</xsl:text>
+    <xsl:text>|lidar=LiDAR</xsl:text>
+    <xsl:text>|line data=Line data</xsl:text>
+    <xsl:text>|mesh data=Mesh data</xsl:text>
+    <xsl:text>|multi-spectral data=Multi-spectral data</xsl:text>
+    <xsl:text>|oblique photographs=Oblique photographs</xsl:text>
+    <xsl:text>|point cloud data=Point cloud data</xsl:text>
+    <xsl:text>|point data=Point data</xsl:text>
+    <xsl:text>|polygon data=Polygon data</xsl:text>
+    <xsl:text>|raster data=Raster data</xsl:text>
+    <xsl:text>|satellite imagery=Satellite imagery</xsl:text>
+    <xsl:text>|streetview photographs=Streetview photographs</xsl:text>
+    <xsl:text>|table data=Table data</xsl:text>
+    <xsl:text>|aerial photographs=Aerial photographs</xsl:text>
+    <xsl:text>|aerial views=Aerial views</xsl:text>
+    <xsl:text>|aeronautical charts=Aeronautical charts</xsl:text>
+    <xsl:text>|armillary spheres=Armillary spheres</xsl:text>
+    <xsl:text>|astronautical charts=Astronautical charts</xsl:text>
+    <xsl:text>|astronomical models=Astronomical models</xsl:text>
+    <xsl:text>|atlases=Atlases</xsl:text>
+    <xsl:text>|bathymetric maps=Bathymetric maps</xsl:text>
+    <xsl:text>|block diagrams=Block diagrams</xsl:text>
+    <xsl:text>|bottle-charts=Bottle-charts</xsl:text>
+    <xsl:text>|cadastral maps=Cadastral maps</xsl:text>
+    <xsl:text>|cartographic materials=Cartographic materials</xsl:text>
+    <xsl:text>|cartographic materials for people with visual disabilities=Cartographic materials for people with visual disabilities</xsl:text>
+    <xsl:text>|celestial charts=Celestial charts</xsl:text>
+    <xsl:text>|celestial globes=Celestial globes</xsl:text>
+    <xsl:text>|census data=Census data</xsl:text>
+    <xsl:text>|children's atlases=Children's atlases</xsl:text>
+    <xsl:text>|children's maps=Children's maps</xsl:text>
+    <xsl:text>|comparative maps=Comparative maps</xsl:text>
+    <xsl:text>|composite atlases=Composite atlases</xsl:text>
+    <xsl:text>|digital elevation models=Digital elevation models</xsl:text>
+    <xsl:text>|digital maps=Digital maps</xsl:text>
+    <xsl:text>|early maps=Early maps</xsl:text>
+    <xsl:text>|ephemerides=Ephemerides</xsl:text>
+    <xsl:text>|ethnographic maps=Ethnographic maps</xsl:text>
+    <xsl:text>|fire insurance maps=Fire insurance maps</xsl:text>
+    <xsl:text>|flow maps=Flow maps</xsl:text>
+    <xsl:text>|gazetteers=Gazetteers</xsl:text>
+    <xsl:text>|geological cross-sections=Geological cross-sections</xsl:text>
+    <xsl:text>|geological maps=Geological maps</xsl:text>
+    <xsl:text>|globes=Globes</xsl:text>
+    <xsl:text>|gores (maps)=Gores (Maps)</xsl:text>
+    <xsl:text>|gravity anomaly maps=Gravity anomaly maps</xsl:text>
+    <xsl:text>|index maps=Index maps</xsl:text>
+    <xsl:text>|linguistic atlases=Linguistic atlases</xsl:text>
+    <xsl:text>|loran charts=Loran charts</xsl:text>
+    <xsl:text>|manuscript maps=Manuscript maps</xsl:text>
+    <xsl:text>|mappae mundi=Mappae mundi</xsl:text>
+    <xsl:text>|mental maps=Mental maps</xsl:text>
+    <xsl:text>|meteorological charts=Meteorological charts</xsl:text>
+    <xsl:text>|military maps=Military maps</xsl:text>
+    <xsl:text>|mine maps=Mine maps</xsl:text>
+    <xsl:text>|miniature maps=Miniature maps</xsl:text>
+    <xsl:text>|nautical charts=Nautical charts</xsl:text>
+    <xsl:text>|outline maps=Outline maps</xsl:text>
+    <xsl:text>|photogrammetric maps=Photogrammetric maps</xsl:text>
+    <xsl:text>|photomaps=Photomaps</xsl:text>
+    <xsl:text>|physical maps=Physical maps</xsl:text>
+    <xsl:text>|pictorial maps=Pictorial maps</xsl:text>
+    <xsl:text>|plotting charts=Plotting charts</xsl:text>
+    <xsl:text>|portolan charts=Portolan charts</xsl:text>
+    <xsl:text>|quadrangle maps=Quadrangle maps</xsl:text>
+    <xsl:text>|relief models=Relief models</xsl:text>
+    <xsl:text>|remote-sensing maps=Remote-sensing maps</xsl:text>
+    <xsl:text>|road maps=Road maps</xsl:text>
+    <xsl:text>|statistical maps=Statistical maps</xsl:text>
+    <xsl:text>|stick charts=Stick charts</xsl:text>
+    <xsl:text>|strip maps=Strip maps</xsl:text>
+    <xsl:text>|thematic maps=Thematic maps</xsl:text>
+    <xsl:text>|topographic maps=Topographic maps</xsl:text>
+    <xsl:text>|tourist maps=Tourist maps</xsl:text>
+    <xsl:text>|upside-down maps=Upside-down maps</xsl:text>
+    <xsl:text>|wall maps=Wall maps</xsl:text>
+    <xsl:text>|world atlases=World atlases</xsl:text>
+    <xsl:text>|world maps=World maps</xsl:text>
+    <xsl:text>|worm's-eye views=Worm's-eye views</xsl:text>
+    <xsl:text>|zoning maps=Zoning maps</xsl:text>
+    <xsl:text>|</xsl:text>
+  </xsl:variable>
+
+  <xsl:variable name="themeVocab">
+    <xsl:text>|farming=Agriculture</xsl:text>
+    <xsl:text>|agriculture=Agriculture</xsl:text>
+    <xsl:text>|biota=Biology</xsl:text>
+    <xsl:text>|biology=Biology</xsl:text>
+    <xsl:text>|biology and ecology=Biology</xsl:text>
+    <xsl:text>|boundaries=Boundaries</xsl:text>
+    <xsl:text>|climatologymeteorologyatmosphere=Climate</xsl:text>
+    <xsl:text>|climatology, meteorology and atmosphere=Climate</xsl:text>
+    <xsl:text>|climate=Climate</xsl:text>
+    <xsl:text>|economy=Economy</xsl:text>
+    <xsl:text>|elevation=Elevation</xsl:text>
+    <xsl:text>|environment=Environment</xsl:text>
+    <xsl:text>|events=Events</xsl:text>
+    <xsl:text>|geoscientificinformation=Geology</xsl:text>
+    <xsl:text>|geoscientific information=Geology</xsl:text>
+    <xsl:text>|geology=Geology</xsl:text>
+    <xsl:text>|health=Health</xsl:text>
+    <xsl:text>|imagerybasemapsearthcover=Imagery</xsl:text>
+    <xsl:text>|imagery and base maps=Imagery</xsl:text>
+    <xsl:text>|imagery=Imagery</xsl:text>
+    <xsl:text>|inlandwaters=Inland Waters</xsl:text>
+    <xsl:text>|inland waters=Inland Waters</xsl:text>
+    <xsl:text>|land cover=Land Cover</xsl:text>
+    <xsl:text>|location=Location</xsl:text>
+    <xsl:text>|intelligencemilitary=Military</xsl:text>
+    <xsl:text>|military=Military</xsl:text>
+    <xsl:text>|oceans=Oceans</xsl:text>
+    <xsl:text>|planningcadastre=Property</xsl:text>
+    <xsl:text>|planning and cadastral=Property</xsl:text>
+    <xsl:text>|property=Property</xsl:text>
+    <xsl:text>|society=Society</xsl:text>
+    <xsl:text>|structure=Structure</xsl:text>
+    <xsl:text>|transportation=Transportation</xsl:text>
+    <xsl:text>|utilitiescommunication=Utilities</xsl:text>
+    <xsl:text>|utilities and communication=Utilities</xsl:text>
+    <xsl:text>|utilities=Utilities</xsl:text>
+    <xsl:text>|</xsl:text>
+  </xsl:variable>
+
   <xsl:variable name="resourceClassKeywords"
     select="/metadata/idinfo/keywords/theme[normalize-space(themekt) = 'GBL Resource Class']/themekey"/>
   <xsl:variable name="resourceTypeKeywords"
     select="/metadata/idinfo/keywords/theme[normalize-space(themekt) = 'GBL Resource Type']/themekey"/>
   <xsl:variable name="themeKeywords"
     select="/metadata/idinfo/keywords/theme[normalize-space(themekt) = 'ISO GBL Theme']/themekey"/>
-  <xsl:variable name="subjectKeywords"
+
+  <xsl:variable name="freeKeywords"
     select="/metadata/idinfo/keywords/theme[not(normalize-space(themekt) = 'GBL Resource Class' or
                                                 normalize-space(themekt) = 'GBL Resource Type' or
                                                 normalize-space(themekt) = 'ISO GBL Theme')]/themekey"/>
+
+  <xsl:variable name="explicitResourceClasses">
+    <xsl:call-template name="value-list">
+      <xsl:with-param name="nodes" select="$resourceClassKeywords"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="explicitResourceTypes">
+    <xsl:call-template name="value-list">
+      <xsl:with-param name="nodes" select="$resourceTypeKeywords"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:variable name="matchedResourceClasses">
+    <xsl:for-each select="$freeKeywords">
+      <xsl:variable name="match">
+        <xsl:call-template name="vocab-value">
+          <xsl:with-param name="vocab" select="$resourceClassVocab"/>
+          <xsl:with-param name="value" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:if test="string($match) != ''">
+        <xsl:value-of select="concat('&#10;', $match)"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:variable name="matchedResourceTypes">
+    <xsl:for-each select="$freeKeywords">
+      <xsl:variable name="match">
+        <xsl:call-template name="vocab-value">
+          <xsl:with-param name="vocab" select="$resourceTypeVocab"/>
+          <xsl:with-param name="value" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:if test="string($match) != ''">
+        <xsl:value-of select="concat('&#10;', $match)"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:variable name="matchedThemes">
+    <xsl:for-each select="$freeKeywords">
+      <xsl:variable name="match">
+        <xsl:call-template name="vocab-value">
+          <xsl:with-param name="vocab" select="$themeVocab"/>
+          <xsl:with-param name="value" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:if test="string($match) != ''">
+        <xsl:value-of select="concat('&#10;', $match)"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+
+  <xsl:variable name="subjectValues">
+    <xsl:for-each select="$freeKeywords">
+      <xsl:if test="normalize-space(.)">
+        <xsl:variable name="asResourceClass">
+          <xsl:call-template name="vocab-value">
+            <xsl:with-param name="vocab" select="$resourceClassVocab"/>
+            <xsl:with-param name="value" select="."/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="asResourceType">
+          <xsl:call-template name="vocab-value">
+            <xsl:with-param name="vocab" select="$resourceTypeVocab"/>
+            <xsl:with-param name="value" select="."/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="asTheme">
+          <xsl:call-template name="vocab-value">
+            <xsl:with-param name="vocab" select="$themeVocab"/>
+            <xsl:with-param name="value" select="."/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:if test="string($asResourceClass) = '' and string($asResourceType) = '' and
+                      string($asTheme) = ''">
+          <xsl:value-of select="concat('&#10;', normalize-space(.))"/>
+        </xsl:if>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+
+  <xsl:variable name="themeValues">
+    <xsl:for-each select="$themeKeywords">
+      <xsl:if test="normalize-space(.)">
+        <xsl:variable name="match">
+          <xsl:call-template name="vocab-value">
+            <xsl:with-param name="vocab" select="$themeVocab"/>
+            <xsl:with-param name="value" select="."/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:text>&#10;</xsl:text>
+        <xsl:choose>
+          <xsl:when test="string($match) != ''">
+            <xsl:value-of select="$match"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="normalize-space(.)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:value-of select="$matchedThemes"/>
+  </xsl:variable>
 
   <xsl:variable name="geoform"
     select="translate(normalize-space(/metadata/idinfo/citation/citeinfo/geoform), $upper, $lower)"/>
@@ -324,128 +654,114 @@
 
     <!-- Resource Class (Required) -->
     <xsl:variable name="resourceClasses">
-      <xsl:choose>
-        <xsl:when test="$resourceClassKeywords[normalize-space(.)]">
-          <xsl:for-each select="$resourceClassKeywords">
-            <xsl:if test="normalize-space(.)">
-              <xsl:text>,</xsl:text>
-              <xsl:call-template name="json-string">
-                <xsl:with-param name="text" select="."/>
-              </xsl:call-template>
-            </xsl:if>
-          </xsl:for-each>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'remote-sensing image')">
-          <xsl:text>,"Imagery"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'digital data')">
-          <xsl:text>,"Datasets"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'web service')">
-          <xsl:text>,"Web services"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'website')">
-          <xsl:text>,"Websites"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'collection')">
-          <xsl:text>,"Collections"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($geoform, 'map') or contains($geoform, 'atlas')">
-          <xsl:text>,"Maps"</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text>,"Other"</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:value-of select="$explicitResourceClasses"/>
+      <xsl:value-of select="$matchedResourceClasses"/>
+      <xsl:if test="string($explicitResourceClasses) = ''">
+        <xsl:choose>
+          <xsl:when test="contains($geoform, 'remote-sensing image')">
+            <xsl:text>&#10;Imagery</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($geoform, 'digital data')">
+            <xsl:text>&#10;Datasets</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($geoform, 'web service')">
+            <xsl:text>&#10;Web services</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($geoform, 'website')">
+            <xsl:text>&#10;Websites</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($geoform, 'collection')">
+            <xsl:text>&#10;Collections</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($geoform, 'map') or contains($geoform, 'atlas')">
+            <xsl:text>&#10;Maps</xsl:text>
+          </xsl:when>
+          <xsl:when test="string($matchedResourceClasses) = ''">
+            <xsl:text>&#10;Other</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:if>
     </xsl:variable>
-    <xsl:call-template name="emit-array">
+    <xsl:call-template name="emit-values-array">
       <xsl:with-param name="key" select="'gbl_resourceClass_sm'"/>
-      <xsl:with-param name="items" select="$resourceClasses"/>
+      <xsl:with-param name="values" select="$resourceClasses"/>
     </xsl:call-template>
 
     <!-- Resource Type -->
     <xsl:variable name="resourceTypes">
-      <xsl:choose>
-        <xsl:when test="$resourceTypeKeywords[normalize-space(.)]">
-          <xsl:for-each select="$resourceTypeKeywords">
-            <xsl:if test="normalize-space(.)">
-              <xsl:text>,</xsl:text>
-              <xsl:call-template name="json-string">
-                <xsl:with-param name="text" select="."/>
-              </xsl:call-template>
-            </xsl:if>
-          </xsl:for-each>
-        </xsl:when>
-        <xsl:when test="contains($sdtsType, 'polygon')">
-          <xsl:text>,"Polygon data"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($sdtsType, 'point') or contains($sdtsType, 'node')">
-          <xsl:text>,"Point data"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($sdtsType, 'string') or contains($sdtsType, 'chain') or
-                        contains($sdtsType, 'arc') or contains($sdtsType, 'link') or
-                        contains($sdtsType, 'line')">
-          <xsl:text>,"Line data"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($directReference, 'raster')">
-          <xsl:text>,"Raster data"</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains($directReference, 'point')">
-          <xsl:text>,"Point data"</xsl:text>
-        </xsl:when>
-      </xsl:choose>
+      <xsl:value-of select="$explicitResourceTypes"/>
+      <xsl:value-of select="$matchedResourceTypes"/>
+      <xsl:if test="string($explicitResourceTypes) = ''">
+        <xsl:choose>
+          <xsl:when test="contains($sdtsType, 'polygon')">
+            <xsl:text>&#10;Polygon data</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($sdtsType, 'point') or contains($sdtsType, 'node')">
+            <xsl:text>&#10;Point data</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($sdtsType, 'string') or contains($sdtsType, 'chain') or
+                          contains($sdtsType, 'arc') or contains($sdtsType, 'link') or
+                          contains($sdtsType, 'line')">
+            <xsl:text>&#10;Line data</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($directReference, 'raster')">
+            <xsl:text>&#10;Raster data</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains($directReference, 'point')">
+            <xsl:text>&#10;Point data</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:if>
     </xsl:variable>
-    <xsl:call-template name="emit-array">
+    <xsl:call-template name="emit-values-array">
       <xsl:with-param name="key" select="'gbl_resourceType_sm'"/>
-      <xsl:with-param name="items" select="$resourceTypes"/>
+      <xsl:with-param name="values" select="$resourceTypes"/>
     </xsl:call-template>
 
     <!-- Subject -->
-    <xsl:call-template name="string-array">
+    <xsl:call-template name="emit-values-array">
       <xsl:with-param name="key" select="'dct_subject_sm'"/>
-      <xsl:with-param name="nodes" select="$subjectKeywords"/>
+      <xsl:with-param name="values" select="$subjectValues"/>
     </xsl:call-template>
 
     <!-- Theme -->
-    <xsl:call-template name="string-array">
+    <xsl:call-template name="emit-values-array">
       <xsl:with-param name="key" select="'dcat_theme_sm'"/>
-      <xsl:with-param name="nodes" select="$themeKeywords"/>
+      <xsl:with-param name="values" select="$themeValues"/>
     </xsl:call-template>
 
-    <!-- Temporal Coverage. Ranges are rendered YYYY-YYYY. -->
+    <!--
+      Temporal Coverage. Single dates keep whatever precision the source records;
+      ranges are rendered YYYY-YYYY.
+    -->
     <xsl:variable name="temporals">
       <xsl:for-each select="idinfo/timeperd/timeinfo/sngdate/caldate |
                             idinfo/timeperd/timeinfo/mdattim/sngdate/caldate">
         <xsl:if test="normalize-space(.)">
-          <xsl:text>,"</xsl:text>
-          <xsl:value-of select="substring(normalize-space(.), 1, 4)"/>
-          <xsl:text>"</xsl:text>
+          <xsl:text>&#10;</xsl:text>
+          <xsl:call-template name="format-date">
+            <xsl:with-param name="value" select="."/>
+          </xsl:call-template>
         </xsl:if>
       </xsl:for-each>
       <xsl:for-each select="idinfo/timeperd/timeinfo/rngdates">
         <xsl:if test="normalize-space(begdate)">
-          <xsl:text>,"</xsl:text>
+          <xsl:text>&#10;</xsl:text>
           <xsl:value-of select="substring(normalize-space(begdate), 1, 4)"/>
           <xsl:if test="substring(normalize-space(begdate), 1, 4) !=
                         substring(normalize-space(enddate), 1, 4) and normalize-space(enddate)">
             <xsl:text>-</xsl:text>
             <xsl:value-of select="substring(normalize-space(enddate), 1, 4)"/>
           </xsl:if>
-          <xsl:text>"</xsl:text>
         </xsl:if>
       </xsl:for-each>
-      <xsl:for-each select="idinfo/keywords/temporal/tempkey">
-        <xsl:if test="normalize-space(.)">
-          <xsl:text>,</xsl:text>
-          <xsl:call-template name="json-string">
-            <xsl:with-param name="text" select="."/>
-          </xsl:call-template>
-        </xsl:if>
-      </xsl:for-each>
+      <xsl:call-template name="value-list">
+        <xsl:with-param name="nodes" select="idinfo/keywords/temporal/tempkey"/>
+      </xsl:call-template>
     </xsl:variable>
-    <xsl:call-template name="emit-array">
+    <xsl:call-template name="emit-values-array">
       <xsl:with-param name="key" select="'dct_temporal_sm'"/>
-      <xsl:with-param name="items" select="$temporals"/>
+      <xsl:with-param name="values" select="$temporals"/>
     </xsl:call-template>
 
     <!-- Date Issued -->
@@ -519,18 +835,6 @@
       <xsl:value-of select="$envelope"/>
       <xsl:text>",</xsl:text>
     </xsl:if>
-
-    <!-- Is Part Of -->
-    <xsl:call-template name="string-array">
-      <xsl:with-param name="key" select="'dct_isPartOf_sm'"/>
-      <xsl:with-param name="nodes" select="idinfo/citation/citeinfo/lworkcit/citeinfo/title"/>
-    </xsl:call-template>
-
-    <!-- Source -->
-    <xsl:call-template name="string-array">
-      <xsl:with-param name="key" select="'dct_source_sm'"/>
-      <xsl:with-param name="nodes" select="dataqual/lineage/srcinfo/srccite/citeinfo/title"/>
-    </xsl:call-template>
 
     <!-- Rights -->
     <xsl:variable name="rights">

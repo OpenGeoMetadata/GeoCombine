@@ -80,4 +80,10 @@ module XmlDocs
   def gbl_keywords_fgdc
     File.read(File.join(File.dirname(__FILE__), './docs/gbl_keywords_fgdc.xml'))
   end
+
+  ##
+  # Hand-authored scanned map that repeats keywords, place names and dates
+  def duplicate_values_fgdc
+    File.read(File.join(File.dirname(__FILE__), './docs/duplicate_values_fgdc.xml'))
+  end
 end

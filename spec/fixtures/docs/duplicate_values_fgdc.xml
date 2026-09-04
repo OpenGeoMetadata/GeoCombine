@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Whitelaw, James</origin>
+        <pubdate>200703</pubdate>
+        <title>A Correct Map of the State of Vermont</title>
+        <geoform>map</geoform>
+        <pubinfo>
+          <pubplace>Burlington, Vermont</pubplace>
+          <publish>University of Vermont Libraries</publish>
+        </pubinfo>
+        <lworkcit>
+          <citeinfo>
+            <title>Vermont Historical Map Collection</title>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Scanned and georeferenced edition of an 1810 map of Vermont.</abstract>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <mdattim>
+          <sngdate>
+            <caldate>181009</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>19970101</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>19970101</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>1997</caldate>
+          </sngdate>
+        </mdattim>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <spdom>
+      <bounding>
+        <westbc>-73.437969</westbc>
+        <eastbc>-71.464555</eastbc>
+        <northbc>45.016659</northbc>
+        <southbc>42.726853</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>LCSH</themekt>
+        <themekey>Roads</themekey>
+        <themekey>Road maps</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>transportation</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>Roads</themekey>
+      </theme>
+      <place>
+        <placekt>LCNAF</placekt>
+        <placekey>Vermont</placekey>
+      </place>
+      <place>
+        <placekt>None</placekt>
+        <placekey>Vermont</placekey>
+      </place>
+      <temporal>
+        <tempkt>None</tempkt>
+        <tempkey>1997</tempkey>
+      </temporal>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>No restrictions on use.</useconst>
+  </idinfo>
+  <spdoinfo>
+    <direct>Raster</direct>
+  </spdoinfo>
+  <dataqual>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>A Correct Map of the State of Vermont, 1810</title>
+          </citeinfo>
+        </srccite>
+      </srcinfo>
+    </lineage>
+  </dataqual>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>University of Vermont Libraries</cntorg>
+        </cntorgp>
+      </cntinfo>
+    </distrib>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>GeoTIFF</formname>
+        </digtinfo>
+      </digform>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20070301</metd>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
