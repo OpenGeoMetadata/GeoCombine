@@ -176,9 +176,12 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_aardvark.metadata['gbl_resourceType_sm']).to eq ['Point data']
       end
 
-      it 'dct_subject_sm' do
-        expect(fgdc_aardvark.metadata['dct_subject_sm']).to include 'point', 'structure', 'economy',
-                                                                    'Drilling platforms', 'Oil well drilling'
+      it 'dct_subject_sm keeps only the descriptive keywords' do
+        expect(fgdc_aardvark.metadata['dct_subject_sm']).to eq ['point', 'Drilling platforms', 'Oil well drilling']
+      end
+
+      it 'dcat_theme_sm takes the ISO topic categories out of dct_subject_sm' do
+        expect(fgdc_aardvark.metadata['dcat_theme_sm']).to eq %w[Structure Economy]
       end
 
       it 'dct_temporal_sm' do
@@ -206,8 +209,10 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_aardvark.metadata['dcat_bbox']).to eq fgdc_aardvark.metadata['locn_geometry']
       end
 
-      it 'dct_isPartOf_sm' do
-        expect(fgdc_aardvark.metadata['dct_isPartOf_sm']).to eq ['Instituto Geografico Militar Data']
+      it 'does not crosswalk dct_isPartOf_sm or dct_source_sm' do
+        expect(fgdc_object.metadata.at_xpath('//lworkcit/citeinfo/title')).not_to be_nil
+        expect(fgdc_aardvark.metadata).not_to have_key 'dct_isPartOf_sm'
+        expect(fgdc_aardvark.metadata).not_to have_key 'dct_source_sm'
       end
 
       it 'dct_rights_sm labels each source element' do
@@ -241,8 +246,8 @@ RSpec.describe GeoCombine::Fgdc do
     describe 'field types' do
       it 'returns multivalued fields as arrays' do
         %w[dct_description_sm dct_creator_sm dct_publisher_sm gbl_resourceClass_sm
-           gbl_resourceType_sm dct_subject_sm dct_temporal_sm dct_spatial_sm
-           dct_isPartOf_sm dct_rights_sm gbl_indexYear_im].each do |field|
+           gbl_resourceType_sm dct_subject_sm dcat_theme_sm dct_temporal_sm
+           dct_spatial_sm dct_rights_sm gbl_indexYear_im].each do |field|
           expect(fgdc_aardvark.metadata[field]).to be_an(Array), "expected #{field} to be an Array"
         end
       end
@@ -320,8 +325,12 @@ RSpec.describe GeoCombine::Fgdc do
           expect(record.metadata['dct_description_sm'].first).not_to include "\n"
         end
 
-        it 'gbl_resourceType_sm' do
-          expect(record.metadata['gbl_resourceType_sm']).to eq ['Point data']
+        it 'adds the cartographic genre keyword' do
+          expect(record.metadata['gbl_resourceType_sm']).to eq ['Gazetteers', 'Point data']
+        end
+
+        it 'removes the cartographic genre keyword from dct_subject_sm' do
+          expect(record.metadata['dct_subject_sm']).not_to include 'Gazetteers'
         end
       end
 
@@ -341,11 +350,7 @@ RSpec.describe GeoCombine::Fgdc do
         end
 
         it 'gbl_resourceType_sm' do
-          expect(record.metadata['gbl_resourceType_sm']).to eq ['Line data']
-        end
-
-        it 'does not include a citation from a Data Quality Information section' do
-          expect(record.metadata).not_to have_key 'dct_isPartOf_sm'
+          expect(record.metadata['gbl_resourceType_sm']).to eq ['Topographic maps', 'Line data']
         end
       end
 
@@ -362,7 +367,11 @@ RSpec.describe GeoCombine::Fgdc do
         end
 
         it 'gbl_resourceType_sm' do
-          expect(record.metadata['gbl_resourceType_sm']).to eq ['Polygon data']
+          expect(record.metadata['gbl_resourceType_sm']).to eq ['Census data', 'Polygon data']
+        end
+
+        it 'de-duplicates a theme' do
+          expect(record.metadata['dcat_theme_sm']).to eq %w[Boundaries Society]
         end
 
         it 'dct_issued_s' do
@@ -382,7 +391,7 @@ RSpec.describe GeoCombine::Fgdc do
         end
 
         it 'calculates resource type from spdoinfo/direct when there is no sdtstype' do
-          expect(record.metadata['gbl_resourceType_sm']).to eq ['Raster data']
+          expect(record.metadata['gbl_resourceType_sm']).to eq ['Nautical charts', 'Raster data']
         end
 
         it 'normalizes pubdate formatted as YYYYMM' do
@@ -447,12 +456,45 @@ RSpec.describe GeoCombine::Fgdc do
           expect(record.metadata['gbl_resourceType_sm']).to eq ['Image data']
         end
 
-        it 'dcat_theme_sm' do
-          expect(record.metadata['dcat_theme_sm']).to eq ['Imagery and Base Maps']
+        it 'normalizes the themekt keyword to an approved Theme value' do
+          expect(record.metadata['dcat_theme_sm']).to eq ['Imagery']
         end
 
         it 'excludes the controlled keywords from dct_subject_sm' do
           expect(record.metadata['dct_subject_sm']).to eq ['Cartography', 'Geospatial data']
+        end
+      end
+
+      describe 'a record with repeated values and mixed date precision' do
+        let(:record) { described_class.new(duplicate_values_fgdc).to_aardvark }
+
+        it 'is valid' do
+          expect(record).to be_valid
+        end
+
+        it 'keeps the precision of each source date and de-duplicates the rest' do
+          expect(record.metadata['dct_temporal_sm']).to eq %w[1810-09 1997-01-01 1997]
+        end
+
+        it 'de-duplicates a keyword that appears in two thesauri' do
+          expect(record.metadata['dct_subject_sm']).to eq ['Roads']
+        end
+
+        it 'de-duplicates a place names' do
+          expect(record.metadata['dct_spatial_sm']).to eq ['Vermont']
+        end
+
+        it 'moves an ISO topic category to dcat_theme_sm' do
+          expect(record.metadata['dcat_theme_sm']).to eq ['Transportation']
+        end
+
+        it 'moves a cartographic genre to gbl_resourceType_sm' do
+          expect(record.metadata['gbl_resourceType_sm']).to eq ['Road maps', 'Raster data']
+        end
+
+        it 'ignores lworkcit and the Data Quality Information citation' do
+          expect(record.metadata).not_to have_key 'dct_isPartOf_sm'
+          expect(record.metadata).not_to have_key 'dct_source_sm'
         end
       end
     end
