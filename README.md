@@ -171,6 +171,8 @@ GeoCombine::GeoBlacklightHarvester.configure do
     crawl_delay: 1, # All sites
     debug: true,
     headers: { 'User-Agent' => 'GeoCombine harvester (you@example.edu)' }, # All sites
+    max_retries: 3, # All sites
+    retry_delay: 2, # All sites
     SITE1: {
       crawl_delay: 2, # SITE1 only
       headers: { 'X-Api-Key' => 'secret' }, # SITE1 only
@@ -200,6 +202,12 @@ Be aware that this makes a harvest take considerably longer than it did when the
 ##### Request Headers (default: none)
 
 Headers can be configured either globally for all sites or on a per-site basis, and are sent with every request the harvester makes; headers configured for a site are merged over the global ones. This is one way to get the harvester past a firewall or bot detection (at Stanford, for example, requests carrying a particular header skip Turnstile), and it can also be used to authenticate the harvester. Configuring a `User-Agent` is worthwhile even if you need neither: it identifies your harvester to the sites you harvest, and lets GeoBlacklight's `crawler_detector` recognize it as a bot.
+
+##### Retries (default: 3 retries, starting with a 2 second delay)
+
+Requests that fail in ways that tend to be transient are retried with an exponential backoff: connection resets, broken pipes, timeouts, TLS errors, 5xx responses, rate limiting, and responses that come back with a 200 but aren't JSON (bot mitigation often answers a crawler with a page of HTML). How many times to retry and the delay to start doubling from can be configured globally or per site with `max_retries` and `retry_delay`.
+
+A request that still can't be completed raises `GeoCombine::Exceptions::HarvestError`, so a harvest that couldn't finish exits non-zero instead of looking like a success that happened to index part of the site. Every page of results is checked, not just the first: a 200 whose JSON isn't a page of search results, which is how a WAF or API gateway rejection often arrives, raises rather than reading as the end of the results. The one failure that is logged and skipped instead is a 404 for an individual document, since a record can be indexed but unreadable.
 
 ##### Solr's commitWithin (default: 5000 milliseconds)
 
