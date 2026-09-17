@@ -152,8 +152,9 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
   end
 
   describe 'HttpClient' do
-    let(:client) { described_class::HttpClient.new(crawl_delay:, logger:) }
+    let(:client) { described_class::HttpClient.new(crawl_delay:, headers:, logger:) }
     let(:crawl_delay) { 1 }
+    let(:headers) { {} }
 
     before do
       stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(body: '{"id":"abc-123"}')
@@ -202,9 +203,22 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         expect(client).not_to have_received(:sleep)
       end
     end
+
+    context 'when headers are configured' do
+      let(:headers) { { 'User-Agent' => 'GeoCombine', :'X-Api-Key' => :secret } }
+
+      it 'sends them with the request, as strings' do
+        client.get_json('https://example.com/catalog/abc-123/raw')
+
+        expect(
+          a_request(:get, 'https://example.com/catalog/abc-123/raw')
+            .with(headers: { 'User-Agent' => 'GeoCombine', 'X-Api-Key' => 'secret' })
+        ).to have_been_made
+      end
+    end
   end
 
-  describe 'crawl delay configuration' do
+  describe 'client configuration' do
     let(:client) { instance_double(described_class::HttpClient) }
 
     before do
@@ -221,7 +235,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       it 'prefers the site crawl delay over the global one' do
         harvester.each_document.to_a
 
-        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 2, logger:)
+        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 2, headers: {}, logger:)
       end
     end
 
@@ -231,7 +245,20 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       it 'uses the global crawl delay' do
         harvester.each_document.to_a
 
-        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 1, logger:)
+        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 1, headers: {}, logger:)
+      end
+    end
+
+    context 'when headers are configured' do
+      let(:site_config) { super().merge(headers: { 'X-Api-Key' => 'secret' }) }
+      let(:config) { { headers: { 'User-Agent' => 'GeoCombine', 'X-Api-Key' => 'global' }, INSTITUTION: site_config } }
+
+      it 'merges the site headers over the global ones' do
+        harvester.each_document.to_a
+
+        expect(described_class::HttpClient).to have_received(:new).with(
+          crawl_delay: nil, headers: { 'User-Agent' => 'GeoCombine', 'X-Api-Key' => 'secret' }, logger:
+        )
       end
     end
   end

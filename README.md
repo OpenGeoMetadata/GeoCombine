@@ -170,8 +170,10 @@ GeoCombine::GeoBlacklightHarvester.configure do
     commit_within: '10000',
     crawl_delay: 1, # All sites
     debug: true,
+    headers: { 'User-Agent' => 'GeoCombine harvester (you@example.edu)' }, # All sites
     SITE1: {
       crawl_delay: 2, # SITE1 only
+      headers: { 'X-Api-Key' => 'secret' }, # SITE1 only
       host: 'https://geoblacklight.example.edu',
       params: {
         f: {
@@ -194,6 +196,10 @@ end
 Crawl delays can be configured (in seconds, and fractions of a second are allowed) either globally for all sites or on a per-site basis. The harvester waits out the delay before every request it makes, not just before each page of search results -- which matters because Blacklight 7 and above needs a request per document, so one page of results is many requests. Each request also gets its own connection instead of reusing one. Together, pacing requests and connecting fresh make a harvest much less likely to be turned away by a WAF or other bot mitigation.
 
 Be aware that this makes a harvest take considerably longer than it did when the delay applied per page: a one second delay against a Blacklight 7 site with 10,000 records is around three hours of waiting. Lower the delay if that matters more to you than getting past bot mitigation.
+
+##### Request Headers (default: none)
+
+Headers can be configured either globally for all sites or on a per-site basis, and are sent with every request the harvester makes; headers configured for a site are merged over the global ones. This is one way to get the harvester past a firewall or bot detection (at Stanford, for example, requests carrying a particular header skip Turnstile), and it can also be used to authenticate the harvester. Configuring a `User-Agent` is worthwhile even if you need neither: it identifies your harvester to the sites you harvest, and lets GeoBlacklight's `crawler_detector` recognize it as a bot.
 
 ##### Solr's commitWithin (default: 5000 milliseconds)
 
