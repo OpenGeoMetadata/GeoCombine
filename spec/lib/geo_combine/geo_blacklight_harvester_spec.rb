@@ -9,19 +9,22 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
   let(:logger) { instance_double(Logger, warn: nil, info: nil, error: nil, debug: nil) }
   let(:site_key) { :INSTITUTION }
+  let(:base_url) { 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100' }
   let(:stub_json_response) { '{}' }
   let(:stub_solr_connection) { double('RSolr::Connection') }
-
-  before do
-    allow(described_class).to receive(:config).and_return({
-                                                            INSTITUTION: {
-                                                              host: 'https://example.com/',
-                                                              params: {
-                                                                f: { dct_provenance_s: ['INSTITUTION'] }
-                                                              }
-                                                            }
-                                                          })
+  let(:site_config) do
+    { host: 'https://example.com/', params: { f: { dct_provenance_s: ['INSTITUTION'] } } }
   end
+  let(:config) { { INSTITUTION: site_config } }
+
+  # Requests are stubbed with webmock; make sure none of them escape
+  around do |example|
+    WebMock.disable_net_connect!
+    example.run
+    WebMock.allow_net_connect!
+  end
+
+  before { allow(described_class).to receive(:config).and_return(config) }
 
   describe '.configure' do
     around do |example|
@@ -53,9 +56,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
   describe '#index' do
     before do
-      expect(Net::HTTP).to receive(:get).with(
-        URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=1')
-      ).and_return(stub_json_response)
+      stub_request(:get, "#{base_url}&page=1").to_return(body: stub_json_response)
       allow(RSolr).to receive(:connect).and_return(stub_solr_connection)
     end
 
@@ -121,11 +122,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
   end
 
   describe '#each_document' do
-    before do
-      expect(Net::HTTP).to receive(:get).with(
-        URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=1')
-      ).and_return(stub_json_response)
-    end
+    before { stub_request(:get, "#{base_url}&page=1").to_return(body: stub_json_response) }
 
     let(:docs) { [{ 'layer_slug_s' => 'abc-123', 'score' => 0.1 }, { 'layer_slug_s' => 'abc-321' }] }
     let(:transformed_docs) { [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }] }
@@ -150,6 +147,91 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
       it 'does not yield the omitted document' do
         expect { |block| harvester.each_document(&block) }.to yield_successive_args({ 'layer_slug_s' => 'abc-321' })
+      end
+    end
+  end
+
+  describe 'HttpClient' do
+    let(:client) { described_class::HttpClient.new(crawl_delay:, logger:) }
+    let(:crawl_delay) { 1 }
+
+    before do
+      stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(body: '{"id":"abc-123"}')
+      stub_request(:get, 'https://example.com/catalog/abc-321/raw').to_return(body: '{"id":"abc-321"}')
+      allow(client).to receive(:sleep)
+    end
+
+    it 'parses the JSON response body' do
+      expect(client.get_json('https://example.com/catalog/abc-123/raw')).to eq('id' => 'abc-123')
+    end
+
+    it 'waits out the crawl delay before every request, not just every page of results' do
+      client.get_json('https://example.com/catalog/abc-123/raw')
+      client.get_json('https://example.com/catalog/abc-321/raw')
+
+      expect(client).to have_received(:sleep).with(1.0).twice
+    end
+
+    it 'uses a new connection for each request' do
+      allow(Net::HTTP).to receive(:get_response).and_call_original
+
+      client.get_json('https://example.com/catalog/abc-123/raw')
+      client.get_json('https://example.com/catalog/abc-321/raw')
+
+      # Net::HTTP.get_response opens and closes a connection per call, rather
+      # than holding one open across requests the way a WAF tends to dislike
+      expect(Net::HTTP).to have_received(:get_response).twice
+    end
+
+    context 'when the crawl delay is fractional' do
+      let(:crawl_delay) { '0.5' }
+
+      it 'waits that fraction of a second' do
+        client.get_json('https://example.com/catalog/abc-123/raw')
+
+        expect(client).to have_received(:sleep).with(0.5)
+      end
+    end
+
+    context 'when no crawl delay is configured' do
+      let(:crawl_delay) { nil }
+
+      it 'does not wait between requests' do
+        client.get_json('https://example.com/catalog/abc-123/raw')
+
+        expect(client).not_to have_received(:sleep)
+      end
+    end
+  end
+
+  describe 'crawl delay configuration' do
+    let(:client) { instance_double(described_class::HttpClient) }
+
+    before do
+      allow(described_class::HttpClient).to receive(:new).and_return(client)
+      allow(client).to receive(:get_json).and_return(
+        { 'response' => { 'docs' => [], 'pages' => { 'current_page' => 1, 'total_pages' => 1 } } }
+      )
+    end
+
+    context 'when the site configures a crawl delay' do
+      let(:site_config) { super().merge(crawl_delay: 2) }
+      let(:config) { { crawl_delay: 1, INSTITUTION: site_config } }
+
+      it 'prefers the site crawl delay over the global one' do
+        harvester.each_document.to_a
+
+        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 2, logger:)
+      end
+    end
+
+    context 'when only a global crawl delay is configured' do
+      let(:config) { { crawl_delay: 1, INSTITUTION: site_config } }
+
+      it 'uses the global crawl delay' do
+        harvester.each_document.to_a
+
+        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 1, logger:)
       end
     end
   end
@@ -190,12 +272,17 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       { 'response' => { 'docs' => second_docs, 'pages' => { 'current_page' => 2, 'total_pages' => 2 } } }
     end
 
+    it 'gives the client it builds by default the logger it was given' do
+      allow(described_class::HttpClient).to receive(:new).and_call_original
+
+      described_class::LegacyBlacklightResponse.new(response: stub_first_response, base_url:, logger:)
+
+      expect(described_class::HttpClient).to have_received(:new).with(logger:)
+    end
+
     describe '#documents' do
       it 'pages through the response and returns all the documents' do
-        expect(Net::HTTP).to receive(:get).with(
-          URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=2')
-        ).and_return(stub_second_response.to_json)
-        base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
+        stub_request(:get, "#{base_url}&page=2").to_return(body: stub_second_response.to_json)
         docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
                                                              base_url:).documents
 
@@ -203,8 +290,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       end
 
       it 'stops paging and logs when a request fails' do
-        allow(Net::HTTP).to receive(:get).and_raise(SocketError, 'no route to host')
-        base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
+        stub_request(:get, "#{base_url}&page=2").to_raise(SocketError.new('no route to host'))
         docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
                                                              base_url:, logger:).documents
 
@@ -217,9 +303,10 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
   describe 'ModernBlacklightResponse' do
     before do
       allow(RSolr).to receive(:connect).and_return(stub_solr_connection)
-      expect(Net::HTTP).to receive(:get).with(
-        URI('https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2&format=json')
-      ).and_return(second_results_response.to_json)
+      stub_request(
+        :get,
+        'https://example.com/catalog.json?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&per_page=100&page=2&format=json'
+      ).to_return(body: second_results_response.to_json)
     end
 
     let(:first_results_response) do
@@ -237,15 +324,22 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       ] }
     end
 
+    it 'gives the client it builds by default the logger it was given' do
+      allow(described_class::HttpClient).to receive(:new).and_call_original
+
+      described_class::ModernBlacklightResponse.new(response: first_results_response, base_url:, logger:)
+
+      expect(described_class::HttpClient).to have_received(:new).with(logger:)
+    end
+
     describe '#documents' do
       it 'pages through the response and fetches documents for each "link" on the response data' do
         %w[abc-123 abc-321 xyz-123 xyz-321].each do |id|
-          expect(Net::HTTP).to receive(:get).with(
-            URI("https://example.com/catalog/#{id}/raw")
-          ).and_return({ 'layer_slug_s' => id }.to_json)
+          stub_request(:get, "https://example.com/catalog/#{id}/raw").to_return(
+            body: { 'layer_slug_s' => id }.to_json
+          )
         end
 
-        base_url = 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100'
         docs = described_class::ModernBlacklightResponse.new(response: first_results_response,
                                                              base_url:).documents
 
@@ -262,7 +356,6 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       described_class::ModernBlacklightResponse.new(response:, base_url:, logger:).documents.to_a
     end
 
-    let(:base_url) { 'https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100' }
     let(:next_url) { 'https://example.com/catalog.json?page=2' }
 
     before { allow(RSolr).to receive(:connect).and_return(stub_solr_connection) }
@@ -276,10 +369,12 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       end
 
       before do
-        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-123/raw'))
-                                         .and_return({ 'layer_slug_s' => 'abc-123' }.to_json)
-        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-321/raw'))
-                                         .and_raise(SocketError, 'connection reset')
+        stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(
+          body: { 'layer_slug_s' => 'abc-123' }.to_json
+        )
+        stub_request(:get, 'https://example.com/catalog/abc-321/raw').to_raise(
+          SocketError.new('connection reset')
+        )
       end
 
       it 'drops that document and keeps the rest' do
@@ -299,10 +394,10 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       end
 
       before do
-        allow(Net::HTTP).to receive(:get).with(URI('https://example.com/catalog/abc-123/raw'))
-                                         .and_return({ 'layer_slug_s' => 'abc-123' }.to_json)
-        allow(Net::HTTP).to receive(:get).with(URI("#{next_url}&format=json"))
-                                         .and_raise(SocketError, 'no route to host')
+        stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(
+          body: { 'layer_slug_s' => 'abc-123' }.to_json
+        )
+        stub_request(:get, "#{next_url}&format=json").to_raise(SocketError.new('no route to host'))
       end
 
       it 'stops paging and returns what it already had' do
