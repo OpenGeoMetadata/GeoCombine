@@ -7,3 +7,6 @@ gemspec
 
 gem 'byebug', require: false
 gem 'rdbg', require: false
+
+# Json 3 drops quicks_mode which we use in our json-schema
+gem 'json', '< 3'
