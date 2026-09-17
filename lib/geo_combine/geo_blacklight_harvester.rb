@@ -15,6 +15,7 @@ module GeoCombine
   # The class configuration also allows for various other things to be configured:
   #  - A debug parameter to print out details of what is being harvested and indexed
   #  - crawl delays between requests (globally or on a per site basis)
+  #  - headers to send with every request (globally or on a per site basis)
   #  - Solr's commitWithin parameter (defaults to 5000)
   #  - A document transformer proc to modify a document before indexing (defaults to removing _version_, score, and timestamp)
   # Example: GeoCombine::GeoBlacklightHarvester.new('SITE').index
@@ -81,10 +82,11 @@ module GeoCombine
     # one; a request that is both paced and freshly connected is much less
     # likely to be turned away by a WAF or other bot mitigation.
     class HttpClient
-      attr_reader :crawl_delay
+      attr_reader :crawl_delay, :headers
 
-      def initialize(crawl_delay: nil, logger: GeoCombine::Logger.logger)
+      def initialize(crawl_delay: nil, headers: {}, logger: GeoCombine::Logger.logger)
         @crawl_delay = crawl_delay&.to_f
+        @headers = headers.to_h { |name, value| [name.to_s, value.to_s] }
         @logger = logger
       end
 
@@ -98,7 +100,7 @@ module GeoCombine
       # Fetch a URL and return the response body
       def get(url)
         throttle
-        Net::HTTP.get_response(URI(url)).body
+        Net::HTTP.get_response(URI(url), headers).body
       end
 
       # Wait out the crawl delay, if one is configured
@@ -241,7 +243,7 @@ module GeoCombine
 
     # The client used to make requests for this site
     def client
-      @client ||= HttpClient.new(crawl_delay:, logger: @logger)
+      @client ||= HttpClient.new(crawl_delay:, headers:, logger: @logger)
     end
 
     def base_url
@@ -260,6 +262,13 @@ module GeoCombine
 
     def crawl_delay
       site[:crawl_delay] || self.class.config[:crawl_delay]
+    end
+
+    # Headers to send with every request, e.g. to identify the harvester to a
+    # WAF or bot detection, or to authenticate it. Headers configured for the
+    # site are merged over any configured globally.
+    def headers
+      (self.class.config[:headers] || {}).merge(site[:headers] || {})
     end
 
     def default_params
