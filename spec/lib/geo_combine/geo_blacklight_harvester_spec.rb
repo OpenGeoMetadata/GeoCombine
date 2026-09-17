@@ -120,6 +120,40 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
     end
   end
 
+  describe '#each_document' do
+    before do
+      expect(Net::HTTP).to receive(:get).with(
+        URI('https://example.com?f%5Bdct_provenance_s%5D%5B%5D=INSTITUTION&format=json&per_page=100&page=1')
+      ).and_return(stub_json_response)
+    end
+
+    let(:docs) { [{ 'layer_slug_s' => 'abc-123', 'score' => 0.1 }, { 'layer_slug_s' => 'abc-321' }] }
+    let(:transformed_docs) { [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }] }
+    let(:stub_json_response) do
+      { response: { docs:, pages: { current_page: 1, total_pages: 1 } } }.to_json
+    end
+
+    it 'yields each transformed document' do
+      expect { |block| harvester.each_document(&block) }.to yield_successive_args(*transformed_docs)
+    end
+
+    it 'returns an enumerator when no block is given' do
+      expect(harvester.each_document.to_a).to eq(transformed_docs)
+    end
+
+    context 'when the document transformer omits a document' do
+      before do
+        allow(described_class).to receive(:document_transformer).and_return(
+          ->(document) { document unless document['layer_slug_s'] == 'abc-123' }
+        )
+      end
+
+      it 'does not yield the omitted document' do
+        expect { |block| harvester.each_document(&block) }.to yield_successive_args({ 'layer_slug_s' => 'abc-321' })
+      end
+    end
+  end
+
   describe 'BlacklightResponseVersionFactory' do
     let(:version_class) { described_class::BlacklightResponseVersionFactory.call(json) }
 
