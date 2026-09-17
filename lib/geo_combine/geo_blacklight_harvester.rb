@@ -55,23 +55,23 @@ module GeoCombine
       raise ArgumentError, "Site key #{@site_key.inspect} is not configured for #{self.class.name}" unless @site
     end
 
+    # Index the documents harvested from the site into Solr
     def index
-      @logger.debug "fetching page 1 @ #{base_url}&page=1"
-      response = JSON.parse(Net::HTTP.get(URI("#{base_url}&page=1")))
-      response_class = BlacklightResponseVersionFactory.call(response)
-
-      response_class.new(response:, base_url:, logger: @logger).documents.each do |docs|
-        docs.map! do |document|
-          self.class.document_transformer&.call(document)
-        end.compact
-
-        @logger.debug "adding #{docs.count} documents to solr"
+      each_page do |documents|
+        @logger.debug "adding #{documents.count} documents to solr"
         solr_connection.update params: { commitWithin: commit_within, overwrite: true },
-                               data: docs.to_json,
+                               data: documents.to_json,
                                headers: { 'Content-Type' => 'application/json' }
-
-        sleep(crawl_delay.to_i) if crawl_delay
       end
+    end
+
+    # Enumerable of the documents harvested from the site, for passing to an
+    # indexer or doing something else with them (e.g. writing them to disk).
+    # Documents have already been through the configured document transformer.
+    def each_document(&block)
+      return to_enum(:each_document) unless block_given?
+
+      each_page { |documents| documents.each(&block) }
     end
 
     ##
@@ -187,6 +187,21 @@ module GeoCombine
     end
 
     private
+
+    # Enumerable of pages of transformed documents harvested from the site
+    def each_page
+      return to_enum(:each_page) unless block_given?
+
+      @logger.debug "fetching page 1 @ #{base_url}&page=1"
+      response = JSON.parse(Net::HTTP.get(URI("#{base_url}&page=1")))
+      response_class = BlacklightResponseVersionFactory.call(response)
+
+      response_class.new(response:, base_url:, logger: @logger).documents.each do |documents|
+        yield documents.map { |document| self.class.document_transformer&.call(document) }.compact
+
+        sleep(crawl_delay.to_i) if crawl_delay
+      end
+    end
 
     def base_url
       "#{site[:host]}?#{default_params.to_query}"
