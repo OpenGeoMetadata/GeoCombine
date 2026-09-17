@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require 'openssl'
+require 'geo_combine/exceptions'
 require 'geo_combine/logger'
 
 module GeoCombine
@@ -16,6 +18,7 @@ module GeoCombine
   #  - A debug parameter to print out details of what is being harvested and indexed
   #  - crawl delays between requests (globally or on a per site basis)
   #  - headers to send with every request (globally or on a per site basis)
+  #  - retries and backoff for failed requests (globally or on a per site basis)
   #  - Solr's commitWithin parameter (defaults to 5000)
   #  - A document transformer proc to modify a document before indexing (defaults to removing _version_, score, and timestamp)
   # Example: GeoCombine::GeoBlacklightHarvester.new('SITE').index
@@ -82,25 +85,46 @@ module GeoCombine
     # one; a request that is both paced and freshly connected is much less
     # likely to be turned away by a WAF or other bot mitigation.
     class HttpClient
-      attr_reader :crawl_delay, :headers
+      # Failures that are worth retrying rather than ending a harvest over
+      RETRIABLE_ERRORS = [
+        Errno::ECONNRESET,
+        Errno::EPIPE,
+        EOFError,
+        Net::OpenTimeout,
+        Net::ReadTimeout,
+        OpenSSL::SSL::SSLError,
+        SocketError
+      ].freeze
 
-      def initialize(crawl_delay: nil, headers: {}, logger: GeoCombine::Logger.logger)
+      DEFAULT_MAX_RETRIES = 3
+      DEFAULT_RETRY_DELAY = 2
+
+      # Raised internally to signal a response that is worth retrying
+      class RetriableResponse < StandardError; end
+
+      attr_reader :crawl_delay, :headers, :max_retries, :retry_delay
+
+      def initialize(crawl_delay: nil, headers: {}, max_retries: nil, retry_delay: nil,
+                     logger: GeoCombine::Logger.logger)
         @crawl_delay = crawl_delay&.to_f
         @headers = headers.to_h { |name, value| [name.to_s, value.to_s] }
+        @max_retries = (max_retries || DEFAULT_MAX_RETRIES).to_i
+        @retry_delay = (retry_delay || DEFAULT_RETRY_DELAY).to_f
         @logger = logger
       end
 
-      # Fetch a URL and parse the JSON response body
+      # Fetch a URL and parse the JSON response body, retrying failures that
+      # look transient and raising if the harvest cannot go on
       def get_json(url)
-        JSON.parse(get(url))
+        with_retries(url) { parse_json(get(url), url) }
       end
 
       private
 
-      # Fetch a URL and return the response body
+      # Fetch a URL and return the response
       def get(url)
         throttle
-        Net::HTTP.get_response(URI(url), headers).body
+        Net::HTTP.get_response(URI(url), headers)
       end
 
       # Wait out the crawl delay, if one is configured
@@ -109,6 +133,51 @@ module GeoCombine
 
         @logger.debug "waiting #{crawl_delay}s before the next request"
         sleep(crawl_delay)
+      end
+
+      # Retry transient failures with an exponential backoff. A request that
+      # still cannot be completed ends the harvest rather than quietly
+      # truncating it.
+      def with_retries(url)
+        attempts = 0
+
+        begin
+          attempts += 1
+          yield
+        rescue *RETRIABLE_ERRORS, RetriableResponse => e
+          raise Exceptions::HarvestError, "request for #{url} failed after #{attempts} attempts: #{e.message}" if attempts > max_retries
+
+          delay = retry_delay * (2**(attempts - 1))
+          @logger.warn "request for #{url} failed with #{e.message}; retrying in #{delay}s"
+          sleep(delay)
+          retry
+        end
+      end
+
+      # Parse a response body, or raise if it isn't a document we can use.
+      # Bot mitigation often answers with a 200 and a page of HTML, so the
+      # status code alone isn't enough to tell a good response from a bad one.
+      def parse_json(response, url)
+        raise Exceptions::DocumentNotFound, "#{url} was not found" if response.is_a?(Net::HTTPNotFound)
+        raise RetriableResponse, status(response) if retriable?(response)
+
+        raise Exceptions::HarvestError, "request for #{url} failed with #{status(response)}" unless response.is_a?(Net::HTTPSuccess)
+
+        parsed = JSON.parse(response.body.to_s)
+        raise RetriableResponse, 'a JSON body that is not an object' unless parsed.is_a?(Hash)
+
+        parsed
+      rescue JSON::ParserError
+        raise RetriableResponse, "a body that is not JSON (content type: #{response.content_type || 'none'})"
+      end
+
+      # Server errors and rate limiting are worth waiting out and retrying
+      def retriable?(response)
+        response.is_a?(Net::HTTPServerError) || response.is_a?(Net::HTTPTooManyRequests)
+      end
+
+      def status(response)
+        "#{response.code} #{response.message}"
       end
     end
 
@@ -150,17 +219,22 @@ module GeoCombine
 
           self.page += 1
           @logger.debug "fetching page #{page} @ #{url}"
-
-          begin
-            self.response = client.get_json(url)
-          rescue StandardError => e
-            @logger.error "request for #{url} failed with #{e}"
-            self.response = nil
-          end
+          self.response = client.get_json(url)
+          validate_page!
         end
       end
 
       private
+
+      # Only the first page of a harvest goes through the response factory. A
+      # 200 carrying JSON that isn't a page of search results -- a WAF or API
+      # gateway rejection, say -- would otherwise read as the end of the
+      # results and finish the harvest as though nothing had gone wrong.
+      def validate_page!
+        return if current_page && total_pages
+
+        raise Exceptions::HarvestError, "response for #{url} was not a page of search results"
+      end
 
       def url
         "#{base_url}&page=#{page}"
@@ -193,7 +267,7 @@ module GeoCombine
         return enum_for(:documents) unless block_given?
 
         while response && response['data'].any?
-          document_urls = response['data'].collect { |data| data.dig('links', 'self') }.compact
+          document_urls = document_urls_from(response['data'])
 
           yield documents_from_urls(document_urls)
 
@@ -203,26 +277,47 @@ module GeoCombine
           url = "#{url}&format=json"
           self.page += 1
           @logger.debug "fetching page #{page} @ #{url}"
-          begin
-            self.response = client.get_json(url)
-          rescue StandardError => e
-            @logger.error "Request for #{url} failed with #{e}"
-            self.response = nil
-          end
+          self.response = client.get_json(url)
+          validate_page!(url)
         end
       end
 
       private
 
+      # Only the first page of a harvest goes through the response factory. A
+      # 200 carrying JSON that isn't a page of search results -- a WAF or API
+      # gateway rejection, say -- would otherwise read as the end of the
+      # results and finish the harvest as though nothing had gone wrong.
+      def validate_page!(url)
+        return if response['data'].is_a?(Array)
+
+        raise Exceptions::HarvestError, "response for #{url} was not a page of search results"
+      end
+
+      # A result with no link to itself can't be fetched; say which one rather
+      # than letting it disappear from the harvest
+      def document_urls_from(data)
+        data.filter_map do |result|
+          url = result.dig('links', 'self')
+          @logger.warn "skipping result with no self link: #{result.inspect}" unless url
+
+          url
+        end
+      end
+
       def documents_from_urls(urls)
         @logger.debug "fetching #{urls.count} documents for page #{page}"
-        urls.map do |url|
+        documents = urls.map do |url|
           client.get_json("#{url}/raw")
-        rescue StandardError => e
-          @logger.error "fetching \"#{url}/raw\" failed with #{e}"
+        rescue Exceptions::DocumentNotFound => e
+          # A record can be indexed but unreadable; log it and move on
+          @logger.warn "skipping document: #{e.message}"
 
           nil
         end.compact
+        @logger.error "skipped every document on page #{page}" if documents.empty? && urls.any?
+
+        documents
       end
     end
 
@@ -243,7 +338,7 @@ module GeoCombine
 
     # The client used to make requests for this site
     def client
-      @client ||= HttpClient.new(crawl_delay:, headers:, logger: @logger)
+      @client ||= HttpClient.new(crawl_delay:, headers:, max_retries:, retry_delay:, logger: @logger)
     end
 
     def base_url
@@ -262,6 +357,16 @@ module GeoCombine
 
     def crawl_delay
       site[:crawl_delay] || self.class.config[:crawl_delay]
+    end
+
+    # How many times to retry a request that fails transiently
+    def max_retries
+      site[:max_retries] || self.class.config[:max_retries]
+    end
+
+    # How long to wait before the first retry; it doubles with each attempt
+    def retry_delay
+      site[:retry_delay] || self.class.config[:retry_delay]
     end
 
     # Headers to send with every request, e.g. to identify the harvester to a

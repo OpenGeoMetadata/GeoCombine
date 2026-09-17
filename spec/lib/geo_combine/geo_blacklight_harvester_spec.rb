@@ -70,6 +70,16 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       harvester.index
     end
 
+    context 'when a request keeps failing' do
+      let(:site_config) { super().merge(retry_delay: 0) }
+
+      it 'raises instead of returning normally after a partial harvest' do
+        stub_request(:get, "#{base_url}&page=1").to_raise(Errno::ECONNRESET)
+
+        expect { harvester.index }.to raise_error(GeoCombine::Exceptions::HarvestError)
+      end
+    end
+
     describe 'document tranformations' do
       let(:docs) do
         [
@@ -138,6 +148,25 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       expect(harvester.each_document.to_a).to eq(transformed_docs)
     end
 
+    context 'when the site has more than one page of results' do
+      let(:stub_json_response) do
+        { response: { docs: [{ 'layer_slug_s' => 'abc-123' }],
+                      pages: { current_page: 1, total_pages: 2 } } }.to_json
+      end
+
+      before do
+        stub_request(:get, "#{base_url}&page=2").to_return(
+          body: { response: { docs: [{ 'layer_slug_s' => 'xyz-123' }],
+                              pages: { current_page: 2, total_pages: 2 } } }.to_json
+        )
+      end
+
+      it 'yields the documents from every page' do
+        expect(harvester.each_document.to_a).to eq([{ 'layer_slug_s' => 'abc-123' },
+                                                    { 'layer_slug_s' => 'xyz-123' }])
+      end
+    end
+
     context 'when the document transformer omits a document' do
       before do
         allow(described_class).to receive(:document_transformer).and_return(
@@ -152,9 +181,13 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
   end
 
   describe 'HttpClient' do
-    let(:client) { described_class::HttpClient.new(crawl_delay:, headers:, logger:) }
+    let(:client) do
+      described_class::HttpClient.new(crawl_delay:, headers:, max_retries:, retry_delay:, logger:)
+    end
     let(:crawl_delay) { 1 }
     let(:headers) { {} }
+    let(:max_retries) { nil }
+    let(:retry_delay) { nil }
 
     before do
       stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(body: '{"id":"abc-123"}')
@@ -216,6 +249,95 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         ).to have_been_made
       end
     end
+
+    context 'when a request fails transiently' do
+      let(:crawl_delay) { nil }
+      let(:url) { 'https://example.com/catalog/abc-123/raw' }
+      let(:document) { { 'id' => 'abc-123' } }
+
+      [Errno::ECONNRESET, Errno::EPIPE, EOFError, Net::OpenTimeout, Net::ReadTimeout,
+       OpenSSL::SSL::SSLError, SocketError].each do |error|
+        it "retries #{error}" do
+          stub_request(:get, url).to_raise(error).then.to_return(body: document.to_json)
+
+          expect(client.get_json(url)).to eq(document)
+        end
+      end
+
+      it 'retries a server error' do
+        stub_request(:get, url).to_return({ status: 503 }, { body: document.to_json })
+
+        expect(client.get_json(url)).to eq(document)
+      end
+
+      it 'retries rate limiting' do
+        stub_request(:get, url).to_return({ status: 429 }, { body: document.to_json })
+
+        expect(client.get_json(url)).to eq(document)
+      end
+
+      it 'retries a 200 that is HTML rather than JSON, as bot mitigation sends' do
+        stub_request(:get, url).to_return(
+          { body: '<html>checking your browser</html>', headers: { 'Content-Type' => 'text/html' } },
+          { body: document.to_json }
+        )
+
+        expect(client.get_json(url)).to eq(document)
+      end
+
+      it 'retries a body that is valid JSON but not an object' do
+        stub_request(:get, url).to_return({ body: 'null' }, { body: document.to_json })
+
+        expect(client.get_json(url)).to eq(document)
+      end
+
+      it 'waits longer before each attempt' do
+        stub_request(:get, url).to_return({ status: 503 }, { status: 503 }, { body: document.to_json })
+        client.get_json(url)
+
+        expect(client).to have_received(:sleep).with(2.0)
+        expect(client).to have_received(:sleep).with(4.0)
+      end
+
+      it 'raises once it runs out of retries, rather than ending the harvest quietly' do
+        stub_request(:get, url).to_raise(Errno::ECONNRESET)
+
+        expect { client.get_json(url) }.to raise_error(GeoCombine::Exceptions::HarvestError,
+                                                       /failed after 4 attempts/)
+        expect(a_request(:get, url)).to have_been_made.times(4)
+      end
+
+      context 'when retries are configured' do
+        let(:max_retries) { 1 }
+        let(:retry_delay) { 0 }
+
+        it 'retries only as often as configured' do
+          stub_request(:get, url).to_raise(Errno::ECONNRESET)
+
+          expect { client.get_json(url) }.to raise_error(GeoCombine::Exceptions::HarvestError)
+          expect(a_request(:get, url)).to have_been_made.twice
+        end
+      end
+    end
+
+    context 'when a request fails unrecoverably' do
+      let(:crawl_delay) { nil }
+      let(:url) { 'https://example.com/catalog/abc-123/raw' }
+
+      it 'raises DocumentNotFound for a document that is gone, without retrying' do
+        stub_request(:get, url).to_return(status: 404)
+
+        expect { client.get_json(url) }.to raise_error(GeoCombine::Exceptions::DocumentNotFound, /was not found/)
+        expect(a_request(:get, url)).to have_been_made.once
+      end
+
+      it 'raises for a response it cannot use, without retrying' do
+        stub_request(:get, url).to_return(status: 403)
+
+        expect { client.get_json(url) }.to raise_error(GeoCombine::Exceptions::HarvestError, /failed with 403/)
+        expect(a_request(:get, url)).to have_been_made.once
+      end
+    end
   end
 
   describe 'client configuration' do
@@ -235,7 +357,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       it 'prefers the site crawl delay over the global one' do
         harvester.each_document.to_a
 
-        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 2, headers: {}, logger:)
+        expect(described_class::HttpClient).to have_received(:new).with(hash_including(crawl_delay: 2))
       end
     end
 
@@ -245,7 +367,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       it 'uses the global crawl delay' do
         harvester.each_document.to_a
 
-        expect(described_class::HttpClient).to have_received(:new).with(crawl_delay: 1, headers: {}, logger:)
+        expect(described_class::HttpClient).to have_received(:new).with(hash_including(crawl_delay: 1))
       end
     end
 
@@ -257,7 +379,32 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         harvester.each_document.to_a
 
         expect(described_class::HttpClient).to have_received(:new).with(
-          crawl_delay: nil, headers: { 'User-Agent' => 'GeoCombine', 'X-Api-Key' => 'secret' }, logger:
+          hash_including(headers: { 'User-Agent' => 'GeoCombine', 'X-Api-Key' => 'secret' })
+        )
+      end
+    end
+
+    context 'when the site configures retries' do
+      let(:site_config) { super().merge(max_retries: 5, retry_delay: 3) }
+      let(:config) { { max_retries: 1, retry_delay: 10, INSTITUTION: site_config } }
+
+      it 'prefers the site retry configuration over the global one' do
+        harvester.each_document.to_a
+
+        expect(described_class::HttpClient).to have_received(:new).with(
+          hash_including(max_retries: 5, retry_delay: 3)
+        )
+      end
+    end
+
+    context 'when only a global retry configuration is set' do
+      let(:config) { { max_retries: 1, retry_delay: 10, INSTITUTION: site_config } }
+
+      it 'uses the global retry configuration' do
+        harvester.each_document.to_a
+
+        expect(described_class::HttpClient).to have_received(:new).with(
+          hash_including(max_retries: 1, retry_delay: 10)
         )
       end
     end
@@ -290,6 +437,7 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
       allow(RSolr).to receive(:connect).and_return(stub_solr_connection)
     end
 
+    let(:client) { described_class::HttpClient.new(retry_delay: 0, logger:) }
     let(:first_docs) {  [{ 'layer_slug_s' => 'abc-123' }, { 'layer_slug_s' => 'abc-321' }] }
     let(:second_docs) { [{ 'layer_slug_s' => 'xyz-123' }, { 'layer_slug_s' => 'xyz-321' }] }
     let(:stub_first_response) do
@@ -316,13 +464,21 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         expect(docs.to_a).to eq([first_docs, second_docs])
       end
 
-      it 'stops paging and logs when a request fails' do
+      it 'raises when a page comes back as JSON that is not a page of search results' do
+        stub_request(:get, "#{base_url}&page=2").to_return(body: { 'error' => 'request blocked' }.to_json)
+        docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
+                                                             base_url:, client:, logger:).documents
+
+        expect { docs.to_a }.to raise_error(GeoCombine::Exceptions::HarvestError,
+                                            /not a page of search results/)
+      end
+
+      it 'raises when a request keeps failing, rather than stopping quietly' do
         stub_request(:get, "#{base_url}&page=2").to_raise(SocketError.new('no route to host'))
         docs = described_class::LegacyBlacklightResponse.new(response: stub_first_response,
-                                                             base_url:, logger:).documents
+                                                             base_url:, client:, logger:).documents
 
-        expect(docs.to_a).to eq([first_docs])
-        expect(logger).to have_received(:error).with(/failed with no route to host/)
+        expect { docs.to_a }.to raise_error(GeoCombine::Exceptions::HarvestError, /no route to host/)
       end
     end
   end
@@ -380,14 +536,40 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
 
   describe 'ModernBlacklightResponse errors' do
     subject(:documents) do
-      described_class::ModernBlacklightResponse.new(response:, base_url:, logger:).documents.to_a
+      described_class::ModernBlacklightResponse.new(response:, base_url:, client:, logger:).documents.to_a
     end
 
+    let(:client) { described_class::HttpClient.new(retry_delay: 0, logger:) }
     let(:next_url) { 'https://example.com/catalog.json?page=2' }
 
     before { allow(RSolr).to receive(:connect).and_return(stub_solr_connection) }
 
-    context 'when fetching an individual document fails' do
+    context 'when an individual document is not found' do
+      let(:response) do
+        { 'data' => [
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
+        ] }
+      end
+
+      before do
+        stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(
+          body: { 'layer_slug_s' => 'abc-123' }.to_json
+        )
+        stub_request(:get, 'https://example.com/catalog/abc-321/raw').to_return(status: 404)
+      end
+
+      it 'skips that document and keeps the rest, since a record can be indexed but unreadable' do
+        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+      end
+
+      it 'logs which document it skipped' do
+        documents
+        expect(logger).to have_received(:warn).with(%r{skipping document.*catalog/abc-321/raw was not found})
+      end
+    end
+
+    context 'when fetching an individual document keeps failing' do
       let(:response) do
         { 'data' => [
           { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
@@ -400,17 +582,67 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
           body: { 'layer_slug_s' => 'abc-123' }.to_json
         )
         stub_request(:get, 'https://example.com/catalog/abc-321/raw').to_raise(
-          SocketError.new('connection reset')
+          Errno::ECONNRESET.new('connection reset')
         )
       end
 
-      it 'drops that document and keeps the rest' do
-        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+      it 'raises instead of dropping the document' do
+        expect { documents }.to raise_error(GeoCombine::Exceptions::HarvestError, /Connection reset/)
+      end
+    end
+
+    context 'when a page comes back as JSON that is not a page of search results' do
+      let(:response) do
+        { 'data' => [{ 'links' => { 'self' => 'https://example.com/catalog/abc-123' } }],
+          'links' => { 'next' => next_url } }
       end
 
-      it 'logs which document failed' do
-        documents
-        expect(logger).to have_received(:error).with(%r{catalog/abc-321/raw" failed with connection reset})
+      before do
+        stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(
+          body: { 'layer_slug_s' => 'abc-123' }.to_json
+        )
+        stub_request(:get, "#{next_url}&format=json").to_return(body: { 'error' => 'request blocked' }.to_json)
+      end
+
+      it 'raises instead of treating it as the end of the results' do
+        expect { documents }.to raise_error(GeoCombine::Exceptions::HarvestError,
+                                            /not a page of search results/)
+      end
+    end
+
+    context 'when a search result has no link to itself' do
+      let(:response) do
+        { 'data' => [
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+          { 'links' => {} }
+        ] }
+      end
+
+      before do
+        stub_request(:get, 'https://example.com/catalog/abc-123/raw').to_return(
+          body: { 'layer_slug_s' => 'abc-123' }.to_json
+        )
+      end
+
+      it 'logs which result it skipped rather than dropping it silently' do
+        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+        expect(logger).to have_received(:warn).with(/skipping result with no self link/)
+      end
+    end
+
+    context 'when every document on a page is skipped' do
+      let(:response) do
+        { 'data' => [
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-123' } },
+          { 'links' => { 'self' => 'https://example.com/catalog/abc-321' } }
+        ] }
+      end
+
+      before { stub_request(:get, %r{/raw$}).to_return(status: 404) }
+
+      it 'logs at error, since the site may have stopped serving records' do
+        expect(documents).to eq([[]])
+        expect(logger).to have_received(:error).with(/skipped every document on page 1/)
       end
     end
 
@@ -427,13 +659,13 @@ RSpec.describe GeoCombine::GeoBlacklightHarvester do
         stub_request(:get, "#{next_url}&format=json").to_raise(SocketError.new('no route to host'))
       end
 
-      it 'stops paging and returns what it already had' do
-        expect(documents).to eq([[{ 'layer_slug_s' => 'abc-123' }]])
+      it 'raises instead of ending the harvest partway through' do
+        expect { documents }.to raise_error(GeoCombine::Exceptions::HarvestError, /no route to host/)
       end
 
-      it 'logs the failure' do
-        documents
-        expect(logger).to have_received(:error).with(/failed with no route to host/)
+      it 'logs each attempt it retried' do
+        expect { documents }.to raise_error(GeoCombine::Exceptions::HarvestError)
+        expect(logger).to have_received(:warn).with(/retrying/).exactly(3).times
       end
     end
   end
