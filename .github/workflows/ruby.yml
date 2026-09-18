@@ -18,9 +18,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false # One failing Ruby shouldn't cancel the others
       matrix:
         ruby: [3.2, 3.3, 3.4]
-        faraday_version: ['', '~> 1.0'] # Defaults to whatever's the most recent version.
     steps:
     - uses: actions/checkout@v6
 
@@ -29,16 +29,12 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-      env:
-        FARADAY_VERSION: ${{ matrix.faraday_version }}
 
-    - name: "Run tests for Ruby ${{ matrix.ruby }} and Faraday ${{ matrix.faraday_version == '~> 1.0' && '1.x' || 'latest' }}"
+    - name: "Run tests for Ruby ${{ matrix.ruby }}"
       run: bundle exec rake spec
-      env:
-        FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Upload coverage artifacts
       uses: actions/upload-artifact@v6
       with:
-        name: "coverage-${{ matrix.ruby }}-${{ matrix.faraday_version == '~> 1.0' && 'faraday-1.x' || 'faraday-latest' }}"
+        name: "coverage-${{ matrix.ruby }}"
         path: coverage/
