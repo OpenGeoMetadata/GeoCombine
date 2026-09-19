@@ -10,7 +10,7 @@ jobs:
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.2
+        ruby-version: 3.3
         bundler-cache: true
     - name: Run linter
       run: bundle exec rubocop
@@ -18,9 +18,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false # One failing Ruby shouldn't cancel the others
+      fail-fast: false
       matrix:
-        ruby: [3.2, 3.3, 3.4]
+        ruby: [3.3, 3.4, 4.0]
     steps:
     - uses: actions/checkout@v6
 
