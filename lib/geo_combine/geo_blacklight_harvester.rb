@@ -12,7 +12,6 @@ module GeoCombine
   #   }
   # end
   # The class configuration also allows for various other things to be configured:
-  #  - A debug parameter to print out details of what is being harvested and indexed
   #  - crawl delays for each page of results (globally or on a per site basis)
   #  - Solr's commitWithin parameter (defaults to 5000)
   #  - A document transformer proc to modify a document before indexing (defaults to removing _version_, score, and timestamp)
