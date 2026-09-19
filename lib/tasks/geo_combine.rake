@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'rsolr'
-require 'find'
-require 'faraday/net_http_persistent'
 require 'geo_combine/harvester'
 require 'geo_combine/indexer'
 require 'geo_combine/geo_blacklight_harvester'
