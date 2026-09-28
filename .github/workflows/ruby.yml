@@ -6,7 +6,7 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
       with:
@@ -22,7 +22,7 @@ jobs:
       matrix:
         ruby: [3.2, 3.3, 3.4]
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Set up Ruby and install dependencies
       uses: ruby/setup-ruby@v1
