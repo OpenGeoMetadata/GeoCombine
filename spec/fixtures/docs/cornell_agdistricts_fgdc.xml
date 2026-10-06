@@ -1,0 +1,572 @@
+<!DOCTYPE metadata SYSTEM "http://fgdc.gov/metadata/fgdc-std-001-1998.dtd">
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Cornell Institute for Resource Information Sciences (Cornell IRIS)</origin>
+        <origin>NYS Department of Agriculture and Markets</origin>
+        <pubdate>20200331</pubdate>
+        <title>Agricultural Districts, Albany County NY, 2020</title>
+        <geoform>vector digital data</geoform>
+        <serinfo>
+          <sername>Agricultural Districts (NYS Ag and Markets)</sername>
+          <issue>Albany County </issue>
+        </serinfo>
+        <onlink>https://cugir.library.cornell.edu/catalog/cugir-007948</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>These GIS files represent geographic boundaries for lands that are under the
+        protection of NYS Agricultural District Law, administered by the New York State Department
+        of Agriculture and Markets. The boundaries are derived from New York State Agricultural
+        District, 1:24,000-scale, maps produced at county agencies. The district boundaries
+        correspond to tax parcel data. District boundaries are joined into a file representing all
+        of the Agricultural Districts within an entire county. Note that 2003 legislation allows
+        lands to be added to districts on an annual basis. Electronic data provided here may predate
+        those additions. Tax parcel detail is not included in this
+        dataset. Road and utility rights-of-way are only
+        included when they are delineated on the original 1:24,000 scale maps. The data files are in
+        ArcGIS shapefile format.</abstract>
+      <purpose>A Geographic Information System (ArcGIS) file intended to represent the lands within
+        agricultural district. Please note that boundaries may be generalizations; precise
+        information can be obtained from the county or town tax parcel information.</purpose>
+      <supplinf>An Agricultural District is defined by a list of tax parcels, including properties
+        added during the annual open enrollment. The 1:24,000-scale maps are only updated to reflect
+        open enrollment changes at the eight-year renewal of the district. The electronic data only
+        reflects changes to the 1:24,000-scale maps. The Agricultural District boundaries are for
+        use in conjunction with NYS geographical data (ex. NYS Department of Transportation (DOT)
+        7.5' planimetric data). Boundary data is current to certification date of the district map
+        on file at IRIS at the time the digital data was updated. The certification date is noted in
+        the attribute table field called "Certified". Legislation in 2003 allows lands to be added
+        to districts on an annual basis. Electronic data provided here may predate those additions.
+        Refer to the current tax parcel list for each district to confirm the precise agricultural
+        district boundary. For more information about NYS Agricultural Districts, see
+        &lt;https://www.agriculture.ny.gov&gt;</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>20200331</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>Publication date</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>Periodically</update>
+    </status>
+    <spdom>
+          <bounding>
+            <westbc>-74.25448</westbc>
+            <eastbc>-73.709464</eastbc>
+            <northbc>42.803925</northbc>
+            <southbc>42.4085</southbc>
+          </bounding>
+        </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>New York State Agricultural District boundaries</themekey>
+        <themekey>Agriculture and Markets</themekey>
+        <themekey>Agricultural Districts Mapping Program</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>farming</themekey>
+        <themekey>planningCadastre</themekey>
+      </theme>
+      <theme>
+              <themekt>CUGIR Category</themekt>
+              <themekey>agriculture</themekey>
+<themekey>property</themekey>
+            </theme>
+      <place>
+        <placekt>LCSH</placekt>
+        <placekey>Albany County (N.Y.)</placekey>
+      </place>
+      <place>
+        <placekt>FIPS</placekt>
+        <placekey>36001</placekey>
+      </place>
+    </keywords>
+    <accconst>none</accconst>
+    <useconst>1) Refer to county tax parcel list of agricultural district properties and current
+      1:24,000-scale district maps in conjunction with annual open enrollment documentation on file
+      for confirmation of precise boundaries. 2) Please acknowledge New York State Agricultural
+      Districts Mapping Program as the source of the data. 3) It is important to check the
+      certification date, found in the attribute table field called "Certified". The district data
+      may have changed since the publication of this digital version. 4) These data are not to be
+      resold in any form.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Cornell IRIS</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>1015 Bradfield Hall</address>
+          <address>Cornell University</address>
+          <city>Ithaca</city>
+          <state>New York</state>
+          <postal>14853-1901</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>607-255-6520 or 607-255-6529</cntvoice>
+        <cntemail>iris@cornell.edu</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <browse>
+              <browsen>https://cugir-data.s3.amazonaws.com/00/79/48/preview.png</browsen>
+              <browsed>preview of the dataset</browsed>
+              <browset>PNG</browset>
+            </browse>
+    <datacred>Cornell IRIS maintains the county produced Agricultural District maps on file under
+      contract with the New York State Department of Agriculture and Markets. In 1996 the maps on
+      file at Cornell IRIS (then CLEARS) were scanned at the NYSDEC as the initial step in creating
+      a digital database of Ag District Boundaries.</datacred>
+    <native>Microsoft Windows 7 Enterprise Version 6.1 (Build 7601) Service Pack 1 ESRI ArcGIS
+      Desktop 10.4 Version 10.4.0.5524</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>The attributes were visually compared to original source map title blocks and
+        confirmed against Agriculture Districts profile data provided by the Department of
+        Agriculture and Markets.</attraccr>
+    </attracc>
+    <logic>Boundary data reflect Agricultural District boundaries as displayed on 1:24,000-scale
+      maps. When boundaries show areas contained mutually in more than one district in the same
+      county, electronic data reflect this as an overlap. If individual tax parcels are dissolved to
+      form an aggregate boundary, slivers and gaps may be formed by drafting discrepancies. These
+      are visually compared to the map and eliminated when they do not represent intended
+      exclusions. If the map is unclear, the county is contacted to confirm intent. District
+      boundary shapefile data is printed out using DOT planimetric raster data as a base, then
+      proofread against the maps.</logic>
+    <complete>County Agricultural District boundaries are complete to the extent that the original
+      map is complete. Tax parcel detail and secondary rights-of-way are not included in this
+      dataset. Rights-of-way for state and federal highways, railroads and utilities are only
+      included when they are delineated on the original 1:24,000 scale maps. NOTE: The most current
+      and precise boundary of a district should be verified by referring to the tax parcel
+      information.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Shapefiles are accurate to the quality of the original 1:24000 scale
+          map.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Albany County Planning</origin>
+            <pubdate>unknown</pubdate>
+            <title>none</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>24000</srcscale>
+        <typesrc>PDF or Paper map</typesrc>
+        <srctime>
+          <timeinfo>
+            <mdattim>
+              <sngdate>
+                <caldate>20141125 (district #1)</caldate>
+              </sngdate>
+              <sngdate>
+                <caldate>20170306 (district #2)</caldate>
+              </sngdate>
+              <sngdate>
+                <caldate>20190607 (district #3)</caldate>
+              </sngdate>
+            </mdattim>
+          </timeinfo>
+          <srccurr>8-year certification date</srccurr>
+        </srctime>
+        <srccitea>origmaps</srccitea>
+        <srccontr>original district boundaries</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>1) ORIGINAL SCAN PROJECT In 1996, the entire set of NYS Agricultural District maps
+          in the collection of Cornell IRIS (originally CLEARS) was converted to digital format.
+          This was done by shipping blueprint copies of the maps to the NYS DEC for scanning.
+          Digital Line Graph files were returned, which were converted to ArcInfo Coverages. These
+          coverages represented one map sheet apiece. Original maps with multiple sheets were
+          represented by multiple coverages. Coverages were compared to the original maps and edited
+          as necessary to create an accurate representation of the Ag District boundaries shown on
+          the maps. After accuracy was confirmed, coverages representing multiple sheets were merged
+          to create district coverages. Districts were then merged to create county coverages.
+          Merged districts sometimes created slivers, which were eliminated, and gaps, which are
+          flagged with district value of zero. Overlaps between districts also occurred in a few
+          cases. These were flagged with district value "66". For each coverage, an attribute table
+          was built to record the information shown on the Cornell IRIS title block of each Ag
+          District hardcopy map. These tables are further described in the Entity and Attribute
+          Information section of the metadata.</procdesc>
+        <procdate>19960100 through 20010131</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Cornell IRIS</cntorg>
+            </cntorgp>
+            <cntaddr>
+              <addrtype>mailing address</addrtype>
+              <address>1015 Bradfield Hall</address>
+              <address>Cornell University</address>
+              <city>Ithaca</city>
+              <state>New York</state>
+              <postal>14853-1901</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>607-255-6520 or 607-255-6529</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>2) CONVERSION FROM COVERAGES TO SHAPEFILES: Internal polygons were labeled zero;
+          coverages were reprojected from UTMz18 NAD27 to UTMz18 NAD83; Coverages were converted to
+          shapefiles; zero polygons were deleted; attribute table was modified: deleted fields are
+          AREA, PERIMETER, FILE#, FILE_ID, AGDIST#, DOTQUADS. Modified fields are DISTCODE and
+          DISTRICT. DISTCODE is 12 characters to accommodate changing abbreviations -- currently
+          four characters and three digits to represent a key code for county name and district
+          number. The field DISTRICT was enlarged to accommodate district numbers up to five digits.
+          Also, DISTCODE, the key field, was moved to the end of the attribute table
+          columns.</procdesc>
+        <procdate>20080101 through 20080331</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Cornell IRIS</cntorg>
+            </cntorgp>
+            <cntaddr>
+              <addrtype>mailing address</addrtype>
+              <address>1015 Bradfield Hall</address>
+              <address>Cornell University</address>
+              <city>Ithaca</city>
+              <state>New York</state>
+              <postal>14853-1901</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>607-255-6520 or 607-255-6529</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>3) UPDATING COUNTY BOUNDARY DATA: County shapefiles are updated to reflect
+          modifications that occurred during the eight-year review process. Boundaries are revised
+          using one or more of the three methods: Tablet digitizing; On-screen digitizing; Copying
+          boundaries from county-supplied shapefiles. All modifications are proofread against the
+          original maps to confirm accuracy. Attributes are updated and checked against the
+          information on the map title blocks, as well as information on file. If individual tax
+          parcels are dissolved to form an aggregate boundary, slivers and gaps may be formed by
+          drafting discrepancies. These are visually compared to the map and eliminated when they do
+          not represent intended exclusions. Discrepancies between the title block information and
+          file information are clarified by contacting the county and/or New York State Department
+          of Agriculture and Markets.</procdesc>
+        <procdate>20190401 through 20200531</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Cornell IRIS</cntorg>
+            </cntorgp>
+            <cntaddr>
+              <addrtype>mailing address</addrtype>
+              <address>1015 Bradfield Hall</address>
+              <address>Cornell University</address>
+              <city>Ithaca</city>
+              <state>New York</state>
+              <postal>14853-1901</postal>
+              <country>USA</country>
+            </cntaddr>
+            <cntvoice>607-255-6520 or 607-255-6529</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+          <sdtsterm>
+            <sdtstype>Polygon</sdtstype>
+            <ptvctcnt>563</ptvctcnt>
+          </sdtsterm>
+        </ptvctinf>
+      </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <gridsys>
+          <gridsysn>Universal Transverse Mercator</gridsysn>
+          <utm>
+            <utmzone>18</utmzone>
+            <transmer>
+              <sfctrmer>0.999600</sfctrmer>
+              <longcm>-75.000000</longcm>
+              <latprjo>0.000000</latprjo>
+              <feast>500000.000000</feast>
+              <fnorth>0.000000</fnorth>
+            </transmer>
+          </utm>
+        </gridsys>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.000001</absres>
+            <ordres>0.000001</ordres>
+          </coordrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>North American Datum of 1983</horizdn>
+        <ellips>Geodetic Reference System 80</ellips>
+        <semiaxis>6378137.000000</semiaxis>
+        <denflat>298.257222</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>agricultural district</enttypl>
+        <enttypd>Agricultural districts are lands that are under the protection of NYS Agricultural
+          District Law, administered by the New York State Department of Agriculture and
+          Markets.</enttypd>
+        <enttypds>Cornell Institute for Resource Information Sciences (Cornell IRIS)</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>county</attrlabl>
+        <attrdef>New York State county name</attrdef>
+        <attrdefs>Cornell IRIS title block</attrdefs>
+        <attrdomv>
+          <udom>NYS county names</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>district</attrlabl>
+        <attrdef>the agricultural district number within the county</attrdef>
+        <attrdefs>Cornell IRIS title block</attrdefs>
+        <attrdomv>
+          <udom>positive integers</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>creation</attrlabl>
+        <attrdef>date which the original proposed district became a legal entity</attrdef>
+        <attrdefs>Cornell IRIS title block</attrdefs>
+        <attrdomv>
+          <udom>date string</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>certified</attrlabl>
+        <attrdef>the most recent certified date of approval by the NYS Department of Agriculture and
+          Markets</attrdef>
+        <attrdefs>Cornell IRIS title block</attrdefs>
+        <attrdomv>
+          <udom>date string</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>towns</attrlabl>
+        <attrdef>New York State towns where district boundaries fall within</attrdef>
+        <attrdefs>Cornell IRIS title block</attrdefs>
+        <attrdomv>
+          <udom>list of NYS town names</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>distcode</attrlabl>
+        <attrdef>keyfield</attrdef>
+        <attrdefs>Cornell IRIS</attrdefs>
+        <attrdomv>
+          <udom>a four character abbreviation of the county name with a three digit district number
+            attached</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+        <distrib>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>Albert R. Mann Library</cntorg>
+            </cntorgp>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>Cornell University</address>
+              <city>Ithaca</city>
+              <state>New York</state>
+              <postal>14853</postal>
+            </cntaddr>
+            <cntvoice>607-255-5406</cntvoice>
+            <cntemail>mann-ref@cornell.edu</cntemail>
+          </cntinfo>
+        </distrib>
+        <distliab>Cornell University provides these geographic data "as is". Cornell
+          University makes no guarantee or warranty concerning the accuracy of
+          information contained in the geographic data. Cornell University further
+          makes no warranty either expressed or implied, regarding the condition of
+          the product or its fitness for any particular purpose. The burden for
+          determining fitness for use lies entirely with the user. Although these
+          files have been processed successfully on computers at Cornell University,
+          no warranty is made by Cornell University regarding the use of these data
+          on any other system, nor does the fact of distribution constitute or imply
+          any such warranty.</distliab>
+        <stdorder>
+        <digform>
+            <digtinfo>
+              <formname>Shapefile</formname>
+              <formcont>zipped shapefile</formcont>
+              <filedec>zip</filedec>
+              <transize>3.48</transize>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir-data.s3.amazonaws.com/00/79/48/cugir-007948.zip</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>metadata</formname>
+              <formcont>FGDC XML metadata</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir-data.s3.amazonaws.com/00/79/48/fgdc.xml</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>HTML metadata</formname>
+              <formcont>FGDC HTML metadata</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir-data.s3.amazonaws.com/00/79/48/fgdc.html</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>PDF</formname>
+              <formcont>prepared PDF map</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir-data.s3.amazonaws.com/00/79/48/agALBA.pdf</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>KML</formname>
+              <formcont>zipped KML file</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir-data.s3.amazonaws.com/00/79/48/agALBA.kmz</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>GeoJSON</formname>
+              <formcont>generated GeoJSON, via WFS</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir.library.cornell.edu/geoserver/cugir/wfs?version=1.0.0&amp;request=GetFeature&amp;typeName=cugir007948&amp;outputFormat=application%2Fjson</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><digform>
+            <digtinfo>
+              <formname>OGC:WMS</formname>
+              <formcont>WMS, from GeoServer</formcont>
+            </digtinfo>
+            <digtopt>
+              <onlinopt>
+                <computer>
+                  <networka>
+                    <networkr>https://cugir.library.cornell.edu/geoserver/cugir/wms?version=1.1.0&amp;request=GetMap&amp;layers=cugir007948&amp;bbox=-74.27083048,42.39663725,-73.69311352,42.81578775&amp;width=256&amp;height=185&amp;srs=EPSG:4326&amp;format=image/png</networkr>
+                  </networka>
+                </computer>
+              </onlinopt>
+            </digtopt>
+          </digform><fees>None</fees></stdorder>
+      </distinfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Cornell IRIS</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>1015 Bradfield Hall</address>
+          <address>Cornell University</address>
+          <city>Ithaca</city>
+          <state>New York</state>
+          <postal>14853-1901</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>607-255-6520 or 607-255-6529</cntvoice>
+        <cntemail>iris@cornell.edu</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Cornell University provides these geographic data "as is." Cornell University makes no
+      guarantee or warranty concerning the accuracy of information contained in the geographic data.
+      Cornell University further makes no warranty either expressed or implied, regarding the
+      condition of the product or its fitness for any particular purpose. The burden for determining
+      fitness for use lies entirely with the user. Although these files have been processed
+      successfully on computers at Cornell University, no warranty is made by Cornell University
+      regarding the use of these data on any other system, nor does the fact of distribution
+      constitute or imply any such warranty.</distliab>
+    <stdorder>
+      <nondig>Hardcopy: Paper copy</nondig>
+      <fees>call for price</fees>
+      <ordering>call Cornell IRIS 607-255-6520 or 255-6529</ordering>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+      <metd>20210615</metd>
+      <metc>
+        <cntinfo>
+          <cntorgp>
+            <cntorg>Albert R. Mann Library</cntorg>
+          </cntorgp>
+          <cntaddr>
+            <addrtype>mailing and physical</addrtype>
+            <address>Albert R. Mann Library</address>
+            <city>Ithaca</city>
+            <state>New York</state>
+            <postal>14853</postal>
+            <country>USA</country>
+          </cntaddr>
+          <cntvoice>607-255-5406</cntvoice>
+          <cntemail>mann-ref@cornell.edu</cntemail>
+        </cntinfo>
+      </metc>
+      <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+      <metstdv>FGDC-STD-001-1998</metstdv>
+      <mettc>local time</mettc>
+    </metainfo>
+</metadata>

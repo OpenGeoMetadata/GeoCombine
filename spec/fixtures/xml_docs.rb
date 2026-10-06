@@ -86,4 +86,20 @@ module XmlDocs
   def duplicate_values_fgdc
     File.read(File.join(File.dirname(__FILE__), './docs/duplicate_values_fgdc.xml'))
   end
+
+  ##
+  # Cornell (CUGIR) vector dataset whose digital forms pair each network
+  # resource with a format: a zipped shapefile, PDF and KMZ downloads, FGDC and
+  # HTML metadata, and WMS and WFS requests. Also has a browse graphic URL.
+  # From https://github.com/OpenGeoMetadata/edu.cornell/blob/main/00/79/48/fgdc.xml
+  def cornell_agdistricts_fgdc
+    File.read(File.join(File.dirname(__FILE__), './docs/cornell_agdistricts_fgdc.xml'))
+  end
+
+  ##
+  # Hand-authored record with wrapped and free-text links, a site's home page,
+  # and WMS, WFS, WMTS and ArcGIS REST services
+  def services_fgdc
+    File.read(File.join(File.dirname(__FILE__), './docs/services_fgdc.xml'))
+  end
 end

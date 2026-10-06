@@ -269,7 +269,7 @@ Some formats also support conversion into HTML for display in a web browser:
 > aardvark.to_json
 ```
 
-Aardvark defines several fields that FGDC has no source for, such as `dct_references_s`, `gbl_wxsIdentifier_s` and `gbl_suppressed_b`. Pass those in and they are merged into the transformed record:
+Aardvark defines some fields that FGDC has no source for, such as `gbl_suppressed_b`, and the links in a record may not be the ones you want to publish. Pass fields in and they are merged into the transformed record, replacing any derived values:
 
 ```ruby
 > fgdc_metadata.to_aardvark(
@@ -294,6 +294,8 @@ Note about `schema_provider_s` and `id`:
 > fgdc_metadata.to_aardvark('id' => 'tufts-ecuador-drilling-towers').metadata['id']
 => "tufts-ecuador-drilling-towers"
 ```
+
+The transformation fills in `dct_references_s` from the citation's online linkage and the network resources of each digital form, classified by URL and by the format they're distributed in: a landing page, downloads (a labeled list when there's more than one), FGDC and HTML metadata, and OGC (WMS, WFS, WCS, WMTS) and Esri service endpoints. A browse graphic URL becomes the thumbnail, and `gbl_wxsIdentifier_s` is the layer an OGC request asks for. References you pass in replace the derived ones.
 
 ### Migrating metadata
 
