@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'rsolr'
-require 'find'
-require 'faraday/net_http_persistent'
 require 'geo_combine/harvester'
 require 'geo_combine/indexer'
-require 'geo_combine/geo_blacklight_harvester'
 
 namespace :geocombine do
   desc 'Clone OpenGeoMetadata repositories'
@@ -32,14 +27,5 @@ namespace :geocombine do
     indexer = GeoCombine::Indexer.new
     harvester = GeoCombine::Harvester.new(ogm_path: ogm_path)
     indexer.index(harvester.docs_to_index)
-  end
-
-  namespace :geoblacklight_harvester do
-    desc 'Harvest documents from a configured GeoBlacklight instance'
-    task :index, [:site] => [:environment] do |_t, args|
-      raise ArgumentError, 'A site argument is required' unless args.site
-
-      GeoCombine::GeoBlacklightHarvester.new(args.site.to_sym).index
-    end
   end
 end
