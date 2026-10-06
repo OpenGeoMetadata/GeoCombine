@@ -12,8 +12,9 @@ module GeoCombine
     attr_reader :ogm_path, :schema_version
 
     # GitHub API endpoint for OpenGeoMetadata repositories
+    # This is the first page of results; 100 is the largest page size GitHub allows
     def self.ogm_api_uri
-      URI('https://api.github.com/orgs/opengeometadata/repos?per_page=1000')
+      URI('https://api.github.com/orgs/opengeometadata/repos?per_page=100')
     end
 
     # Initialize a new harvester
@@ -131,17 +132,39 @@ module GeoCombine
 
     # List of repository names to harvest
     def repositories
-      @repositories ||= JSON.parse(Net::HTTP.get(self.class.ogm_api_uri))
-                            .filter { |repo| Array(repo.dig('custom_properties', 'supported_schemas')).include? @schema_version }
-                            .filter { |repo| repo['size'].positive? }
-                            .reject { |repo| repo['archived'] }
-                            .reject { |repo| @skip_repos.include?(repo['name']) }
-                            .map { |repo| repo['name'] }
+      @repositories ||= organization_repositories
+                        .filter { |repo| Array(repo.dig('custom_properties', 'supported_schemas')).include? @schema_version }
+                        .filter { |repo| repo['size'].positive? }
+                        .reject { |repo| repo['archived'] }
+                        .reject { |repo| @skip_repos.include?(repo['name']) }
+                        .map { |repo| repo['name'] }
+    end
+
+    # Fetch metadata for every OpenGeoMetadata repository from GitHub API
+    # Results are paginated; follow the rel="next" URL in each response's Link header until there isn't one
+    def organization_repositories
+      repos = []
+      uri = self.class.ogm_api_uri
+      while uri
+        response = Net::HTTP.get_response(uri, github_api_headers)
+        repos.concat(JSON.parse(response.body))
+        next_url = response['link'].to_s[/<([^>]+)>;\s*rel="next"/, 1]
+        uri = next_url && URI(next_url)
+      end
+      repos
     end
 
     # Fetch repository metadata from GitHub API
     def repository_info(repo_name)
-      JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/opengeometadata/#{repo_name}")))
+      JSON.parse(Net::HTTP.get(URI("https://api.github.com/repos/opengeometadata/#{repo_name}"), github_api_headers))
+    end
+
+    # Authenticate GitHub API requests if a token is available, which raises the rate limit
+    def github_api_headers
+      token = ENV.fetch('GITHUB_TOKEN', '')
+      return {} if token.empty?
+
+      { 'Authorization' => "Bearer #{token}" }
     end
   end
 end
