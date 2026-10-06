@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'json'
 require 'rsolr'
 require 'faraday/retry'
 require 'faraday/net_http_persistent'
