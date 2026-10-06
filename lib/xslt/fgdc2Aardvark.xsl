@@ -250,6 +250,22 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Collapse runs of hyphens, however long, into one. -->
+  <xsl:template name="collapse-hyphens">
+    <xsl:param name="value"/>
+    <xsl:choose>
+      <xsl:when test="contains($value, '--')">
+        <xsl:call-template name="collapse-hyphens">
+          <xsl:with-param name="value"
+            select="concat(substring-before($value, '--'), '-', substring-after($value, '--'))"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$value"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- Convert to slug -->
   <xsl:template name="slugify">
     <xsl:param name="value"/>
@@ -257,10 +273,8 @@
       select="translate(translate(normalize-space($value), $upper, $lower),
                         string($slugPunctuation), string($slugHyphens))"/>
     <xsl:variable name="collapsed">
-      <xsl:call-template name="replace-substring">
+      <xsl:call-template name="collapse-hyphens">
         <xsl:with-param name="value" select="$hyphenated"/>
-        <xsl:with-param name="from" select="'--'"/>
-        <xsl:with-param name="to" select="'-'"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:call-template name="trim-hyphens">
