@@ -497,6 +497,21 @@ RSpec.describe GeoCombine::Fgdc do
           expect(record.metadata).not_to have_key 'dct_source_sm'
         end
       end
+
+      describe 'a record whose id comes from a title with adjacent punctuation' do
+        # No sdtsterm/@Name or onlink, so the title drives the id
+        let(:record) do
+          doc = Nokogiri::XML(duplicate_values_fgdc)
+          doc.at_xpath('/metadata/idinfo/citation/citeinfo/title').content =
+            "Orthophotos (0.5' Resolution), University of Arizona"
+          described_class.new(doc).to_aardvark
+        end
+
+        it 'collapses a run of three or more hyphens into one' do
+          expect(record.metadata['id'])
+            .to eq 'university-of-vermont-libraries-orthophotos-0-5-resolution-university-of-arizona'
+        end
+      end
     end
   end
 
