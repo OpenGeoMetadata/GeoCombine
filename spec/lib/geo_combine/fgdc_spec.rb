@@ -234,6 +234,15 @@ RSpec.describe GeoCombine::Fgdc do
         expect(fgdc_aardvark.metadata['gbl_fileSize_s']).to eq '13.102'
       end
 
+      it 'dct_references_s links the online linkage as the landing page' do
+        expect(JSON.parse(fgdc_aardvark.metadata['dct_references_s']))
+          .to eq('http://schema.org/url' => 'http://www.geoportaligm.gob.ec/portal/')
+      end
+
+      it 'has no gbl_wxsIdentifier_s without an OGC link' do
+        expect(fgdc_aardvark.metadata).not_to have_key 'gbl_wxsIdentifier_s'
+      end
+
       it 'gbl_mdModified_dt' do
         expect(fgdc_aardvark.metadata['gbl_mdModified_dt']).to eq '2013-08-13T00:00:00Z'
       end
@@ -258,7 +267,7 @@ RSpec.describe GeoCombine::Fgdc do
 
       it 'returns single-valued fields as strings' do
         %w[dct_title_s schema_provider_s dct_issued_s locn_geometry dcat_bbox
-           dct_accessRights_s dct_format_s id gbl_mdVersion_s].each do |field|
+           dct_accessRights_s dct_format_s dct_references_s id gbl_mdVersion_s].each do |field|
           expect(fgdc_aardvark.metadata[field]).to be_a(String), "expected #{field} to be a String"
         end
       end
@@ -276,10 +285,16 @@ RSpec.describe GeoCombine::Fgdc do
         expect(record.metadata['id']).to eq 'tufts-drilling-towers'
       end
 
-      it 'merges fields the source metadata cannot provide' do
+      it 'replaces the derived references with supplied ones' do
         references = { 'http://schema.org/url' => 'https://example.edu/catalog/tufts-1' }.to_json
         record = fgdc_object.to_aardvark('dct_references_s' => references)
         expect(record.metadata['dct_references_s']).to eq references
+      end
+
+      it 'merges fields the source metadata cannot provide' do
+        record = fgdc_object.to_aardvark('gbl_suppressed_b' => true)
+        expect(record.metadata['gbl_suppressed_b']).to be true
+        expect(record).to be_valid
       end
 
       it 'derives the provider from the record when none is supplied' do
@@ -405,6 +420,11 @@ RSpec.describe GeoCombine::Fgdc do
         it 'takes gbl_indexYear_im from the content date, not the publication date' do
           expect(record.metadata['gbl_indexYear_im']).to eq [1889]
         end
+
+        it 'links the catalog page, but not the home pages it also links to' do
+          expect(JSON.parse(record.metadata['dct_references_s']))
+            .to eq('http://schema.org/url' => 'https://hgl.harvard.edu/catalog/harvard-g9482-t35-1899-u5-mapa')
+        end
       end
 
       describe 'a record with quotation marks in the abstract' do
@@ -421,6 +441,13 @@ RSpec.describe GeoCombine::Fgdc do
         it 'collects every temporal value into a single field' do
           expect(record.metadata['dct_temporal_sm'])
             .to eq %w[2020-2050 2020 2025 2030 2035 2040 2045 2050]
+        end
+
+        it 'treats an online linkage to a downloads path as a download' do
+          expect(JSON.parse(record.metadata['dct_references_s'])).to eq(
+            'http://schema.org/downloadUrl' =>
+              'https://figgy.princeton.edu/downloads/8180d3d2-987e-42b5-9429-b846503c81c0/file/d2af93b3-8289-4cc0-b21a-837cbf9b2a9b'
+          )
         end
       end
 
@@ -510,6 +537,112 @@ RSpec.describe GeoCombine::Fgdc do
         it 'collapses a run of three or more hyphens into one' do
           expect(record.metadata['id'])
             .to eq 'university-of-vermont-libraries-orthophotos-0-5-resolution-university-of-arizona'
+        end
+      end
+
+      describe 'a record with downloads, services and metadata links' do
+        let(:record) { described_class.new(cornell_agdistricts_fgdc).to_aardvark }
+        let(:references) { JSON.parse(record.metadata['dct_references_s']) }
+
+        it 'is valid' do
+          expect(record).to be_valid
+        end
+
+        it 'links the online linkage as the landing page' do
+          expect(references['http://schema.org/url']).to eq 'https://cugir.library.cornell.edu/catalog/cugir-007948'
+        end
+
+        it 'lists each download, labeled with its format' do
+          expect(references['http://schema.org/downloadUrl']).to eq [
+            { 'url' => 'https://cugir-data.s3.amazonaws.com/00/79/48/cugir-007948.zip', 'label' => 'Shapefile' },
+            { 'url' => 'https://cugir-data.s3.amazonaws.com/00/79/48/agALBA.pdf', 'label' => 'PDF' },
+            { 'url' => 'https://cugir-data.s3.amazonaws.com/00/79/48/agALBA.kmz', 'label' => 'KML' }
+          ]
+        end
+
+        it 'links the browse graphic as the thumbnail' do
+          expect(references['http://schema.org/thumbnailUrl'])
+            .to eq 'https://cugir-data.s3.amazonaws.com/00/79/48/preview.png'
+        end
+
+        it 'links the FGDC and HTML metadata' do
+          expect(references['http://www.opengis.net/cat/csw/csdgm'])
+            .to eq 'https://cugir-data.s3.amazonaws.com/00/79/48/fgdc.xml'
+          expect(references['http://www.w3.org/1999/xhtml'])
+            .to eq 'https://cugir-data.s3.amazonaws.com/00/79/48/fgdc.html'
+        end
+
+        it 'links the service endpoints rather than the requests made to them' do
+          expect(references['http://www.opengis.net/def/serviceType/ogc/wms'])
+            .to eq 'https://cugir.library.cornell.edu/geoserver/cugir/wms'
+          expect(references['http://www.opengis.net/def/serviceType/ogc/wfs'])
+            .to eq 'https://cugir.library.cornell.edu/geoserver/cugir/wfs'
+        end
+
+        it 'has nothing else' do
+          expect(references.keys).to contain_exactly(
+            'http://schema.org/url', 'http://schema.org/downloadUrl', 'http://schema.org/thumbnailUrl',
+            'http://www.opengis.net/cat/csw/csdgm', 'http://www.w3.org/1999/xhtml',
+            'http://www.opengis.net/def/serviceType/ogc/wms', 'http://www.opengis.net/def/serviceType/ogc/wfs'
+          )
+        end
+
+        it 'takes gbl_wxsIdentifier_s from the layer the WMS request asks for' do
+          expect(record.metadata['gbl_wxsIdentifier_s']).to eq 'cugir007948'
+        end
+      end
+
+      describe 'a record with wrapped, free-text and service links' do
+        let(:record) { described_class.new(services_fgdc).to_aardvark }
+        let(:references) { JSON.parse(record.metadata['dct_references_s']) }
+
+        it 'is valid' do
+          expect(record).to be_valid
+        end
+
+        it 'removes the <URL:...> wrapper from the landing page' do
+          expect(references['http://schema.org/url']).to eq 'https://data.example.org/datasets/bus-stops'
+        end
+
+        it 'lists downloads from the citation and the distribution, but not links to web pages or file paths' do
+          expect(references['http://schema.org/downloadUrl']).to eq [
+            { 'url' => 'https://data.example.org/files/bus_stops.csv', 'label' => 'bus_stops.csv' },
+            { 'url' => 'https://data.example.org/downloads/bus_stops.gdb.zip', 'label' => 'ESRI File Geodatabase' }
+          ]
+        end
+
+        it 'ignores home pages and the larger work and cross reference citations' do
+          expect(record.metadata['dct_references_s']).not_to include 'http://www.example.org/'
+          expect(record.metadata['dct_references_s']).not_to include 'gis.example.org'
+          expect(record.metadata['dct_references_s']).not_to include 'collections/transit'
+          expect(record.metadata['dct_references_s']).not_to include 'bus-routes'
+        end
+
+        it 'has no thumbnail when the browse graphic is a file name' do
+          expect(references).not_to have_key 'http://schema.org/thumbnailUrl'
+        end
+
+        it 'links metadata in a format named as FGDC metadata' do
+          expect(references['http://www.opengis.net/cat/csw/csdgm'])
+            .to eq 'https://data.example.org/metadata/bus_stops.xml'
+        end
+
+        it 'recognizes OGC services by format name, service parameter or path' do
+          expect(references).to include(
+            'http://www.opengis.net/def/serviceType/ogc/wms' =>
+              'https://maps.example.org/arcgis/services/Transit/MapServer/WMSServer',
+            'http://www.opengis.net/def/serviceType/ogc/wfs' => 'https://maps.example.org/geoserver/ows',
+            'http://www.opengis.net/def/serviceType/ogc/wmts' => 'https://maps.example.org/geoserver/gwc/service/wmts'
+          )
+        end
+
+        it 'links an ArcGIS feature layer' do
+          expect(references['urn:x-esri:serviceType:ArcGIS#FeatureLayer'])
+            .to eq 'https://services.arcgis.com/abc123/arcgis/rest/services/Bus_Stops/FeatureServer/0'
+        end
+
+        it 'takes gbl_wxsIdentifier_s from a WFS request when the WMS link names no layer' do
+          expect(record.metadata['gbl_wxsIdentifier_s']).to eq 'transit:bus_stops'
         end
       end
     end

@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!--
+  Hand-authored fixture covering the online links the real FGDC fixtures don't:
+  wrapped URLs ("<URL:...>" and "URL:..."), a site's home page, free-text
+  links that aren't URLs, a download link to a web page, a browse graphic given
+  as a file name, and WMS, WFS, WMTS and ArcGIS REST services.
+-->
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Example City Transit Authority</origin>
+        <pubdate>2024</pubdate>
+        <title>Bus Stops, Example City, 2024</title>
+        <geoform>vector digital data</geoform>
+        <pubinfo>
+          <pubplace>Example City</pubplace>
+          <publish>Example University Library</publish>
+        </pubinfo>
+        <onlink>&lt;URL:https://data.example.org/datasets/bus-stops&gt;</onlink>
+        <onlink>http://www.example.org/</onlink>
+        <onlink>https://data.example.org/files/bus_stops.csv</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Example City Transit Authority</origin>
+            <pubdate>2024</pubdate>
+            <title>Transit Data</title>
+            <onlink>https://data.example.org/collections/transit</onlink>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Bus stops served by the Example City Transit Authority.</abstract>
+      <purpose>Fixture record for crosswalking FGDC online links into dct_references_s.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>2024</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>Ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>Annually</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-71.191155</westbc>
+        <eastbc>-70.986365</eastbc>
+        <northbc>42.402462</northbc>
+        <southbc>42.227925</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>Bus stops</themekey>
+        <themekey>transportation</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>Example City</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>None</useconst>
+    <browse>
+      <browsen>bus_stops.png</browsen>
+      <browsed>Map of the bus stops</browsed>
+      <browset>PNG</browset>
+    </browse>
+    <crossref>
+      <citeinfo>
+        <origin>Example City Transit Authority</origin>
+        <pubdate>2023</pubdate>
+        <title>Bus Routes, Example City, 2023</title>
+        <onlink>https://data.example.org/datasets/bus-routes</onlink>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>1250</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Example University Library</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <city>Example City</city>
+          <state>MA</state>
+          <postal>02100</postal>
+        </cntaddr>
+        <cntvoice>555-555-0100</cntvoice>
+      </cntinfo>
+    </distrib>
+    <resdesc>Downloadable Data</resdesc>
+    <distliab>None</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>ESRI File Geodatabase</formname>
+          <transize>1.2</transize>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>URL:https://data.example.org/downloads/bus_stops.gdb.zip</networkr>
+                <networkr>\\gisserver\share\transit\bus_stops.gdb</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>Shapefile</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://data.example.org/download.html</networkr>
+                <networkr>http://gis.example.org</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>FGDC metadata</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://data.example.org/metadata/bus_stops.xml</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>WMS</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://maps.example.org/arcgis/services/Transit/MapServer/WMSServer?request=GetCapabilities&amp;service=WMS</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>GeoJSON</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://maps.example.org/geoserver/ows?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typeNames=transit%3Abus_stops&amp;outputFormat=application/json</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>Tiles</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://maps.example.org/geoserver/gwc/service/wmts?REQUEST=GetCapabilities</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>Esri REST</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://services.arcgis.com/abc123/arcgis/rest/services/Bus_Stops/FeatureServer/0?f=pjson</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20240115</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Example University Library</cntorg>
+        </cntorgp>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

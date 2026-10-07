@@ -300,6 +300,332 @@
     </xsl:choose>
   </xsl:template>
 
+  <!--
+    A link with any "<URL:...>" wrapper removed, or nothing when it isn't an
+    http(s) URL. FGDC allows free text here, so paths and bare hostnames turn up.
+  -->
+  <xsl:template name="link-url">
+    <xsl:param name="value"/>
+    <xsl:variable name="text" select="normalize-space($value)"/>
+    <xsl:variable name="unwrapped">
+      <xsl:choose>
+        <xsl:when test="starts-with($text, '&lt;') and substring($text, string-length($text)) = '&gt;'">
+          <xsl:value-of select="normalize-space(substring($text, 2, string-length($text) - 2))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$text"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="url">
+      <xsl:choose>
+        <xsl:when test="starts-with(translate($unwrapped, $upper, $lower), 'url:')">
+          <xsl:value-of select="normalize-space(substring($unwrapped, 5))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$unwrapped"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="scheme" select="translate(substring-before($url, '://'), $upper, $lower)"/>
+    <xsl:if test="($scheme = 'http' or $scheme = 'https') and not(contains($url, ' ')) and
+                  substring-after($url, '://') != ''">
+      <xsl:value-of select="$url"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- The lowercased path of a URL, without its query string or fragment. -->
+  <xsl:template name="url-path">
+    <xsl:param name="url"/>
+    <xsl:variable name="afterScheme" select="translate(substring-after($url, '://'), $upper, $lower)"/>
+    <xsl:variable name="hostAndPath">
+      <xsl:choose>
+        <xsl:when test="contains($afterScheme, '?')">
+          <xsl:value-of select="substring-before($afterScheme, '?')"/>
+        </xsl:when>
+        <xsl:when test="contains($afterScheme, '#')">
+          <xsl:value-of select="substring-before($afterScheme, '#')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$afterScheme"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="contains($hostAndPath, '/')">
+      <xsl:value-of select="concat('/', substring-after($hostAndPath, '/'))"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!--
+    What a link is, from its URL and the name of the format it's distributed in:
+    an OGC or Esri service, FGDC or HTML metadata, a download or a web page.
+    Nothing for a site's home page, which says nothing about the record.
+  -->
+  <xsl:template name="link-kind">
+    <xsl:param name="url"/>
+    <xsl:param name="format"/>
+    <xsl:variable name="lowerUrl" select="translate($url, $upper, $lower)"/>
+    <xsl:variable name="formatKey" select="translate($format, $upper, $lower)"/>
+    <xsl:variable name="path">
+      <xsl:call-template name="url-path">
+        <xsl:with-param name="url" select="$url"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="segments" select="concat($path, '/')"/>
+    <xsl:variable name="fileName">
+      <xsl:call-template name="substring-after-last">
+        <xsl:with-param name="value" select="$path"/>
+        <xsl:with-param name="delimiter" select="'/'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="extension">
+      <xsl:if test="contains($fileName, '.')">
+        <xsl:call-template name="substring-after-last">
+          <xsl:with-param name="value" select="$fileName"/>
+          <xsl:with-param name="delimiter" select="'.'"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable name="extensionKey" select="concat('|', $extension, '|')"/>
+    <xsl:choose>
+      <xsl:when test="(string($path) = '' or string($path) = '/') and not(contains($url, '?'))"/>
+      <xsl:when test="contains($lowerUrl, 'service=wmts') or contains($segments, '/wmts/') or
+                      contains($formatKey, 'wmts')">wmts</xsl:when>
+      <xsl:when test="contains($lowerUrl, 'service=wms') or contains($segments, '/wms/') or
+                      contains($segments, '/wmsserver/') or contains($formatKey, 'wms')">wms</xsl:when>
+      <xsl:when test="contains($lowerUrl, 'service=wfs') or contains($segments, '/wfs/') or
+                      contains($segments, '/wfsserver/') or contains($formatKey, 'wfs')">wfs</xsl:when>
+      <xsl:when test="contains($lowerUrl, 'service=wcs') or contains($segments, '/wcs/') or
+                      contains($segments, '/wcsserver/') or contains($formatKey, 'wcs')">wcs</xsl:when>
+      <xsl:when test="contains($path, '/rest/services/')">
+        <xsl:choose>
+          <xsl:when test="contains($path, '/featureserver')">featureLayer</xsl:when>
+          <xsl:when test="contains($path, '/imageserver')">imageLayer</xsl:when>
+          <xsl:when test="contains($path, '/mapserver')">mapLayer</xsl:when>
+          <xsl:otherwise>service</xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="contains($formatKey, 'metadata') and
+                      (contains($formatKey, 'html') or $extension = 'html' or $extension = 'htm')">html</xsl:when>
+      <xsl:when test="contains($formatKey, 'metadata')">fgdc</xsl:when>
+      <xsl:when test="contains($webPageExtensions, $extensionKey)">page</xsl:when>
+      <xsl:when test="contains($fileExtensions, $extensionKey) or contains($path, '/download')">download</xsl:when>
+      <xsl:otherwise>page</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!--
+    The links of one kind from $links, each as a newline, the URL, a tab and the
+    format name. A URL is only listed once.
+  -->
+  <xsl:template name="links-of-kind">
+    <xsl:param name="kind"/>
+    <xsl:param name="links"/>
+    <xsl:param name="seen" select="'&#10;'"/>
+    <xsl:variable name="marker" select="concat('&#10;', $kind, '&#9;')"/>
+    <xsl:if test="contains($links, $marker)">
+      <xsl:variable name="line" select="substring-before(substring-after($links, $marker), '&#10;')"/>
+      <xsl:variable name="url" select="substring-before($line, '&#9;')"/>
+      <xsl:if test="not(contains($seen, concat('&#10;', $url, '&#10;')))">
+        <xsl:value-of select="concat('&#10;', $line)"/>
+      </xsl:if>
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="$kind"/>
+        <xsl:with-param name="links"
+          select="concat('&#10;', substring-after(substring-after($links, $marker), '&#10;'))"/>
+        <xsl:with-param name="seen" select="concat($seen, $url, '&#10;')"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- The URL of the first link of a kind. -->
+  <xsl:template name="first-link-of-kind">
+    <xsl:param name="kind"/>
+    <xsl:variable name="links">
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="$kind"/>
+        <xsl:with-param name="links" select="$onlineLinks"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="substring-before(substring-after($links, '&#10;'), '&#9;')"/>
+  </xsl:template>
+
+  <!-- A reference to the first link of a kind. -->
+  <xsl:template name="link-reference">
+    <xsl:param name="key"/>
+    <xsl:param name="kind"/>
+    <xsl:call-template name="reference">
+      <xsl:with-param name="key" select="$key"/>
+      <xsl:with-param name="url">
+        <xsl:call-template name="first-link-of-kind">
+          <xsl:with-param name="kind" select="$kind"/>
+        </xsl:call-template>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!-- A reference to the endpoint of the first service link of a kind. -->
+  <xsl:template name="service-reference">
+    <xsl:param name="key"/>
+    <xsl:param name="kind"/>
+    <xsl:variable name="url">
+      <xsl:call-template name="first-link-of-kind">
+        <xsl:with-param name="kind" select="$kind"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:call-template name="reference">
+      <xsl:with-param name="key" select="$key"/>
+      <xsl:with-param name="url">
+        <xsl:call-template name="endpoint">
+          <xsl:with-param name="url" select="string($url)"/>
+        </xsl:call-template>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!--
+    The members of a downloadUrl array for a links-of-kind list, each with a
+    leading comma and labeled with its format name, or else its file name.
+  -->
+  <xsl:template name="download-items">
+    <xsl:param name="links"/>
+    <xsl:if test="contains($links, '&#10;')">
+      <xsl:variable name="rest" select="substring-after($links, '&#10;')"/>
+      <xsl:variable name="line">
+        <xsl:choose>
+          <xsl:when test="contains($rest, '&#10;')">
+            <xsl:value-of select="substring-before($rest, '&#10;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$rest"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="url" select="substring-before($line, '&#9;')"/>
+      <xsl:variable name="label">
+        <xsl:choose>
+          <xsl:when test="substring-after($line, '&#9;') != ''">
+            <xsl:value-of select="substring-after($line, '&#9;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="substring-after-last">
+              <xsl:with-param name="value" select="substring-before(concat($url, '?'), '?')"/>
+              <xsl:with-param name="delimiter" select="'/'"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:text>,{"url":</xsl:text>
+      <xsl:call-template name="json-string">
+        <xsl:with-param name="text" select="$url"/>
+      </xsl:call-template>
+      <xsl:text>,"label":</xsl:text>
+      <xsl:call-template name="json-string">
+        <xsl:with-param name="text" select="string($label)"/>
+      </xsl:call-template>
+      <xsl:text>}</xsl:text>
+      <xsl:call-template name="download-items">
+        <xsl:with-param name="links" select="$rest"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- A service URL with its query string removed. -->
+  <xsl:template name="endpoint">
+    <xsl:param name="url"/>
+    <xsl:variable name="value" select="normalize-space($url)"/>
+    <xsl:choose>
+      <xsl:when test="contains($value, '?')">
+        <xsl:value-of select="substring-before($value, '?')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$value"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- The value of the first of a URL's query parameters that names an OGC layer. -->
+  <xsl:template name="layer-parameter">
+    <xsl:param name="url"/>
+    <xsl:variable name="query" select="concat('&amp;', substring-after($url, '?'), '&amp;')"/>
+    <xsl:variable name="lowerQuery" select="translate($query, $upper, $lower)"/>
+    <xsl:variable name="name">
+      <xsl:choose>
+        <xsl:when test="contains($lowerQuery, '&amp;layers=')">layers</xsl:when>
+        <xsl:when test="contains($lowerQuery, '&amp;typenames=')">typenames</xsl:when>
+        <xsl:when test="contains($lowerQuery, '&amp;typename=')">typename</xsl:when>
+        <xsl:when test="contains($lowerQuery, '&amp;coverageid=')">coverageid</xsl:when>
+        <xsl:when test="contains($lowerQuery, '&amp;coverage=')">coverage</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="string($name) != ''">
+      <xsl:variable name="start"
+        select="string-length(substring-before($lowerQuery, concat('&amp;', $name, '='))) +
+                string-length($name) + 3"/>
+      <xsl:variable name="value" select="substring-before(substring($query, $start), '&amp;')"/>
+      <!-- Only the first of a comma-separated list of layers. -->
+      <xsl:variable name="layer">
+        <xsl:choose>
+          <xsl:when test="contains($value, ',')">
+            <xsl:value-of select="substring-before($value, ',')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$value"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="colon">
+        <xsl:call-template name="replace-substring">
+          <xsl:with-param name="value" select="string($layer)"/>
+          <xsl:with-param name="from" select="'%3A'"/>
+          <xsl:with-param name="to" select="':'"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:call-template name="replace-substring">
+        <xsl:with-param name="value" select="string($colon)"/>
+        <xsl:with-param name="from" select="'%3a'"/>
+        <xsl:with-param name="to" select="':'"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- The first layer name found in the URLs of a links-of-kind list. -->
+  <xsl:template name="first-layer-name">
+    <xsl:param name="links"/>
+    <xsl:if test="contains($links, '&#10;')">
+      <xsl:variable name="layer">
+        <xsl:call-template name="layer-parameter">
+          <xsl:with-param name="url"
+            select="substring-before(substring-after($links, '&#10;'), '&#9;')"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="normalize-space($layer) != ''">
+          <xsl:value-of select="normalize-space($layer)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="first-layer-name">
+            <xsl:with-param name="links" select="substring-after($links, '&#10;')"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- A "key":"url" member of dct_references_s, with a leading comma. -->
+  <xsl:template name="reference">
+    <xsl:param name="key"/>
+    <xsl:param name="url"/>
+    <xsl:if test="normalize-space($url) != ''">
+      <xsl:text>,"</xsl:text>
+      <xsl:value-of select="$key"/>
+      <xsl:text>":</xsl:text>
+      <xsl:call-template name="json-string">
+        <xsl:with-param name="text" select="$url"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
   <!-- ==================================================================
        Shared variables
        ================================================================== -->
@@ -592,6 +918,48 @@
     select="translate(normalize-space(/metadata/spdoinfo/direct), $upper, $lower)"/>
   <xsl:variable name="formatName"
     select="translate(normalize-space(/metadata/distinfo/stdorder/digform/digtinfo/formname), $upper, $lower)"/>
+
+  <!-- File extensions of links that are downloads, and of links that are web pages. -->
+  <xsl:variable name="fileExtensions">
+    <xsl:text>|zip|gz|tgz|tar|7z|rar|kmz|kml|shp|gpkg|gdb|mdb|geojson|topojson|gml|csv|xls|xlsx|dbf</xsl:text>
+    <xsl:text>|tif|tiff|jp2|sid|ecw|img|dem|asc|e00|las|laz|nc|hdf|h5|pdf|jpg|jpeg|png|gif|dwg|dxf|</xsl:text>
+  </xsl:variable>
+  <xsl:variable name="webPageExtensions" select="'|htm|html|shtml|php|asp|aspx|jsp|cfm|cgi|'"/>
+
+  <!--
+    Online links in document order, each as a newline, its kind, a tab, the URL,
+    a tab and the format name. The citation's online linkage comes first, then
+    browse graphics, which are thumbnails when they're URLs rather than file
+    names, then the network resources of each digital form it's distributed in.
+  -->
+  <xsl:variable name="onlineLinks">
+    <xsl:for-each select="/metadata/idinfo/citation/citeinfo/onlink |
+                          /metadata/idinfo/browse/browsen |
+                          /metadata/distinfo/stdorder/digform/digtopt/onlinopt/computer/networka/networkr">
+      <xsl:variable name="url">
+        <xsl:call-template name="link-url">
+          <xsl:with-param name="value" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="format" select="normalize-space(ancestor::digform[1]/digtinfo/formname)"/>
+      <xsl:variable name="kind">
+        <xsl:choose>
+          <xsl:when test="string($url) = ''"/>
+          <xsl:when test="self::browsen">thumbnail</xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="link-kind">
+              <xsl:with-param name="url" select="string($url)"/>
+              <xsl:with-param name="format" select="$format"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:if test="string($kind) != ''">
+        <xsl:value-of select="concat('&#10;', $kind, '&#9;', $url, '&#9;', $format)"/>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:text>&#10;</xsl:text>
+  </xsl:variable>
 
   <!-- ==================================================================
        Record
@@ -943,6 +1311,121 @@
         <xsl:with-param name="text" select="distinfo/stdorder/digform/digtinfo/transize[1]"/>
       </xsl:call-template>
       <xsl:text>,</xsl:text>
+    </xsl:if>
+
+    <xsl:variable name="wmsLinks">
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="'wms'"/>
+        <xsl:with-param name="links" select="$onlineLinks"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="wfsLinks">
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="'wfs'"/>
+        <xsl:with-param name="links" select="$onlineLinks"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="wcsLinks">
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="'wcs'"/>
+        <xsl:with-param name="links" select="$onlineLinks"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="downloadLinks">
+      <xsl:call-template name="links-of-kind">
+        <xsl:with-param name="kind" select="'download'"/>
+        <xsl:with-param name="links" select="$onlineLinks"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="downloadCount"
+      select="string-length($downloadLinks) - string-length(translate($downloadLinks, '&#10;', ''))"/>
+
+    <!-- WxS Identifier. FGDC has no field for it, so it comes from the layer an OGC link asks for. -->
+    <xsl:variable name="wxsIdentifier">
+      <xsl:call-template name="first-layer-name">
+        <xsl:with-param name="links" select="concat($wmsLinks, $wfsLinks, $wcsLinks)"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="string($wxsIdentifier) != ''">
+      <xsl:text>"gbl_wxsIdentifier_s": </xsl:text>
+      <xsl:call-template name="json-string">
+        <xsl:with-param name="text" select="string($wxsIdentifier)"/>
+      </xsl:call-template>
+      <xsl:text>,</xsl:text>
+    </xsl:if>
+
+    <!-- References. A serialized JSON object, so it's escaped a second time. -->
+    <xsl:variable name="references">
+      <xsl:call-template name="link-reference">
+        <xsl:with-param name="key" select="'http://schema.org/url'"/>
+        <xsl:with-param name="kind" select="'page'"/>
+      </xsl:call-template>
+      <xsl:choose>
+        <xsl:when test="$downloadCount = 1">
+          <xsl:call-template name="reference">
+            <xsl:with-param name="key" select="'http://schema.org/downloadUrl'"/>
+            <xsl:with-param name="url" select="substring-before(substring-after($downloadLinks, '&#10;'), '&#9;')"/>
+          </xsl:call-template>
+        </xsl:when>
+        <!-- More than one download is an array of links labeled with their format. -->
+        <xsl:when test="$downloadCount &gt; 1">
+          <xsl:variable name="downloadItems">
+            <xsl:call-template name="download-items">
+              <xsl:with-param name="links" select="$downloadLinks"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:text>,"http://schema.org/downloadUrl":[</xsl:text>
+          <xsl:value-of select="substring($downloadItems, 2)"/>
+          <xsl:text>]</xsl:text>
+        </xsl:when>
+      </xsl:choose>
+      <xsl:call-template name="link-reference">
+        <xsl:with-param name="key" select="'http://schema.org/thumbnailUrl'"/>
+        <xsl:with-param name="kind" select="'thumbnail'"/>
+      </xsl:call-template>
+      <xsl:call-template name="link-reference">
+        <xsl:with-param name="key" select="'http://www.opengis.net/cat/csw/csdgm'"/>
+        <xsl:with-param name="kind" select="'fgdc'"/>
+      </xsl:call-template>
+      <xsl:call-template name="link-reference">
+        <xsl:with-param name="key" select="'http://www.w3.org/1999/xhtml'"/>
+        <xsl:with-param name="kind" select="'html'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'http://www.opengis.net/def/serviceType/ogc/wms'"/>
+        <xsl:with-param name="kind" select="'wms'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'http://www.opengis.net/def/serviceType/ogc/wfs'"/>
+        <xsl:with-param name="kind" select="'wfs'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'http://www.opengis.net/def/serviceType/ogc/wcs'"/>
+        <xsl:with-param name="kind" select="'wcs'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'http://www.opengis.net/def/serviceType/ogc/wmts'"/>
+        <xsl:with-param name="kind" select="'wmts'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'urn:x-esri:serviceType:ArcGIS#FeatureLayer'"/>
+        <xsl:with-param name="kind" select="'featureLayer'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'urn:x-esri:serviceType:ArcGIS#ImageMapLayer'"/>
+        <xsl:with-param name="kind" select="'imageLayer'"/>
+      </xsl:call-template>
+      <xsl:call-template name="service-reference">
+        <xsl:with-param name="key" select="'urn:x-esri:serviceType:ArcGIS#DynamicMapLayer'"/>
+        <xsl:with-param name="kind" select="'mapLayer'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="string($references) != ''">
+      <xsl:text>"dct_references_s": "</xsl:text>
+      <xsl:call-template name="escape-json">
+        <xsl:with-param name="text" select="concat('{', substring(string($references), 2), '}')"/>
+      </xsl:call-template>
+      <xsl:text>",</xsl:text>
     </xsl:if>
 
     <!-- ID (Required) -->
