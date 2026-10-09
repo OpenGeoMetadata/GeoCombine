@@ -7,8 +7,8 @@
 A Ruby toolkit for managing geospatial metadata, including:
 
 - harvesting and indexing records from OpenGeoMetadata
-- harvesting records directly from a GeoBlacklight instance
 - converting geospatial metadata records between standards
+- migrating OpenGeoMetadata records from older to newer schema versions
 
 ## Installation
 
@@ -150,67 +150,6 @@ Or:
 
 ```sh
 OGM_PATH=/path/to/your/file.json rake geocombine:index
-```
-
-### Harvesting and indexing documents from GeoBlacklight sites
-
-GeoCombine provides a Harvester class and rake task to harvest and index content from GeoBlacklight sites (or any site that follows the Blacklight API format). Given that the configurations can change from consumer to consumer and site to site, the class provides a relatively simple configuration API. This can be configured in an initializer, a wrapping rake task, or any other ruby context where the rake task our class would be invoked.
-
-```sh
-bundle exec rake geocombine:geoblacklight_harvester:index[YOUR_CONFIGURED_SITE_KEY]
-```
-
-#### Harvester configuration
-
-Only the sites themselves are required to be configured but there are various configuration options that can (optionally) be supplied to modify the harvester's behavior.
-
-```ruby
-GeoCombine::GeoBlacklightHarvester.configure do
-  {
-    commit_within: '10000',
-    crawl_delay: 1, # All sites
-    debug: true,
-    SITE1: {
-      crawl_delay: 2, # SITE1 only
-      host: 'https://geoblacklight.example.edu',
-      params: {
-        f: {
-          dct_provenance_s: ['Institution']
-        }
-      }
-    },
-    SITE2: {
-      host: 'https://geoportal.example.edu',
-      params: {
-        q: '*'
-      }
-    }
-  }
-end
-```
-
-##### Crawl Delays (default: none)
-
-Crawl delays can be configured (in seconds) either globally for all sites or on a per-site basis. This will cause a delay for that number of seconds between each search results page (note that Blacklight 7 necessitates a lot of requests per results page and this only causes the delay per page of results)
-
-##### Solr's commitWithin (default: 5000 milliseconds)
-
-Solr's commitWithin option can be configured (in milliseconds) by passing a value under the commit_within key.
-
-#### Transforming Documents
-
-You may need to transform documents that are harvested for various purposes (removing fields, adding fields, omitting a document all together, etc). You can configure some ruby code (a proc) that will take the document in, transform it, and return the transformed document. By default the indexer will remove the `score`, `timestamp`, and `_version_` fields from the documents harvested. If you provide your own transformer, you'll likely want to remove these fields in addition to the other transformations you provide.
-
-```ruby
-GeoCombine::GeoBlacklightIndexer.document_transformer = -> (document) do
-  # Removes "bogus_field" from the content we're harvesting
-  # in addition to some other solr fields we don't want
-  %w[_version_ score timestamp bogus_field].each do |field|
-    document.delete(field)
-  end
-
-  document
-end
 ```
 
 ### Converting metadata

@@ -64,7 +64,6 @@ RSpec/ExampleLength:
 # Offense count: 4
 RSpec/ExpectInHook:
   Exclude:
-    - 'spec/lib/geo_combine/geo_blacklight_harvester_spec.rb'
     - 'spec/lib/geo_combine/geoblacklight_spec.rb'
 
 # Offense count: 23
@@ -73,7 +72,6 @@ RSpec/ExpectInHook:
 RSpec/MessageSpies:
   Exclude:
     - 'spec/lib/geo_combine/esri_open_data_spec.rb'
-    - 'spec/lib/geo_combine/geo_blacklight_harvester_spec.rb'
     - 'spec/lib/geo_combine/geoblacklight_spec.rb'
     - 'spec/lib/geo_combine/ogp_spec.rb'
     - 'spec/lib/geo_combine_spec.rb'
@@ -121,7 +119,6 @@ RSpec/SpecFilePathFormat:
 RSpec/StubbedMock:
   Exclude:
     - 'spec/lib/geo_combine/esri_open_data_spec.rb'
-    - 'spec/lib/geo_combine/geo_blacklight_harvester_spec.rb'
     - 'spec/lib/geo_combine/geoblacklight_spec.rb'
     - 'spec/lib/geo_combine/ogp_spec.rb'
     - 'spec/lib/geo_combine_spec.rb'
@@ -130,12 +127,6 @@ RSpec/StubbedMock:
 RSpec/SubjectStub:
   Exclude:
     - 'spec/lib/geo_combine/ogp_spec.rb'
-
-# Offense count: 1
-# Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
-RSpec/VerifiedDoubles:
-  Exclude:
-    - 'spec/lib/geo_combine/geo_blacklight_harvester_spec.rb'
 
 # Offense count: 1
 Security/Open:
@@ -151,7 +142,6 @@ Style/Documentation:
     - 'test/**/*'
     - 'lib/geo_combine/bounding_box.rb'
     - 'lib/geo_combine/ckan_metadata.rb'
-    - 'lib/geo_combine/geo_blacklight_harvester.rb'
     - 'lib/geo_combine/geoblacklight.rb'
     - 'lib/geo_combine/geoblacklight_aardvark.rb'
     - 'lib/geo_combine/geometry_types.rb'
