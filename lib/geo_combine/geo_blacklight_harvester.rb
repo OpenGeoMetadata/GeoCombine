@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'net/http'
 require 'geo_combine/logger'
 
 module GeoCombine
@@ -13,7 +14,7 @@ module GeoCombine
   # end
   # The class configuration also allows for various other things to be configured:
   #  - A debug parameter to print out details of what is being harvested and indexed
-  #  - crawl delays for each page of results (globally or on a per site basis)
+  #  - crawl delays between requests (globally or on a per site basis)
   #  - Solr's commitWithin parameter (defaults to 5000)
   #  - A document transformer proc to modify a document before indexing (defaults to removing _version_, score, and timestamp)
   # Example: GeoCombine::GeoBlacklightHarvester.new('SITE').index
@@ -75,6 +76,41 @@ module GeoCombine
     end
 
     ##
+    # Makes the requests for a harvest, waiting out the configured crawl delay
+    # before each one. Each request gets its own connection instead of reusing
+    # one; a request that is both paced and freshly connected is much less
+    # likely to be turned away by a WAF or other bot mitigation.
+    class HttpClient
+      attr_reader :crawl_delay
+
+      def initialize(crawl_delay: nil, logger: GeoCombine::Logger.logger)
+        @crawl_delay = crawl_delay&.to_f
+        @logger = logger
+      end
+
+      # Fetch a URL and parse the JSON response body
+      def get_json(url)
+        JSON.parse(get(url))
+      end
+
+      private
+
+      # Fetch a URL and return the response body
+      def get(url)
+        throttle
+        Net::HTTP.get_response(URI(url)).body
+      end
+
+      # Wait out the crawl delay, if one is configured
+      def throttle
+        return unless crawl_delay
+
+        @logger.debug "waiting #{crawl_delay}s before the next request"
+        sleep(crawl_delay)
+      end
+    end
+
+    ##
     # A "factory" class to determine the blacklight response version to use
     class BlacklightResponseVersionFactory
       def self.call(json)
@@ -91,12 +127,13 @@ module GeoCombine
     end
 
     class LegacyBlacklightResponse
-      attr_reader :base_url
+      attr_reader :base_url, :client
       attr_accessor :response, :page
 
-      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger)
+      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger, client: HttpClient.new(logger:))
         @base_url = base_url
         @response = response
+        @client = client
         @page = 1
         @logger = logger
       end
@@ -113,7 +150,7 @@ module GeoCombine
           @logger.debug "fetching page #{page} @ #{url}"
 
           begin
-            self.response = JSON.parse(Net::HTTP.get(URI(url)))
+            self.response = client.get_json(url)
           rescue StandardError => e
             @logger.error "request for #{url} failed with #{e}"
             self.response = nil
@@ -139,12 +176,13 @@ module GeoCombine
     ##
     # Class to return documents from the Blacklight API (v7 and above)
     class ModernBlacklightResponse
-      attr_reader :base_url
+      attr_reader :base_url, :client
       attr_accessor :response, :page
 
-      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger)
+      def initialize(response:, base_url:, logger: GeoCombine::Logger.logger, client: HttpClient.new(logger:))
         @base_url = base_url
         @response = response
+        @client = client
         @page = 1
         @logger = logger
       end
@@ -164,7 +202,7 @@ module GeoCombine
           self.page += 1
           @logger.debug "fetching page #{page} @ #{url}"
           begin
-            self.response = JSON.parse(Net::HTTP.get(URI(url)))
+            self.response = client.get_json(url)
           rescue StandardError => e
             @logger.error "Request for #{url} failed with #{e}"
             self.response = nil
@@ -177,7 +215,7 @@ module GeoCombine
       def documents_from_urls(urls)
         @logger.debug "fetching #{urls.count} documents for page #{page}"
         urls.map do |url|
-          JSON.parse(Net::HTTP.get(URI("#{url}/raw")))
+          client.get_json("#{url}/raw")
         rescue StandardError => e
           @logger.error "fetching \"#{url}/raw\" failed with #{e}"
 
@@ -193,14 +231,17 @@ module GeoCombine
       return to_enum(:each_page) unless block_given?
 
       @logger.debug "fetching page 1 @ #{base_url}&page=1"
-      response = JSON.parse(Net::HTTP.get(URI("#{base_url}&page=1")))
+      response = client.get_json("#{base_url}&page=1")
       response_class = BlacklightResponseVersionFactory.call(response)
 
-      response_class.new(response:, base_url:, logger: @logger).documents.each do |documents|
+      response_class.new(response:, base_url:, client:, logger: @logger).documents.each do |documents|
         yield documents.map { |document| self.class.document_transformer&.call(document) }.compact
-
-        sleep(crawl_delay.to_i) if crawl_delay
       end
+    end
+
+    # The client used to make requests for this site
+    def client
+      @client ||= HttpClient.new(crawl_delay:, logger: @logger)
     end
 
     def base_url

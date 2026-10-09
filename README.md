@@ -191,7 +191,9 @@ end
 
 ##### Crawl Delays (default: none)
 
-Crawl delays can be configured (in seconds) either globally for all sites or on a per-site basis. This will cause a delay for that number of seconds between each search results page (note that Blacklight 7 necessitates a lot of requests per results page and this only causes the delay per page of results)
+Crawl delays can be configured (in seconds, and fractions of a second are allowed) either globally for all sites or on a per-site basis. The harvester waits out the delay before every request it makes, not just before each page of search results -- which matters because Blacklight 7 and above needs a request per document, so one page of results is many requests. Each request also gets its own connection instead of reusing one. Together, pacing requests and connecting fresh make a harvest much less likely to be turned away by a WAF or other bot mitigation.
+
+Be aware that this makes a harvest take considerably longer than it did when the delay applied per page: a one second delay against a Blacklight 7 site with 10,000 records is around three hours of waiting. Lower the delay if that matters more to you than getting past bot mitigation.
 
 ##### Solr's commitWithin (default: 5000 milliseconds)
 
