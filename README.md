@@ -197,6 +197,17 @@ Crawl delays can be configured (in seconds) either globally for all sites or on 
 
 Solr's commitWithin option can be configured (in milliseconds) by passing a value under the commit_within key.
 
+#### Harvesting Documents Without Indexing Them
+
+The harvester exposes the documents it harvests as an enumerable, so you can do something with them other than index them into Solr -- writing them to disk to contribute them to your own OpenGeoMetadata repository, for example. The documents yielded have already been through the configured document transformer.
+
+```ruby
+harvester = GeoCombine::GeoBlacklightHarvester.new(:SITE1)
+harvester.each_document do |document|
+  File.write("#{document['id']}.json", JSON.pretty_generate(document))
+end
+```
+
 #### Transforming Documents
 
 You may need to transform documents that are harvested for various purposes (removing fields, adding fields, omitting a document all together, etc). You can configure some ruby code (a proc) that will take the document in, transform it, and return the transformed document. By default the indexer will remove the `score`, `timestamp`, and `_version_` fields from the documents harvested. If you provide your own transformer, you'll likely want to remove these fields in addition to the other transformations you provide.
