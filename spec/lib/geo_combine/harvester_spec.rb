@@ -23,16 +23,20 @@ RSpec.describe GeoCombine::Harvester do
     ]
   end
 
+  # never let a request reach the real GitHub API
+  around do |example|
+    WebMock.disable_net_connect!
+    example.run
+  ensure
+    WebMock.allow_net_connect!
+  end
+
   before do
     # stub github API requests
     # use the whole org response, or just a portion for particular repos
-    allow(Net::HTTP).to receive(:get) do |uri|
-      if uri == described_class.ogm_api_uri
-        stub_gh_api.to_json
-      else
-        repo_name = uri.path.split('/').last.gsub('.git', '')
-        stub_gh_api.find { |repo| repo[:name] == repo_name }.to_json
-      end
+    stub_request(:get, described_class.ogm_api_uri.to_s).to_return(body: stub_gh_api.to_json)
+    stub_gh_api.each do |repo|
+      stub_request(:get, "https://api.github.com/repos/opengeometadata/#{repo[:name]}").to_return(body: repo.to_json)
     end
 
     # stub git commands
@@ -202,8 +206,66 @@ RSpec.describe GeoCombine::Harvester do
   end
 
   describe '#ogm_api_uri' do
-    it 'includes a per_page param' do
-      expect(described_class.send('ogm_api_uri').to_s).to include('per_page')
+    it 'requests the largest page size GitHub allows' do
+      expect(described_class.send('ogm_api_uri').to_s).to include('per_page=100')
+    end
+  end
+
+  describe 'GitHub API requests' do
+    context 'when the organization has more than one page of repositories' do
+      let(:first_page_url) { 'https://api.github.com/organizations/1234/repos?per_page=100&page=1' }
+      let(:next_page_url) { 'https://api.github.com/organizations/1234/repos?per_page=100&page=2' }
+
+      before do
+        # each page links to the next one; the last page only links back to earlier ones
+        stub_request(:get, described_class.ogm_api_uri.to_s).to_return(
+          body: stub_gh_api.first(1).to_json,
+          headers: { 'Link' => %(<#{next_page_url}>; rel="next", <#{next_page_url}>; rel="last") }
+        )
+        stub_request(:get, next_page_url).to_return(
+          body: stub_gh_api.drop(1).to_json,
+          headers: { 'Link' => %(<#{first_page_url}>; rel="prev", <#{first_page_url}>; rel="first") }
+        )
+      end
+
+      it 'harvests repositories from every page' do
+        expect(harvester.pull_all).to eq(%w[my-institution another-institution])
+      end
+
+      it 'stops requesting pages when there is no next page' do
+        harvester.pull_all
+        expect(a_request(:get, next_page_url)).to have_been_made.once
+      end
+    end
+
+    context 'when GITHUB_TOKEN is set' do
+      let(:auth_header) { { 'Authorization' => 'Bearer secret-token' } }
+
+      before { stub_const('ENV', ENV.to_h.merge('GITHUB_TOKEN' => 'secret-token')) }
+
+      it 'authenticates requests for the repository list and for each repository' do
+        harvester.clone_all
+        expect(a_request(:get, described_class.ogm_api_uri.to_s).with(headers: auth_header)).to have_been_made
+        expect(a_request(:get, "https://api.github.com/repos/opengeometadata/#{repo_name}").with(headers: auth_header)).to have_been_made
+      end
+    end
+
+    context 'when GITHUB_TOKEN is not set' do
+      before { stub_const('ENV', ENV.to_h.except('GITHUB_TOKEN')) }
+
+      it 'makes unauthenticated requests' do
+        harvester.clone_all
+        expect(a_request(:get, /api\.github\.com/).with { |request| request.headers.key?('Authorization') }).not_to have_been_made
+      end
+    end
+
+    context 'when GITHUB_TOKEN is empty' do
+      before { stub_const('ENV', ENV.to_h.merge('GITHUB_TOKEN' => '')) }
+
+      it 'makes unauthenticated requests' do
+        harvester.clone_all
+        expect(a_request(:get, /api\.github\.com/).with { |request| request.headers.key?('Authorization') }).not_to have_been_made
+      end
     end
   end
 end
