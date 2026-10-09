@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'git'
+require 'tmpdir'
+require 'fileutils'
 require 'geo_combine/harvester'
 require 'spec_helper'
 
@@ -93,6 +95,69 @@ RSpec.describe GeoCombine::Harvester do
         harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', logger:)
         expect(yielded_titles(harvester)).to include('Property Lot, Arlington County, VA ')
       end
+    end
+  end
+
+  context 'when walking files that cannot be parsed, or are hidden' do
+    subject(:harvester) { described_class.new(ogm_path:, logger:) }
+
+    let(:ogm_path) { Dir.mktmpdir }
+    let(:record) { { 'id' => 'tmp-record', 'gbl_mdVersion_s' => 'Aardvark', 'dct_accessRights_s' => 'Public' } }
+
+    def write(path, content)
+      FileUtils.mkdir_p(File.dirname(File.join(ogm_path, path)))
+      File.binwrite(File.join(ogm_path, path), content)
+    end
+
+    def yielded_ids
+      harvester.docs_to_index.map { |record, _path| record['id'] }
+    end
+
+    after { FileUtils.remove_entry(ogm_path) }
+
+    it 'logs a malformed file and continues the walk' do
+      write('repo/a.json', '{ "id": "truncated"')
+      write('repo/b.json', record.to_json)
+      expect(yielded_ids).to eq ['tmp-record']
+      expect(logger).to have_received(:error).with(%r{skipping .*/repo/a.json; could not parse JSON})
+    end
+
+    it 'logs a file that is not valid UTF-8 and continues the walk' do
+      write('repo/a.json', "{ \"id\": \"\xC3\x28\" }".b)
+      write('repo/b.json', record.to_json)
+      expect(yielded_ids).to eq ['tmp-record']
+      expect(logger).to have_received(:error).with(%r{skipping .*/repo/a.json; could not parse JSON})
+    end
+
+    it 'skips JSON that is not a record' do
+      write('repo/a.json', '[1, "two", null]')
+      write('repo/b.json', record.to_json)
+      expect(yielded_ids).to eq ['tmp-record']
+    end
+
+    it 'skips files in hidden directories' do
+      write('repo/.git/a.json', record.merge('id' => 'in-git').to_json)
+      write('.geocombine/journal/b.json', record.merge('id' => 'in-state').to_json)
+      write('repo/c.json', record.to_json)
+      expect(yielded_ids).to eq ['tmp-record']
+    end
+
+    it 'walks an ogm_path that is itself hidden' do
+      write('.ogm/repo/a.json', record.to_json)
+      harvester = described_class.new(ogm_path: File.join(ogm_path, '.ogm'), logger:)
+      expect(harvester.docs_to_index.map { |record, _path| record['id'] }).to eq ['tmp-record']
+    end
+
+    it 'reads UTF-8 records when the default external encoding is not UTF-8' do
+      # As in a cron job, systemd unit, or container with no LANG set
+      original = Encoding.default_external
+      Encoding.default_external = Encoding::US_ASCII
+      write('repo/a.json', record.merge('dct_title_s' => 'Plano de la ciudad de Bogotá').to_json)
+      write('repo/b.json', "\uFEFF#{record.merge('id' => 'with-bom').to_json}")
+      expect(harvester.docs_to_index.map { |record, _path| record['dct_title_s'] || record['id'] })
+        .to contain_exactly('Plano de la ciudad de Bogotá', 'with-bom')
+    ensure
+      Encoding.default_external = original
     end
   end
 
