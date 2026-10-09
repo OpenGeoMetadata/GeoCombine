@@ -11,6 +11,13 @@ module GeoCombine
     end
 
     ##
+    # Returns a Nokogiri::XSLT object containing the ISO19139 to Aardvark XSL
+    # @return [Nokogiri::XSLT]
+    def xsl_aardvark
+      Nokogiri::XSLT(File.open(File.join(File.dirname(__FILE__), '../xslt/iso2Aardvark.xsl')))
+    end
+
+    ##
     # Returns a Nokogiri::XSLT object containing the ISO19139 to HTML XSL
     # @return [Nokogiri:XSLT]
     def xsl_html
