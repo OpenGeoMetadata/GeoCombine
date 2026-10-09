@@ -169,7 +169,6 @@ GeoCombine::GeoBlacklightHarvester.configure do
   {
     commit_within: '10000',
     crawl_delay: 1, # All sites
-    debug: true,
     SITE1: {
       crawl_delay: 2, # SITE1 only
       host: 'https://geoblacklight.example.edu',
