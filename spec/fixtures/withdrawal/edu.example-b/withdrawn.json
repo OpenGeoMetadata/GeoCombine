@@ -1,0 +1,7 @@
+{
+  "$schema": "https://opengeometadata.org/schema/ogm-withdrawals-1.0.json",
+  "ogm_version": "1.0",
+  "withdrawn": [
+    { "id": "b-gone", "date": "2026-04-01", "reason": "superseded", "is_replaced_by": ["b-live"] }
+  ]
+}

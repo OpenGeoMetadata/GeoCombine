@@ -1,0 +1,4 @@
+{
+  "ogm_version": "1.0",
+  "withdrawn": [
+    { "id": "local-only", "date": "2026-04-01" }

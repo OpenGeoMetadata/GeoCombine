@@ -6,7 +6,7 @@ require 'faraday/net_http_persistent'
 require 'geo_combine/logger'
 
 module GeoCombine
-  # Indexes Geoblacklight documents into Solr
+  # Indexes Geoblacklight documents into Solr, and deletes them
   class Indexer
     attr_reader :solr
 
@@ -56,12 +56,42 @@ module GeoCombine
       total_indexed
     end
 
+    # Delete documents by id, commit, and return successful IDs (regardless of if they existed).
+    # NOTE: We don't delete by query because OGM ids can contain characters that mess up the parser.
+    def delete(ids)
+      @logger.info "deleting #{ids.size} ids from #{solr_url}"
+      deleted = ids.each_slice(@batch_size).flat_map { |slice| delete_batch(slice) }
+      @solr.commit
+      deleted
+    end
+
     # URL to the solr instance being used
     def solr_url
       @solr.options[:url]
     end
 
     private
+
+    # Delete a batch of ids; if we fail, delete them all individually
+    def delete_batch(ids)
+      @solr.delete_by_id(ids)
+      @logger.debug "deleted batch (#{ids.size} ids)"
+      ids
+    rescue RSolr::Error::Http => e
+      @logger.error "error deleting batch (#{ids.size} ids): #{format_error(e)}"
+      @logger.warn 'retrying ids individually'
+      ids.filter_map { |id| delete_single(id) }
+    end
+
+    # Delete a single id; if it fails, log the error and continue
+    def delete_single(id)
+      @solr.delete_by_id(id)
+      @logger.debug "deleted #{id}"
+      id
+    rescue RSolr::Error::Http => e
+      @logger.error "error deleting #{id}: #{format_error(e)}"
+      nil
+    end
 
     # Index a batch of documents; if we fail, index them all individually
     def index_batch(batch)

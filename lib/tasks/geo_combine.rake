@@ -6,6 +6,7 @@ require 'find'
 require 'faraday/net_http_persistent'
 require 'geo_combine/harvester'
 require 'geo_combine/indexer'
+require 'geo_combine/withdrawals'
 require 'geo_combine/geo_blacklight_harvester'
 
 namespace :geocombine do
@@ -25,13 +26,25 @@ namespace :geocombine do
     args[:repo] ? harvester.pull(args.repo) : harvester.pull_all
   end
 
-  desc 'Index all JSON documents except Layers.json'
+  desc 'Reindex all records and delete withdrawn records'
   task :index, [:ogm_path] => [:environment] do |_t, args|
     ogm_path = args.ogm_path || ENV.fetch('OGM_PATH', 'tmp/opengeometadata')
 
     indexer = GeoCombine::Indexer.new
     harvester = GeoCombine::Harvester.new(ogm_path: ogm_path)
     indexer.index(harvester.docs_to_index)
+    GeoCombine::Withdrawals.new(ogm_path: ogm_path).apply(harvester: harvester, indexer: indexer)
+  end
+
+  desc 'Delete withdrawn records without reindexing'
+  task :withdraw, [:ogm_path] => [:environment] do |_t, args|
+    ogm_path = args.ogm_path || ENV.fetch('OGM_PATH', 'tmp/opengeometadata')
+
+    indexer = GeoCombine::Indexer.new
+    harvester = GeoCombine::Harvester.new(ogm_path: ogm_path)
+    # Walk every record without indexing, to learn which ids are still published
+    harvester.docs_to_index.each { nil }
+    GeoCombine::Withdrawals.new(ogm_path: ogm_path).apply(harvester: harvester, indexer: indexer)
   end
 
   namespace :geoblacklight_harvester do

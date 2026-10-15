@@ -4,12 +4,17 @@ require 'json'
 require 'find'
 require 'git'
 require 'net/http'
+require 'set'
 require 'geo_combine/logger'
+require 'geo_combine/schema'
 
 module GeoCombine
   # Harvests Geoblacklight documents from OpenGeoMetadata for indexing
   class Harvester
-    attr_reader :ogm_path, :schema_version
+    # Files at the root of a repository that describe the repository, not records
+    REPOSITORY_FILES = %w[layers.json withdrawn.json].freeze
+
+    attr_reader :ogm_path, :schema_version, :present_ids
 
     # GitHub API endpoint for OpenGeoMetadata repositories
     def self.ogm_api_uri
@@ -26,7 +31,7 @@ module GeoCombine
       ogm_path:,
       skip_repos: ENV.fetch('OGM_SKIP_REPOS', '').split(',').map(&:strip),
       skip_restricted: ENV.fetch('OGM_SKIP_RESTRICTED', 'true') == 'true',
-      schema_version: ENV.fetch('SCHEMA_VERSION', 'Aardvark'),
+      schema_version: ENV.fetch('SCHEMA_VERSION', GeoCombine::Schema::DEFAULT_VERSION),
       logger: GeoCombine::Logger.logger
     )
       @ogm_path = ogm_path
@@ -37,16 +42,19 @@ module GeoCombine
     end
 
     # Enumerable of docs to index, for passing to an indexer
+    # While enumerating, collects the ids of the records yielded in present_ids
     def docs_to_index
       return to_enum(:docs_to_index) unless block_given?
 
+      @present_ids = Set.new
+      @walk_complete = false
       @logger.info "loading documents from #{ogm_path}"
       Find.find(@ogm_path) do |path|
         # skip hidden directories, like .git
         Find.prune if hidden_directory?(path)
 
-        # skip non-json and layers.json files
-        if File.basename(path) == 'layers.json' || !File.basename(path).end_with?('.json')
+        # skip non-json files, and files that describe a repository rather than records
+        if REPOSITORY_FILES.include?(File.basename(path)) || !File.basename(path).end_with?('.json')
           @logger.debug "skipping #{path}; not a geoblacklight JSON document"
           next
         end
@@ -54,13 +62,20 @@ module GeoCombine
         records_in(path).each do |record|
           next unless record.is_a?(Hash)
 
-          record_id = record['layer_slug_s'] || record['dc_identifier_s']
+          record_id = GeoCombine::Schema.id(record)
           next unless indexable?(record, record_id, path)
 
           @logger.debug "found record #{record_id} at #{path}"
+          @present_ids << record_id
           yield record, path
         end
       end
+      @walk_complete = true
+    end
+
+    # Whether the run visited every file
+    def walk_complete?
+      @walk_complete == true
     end
 
     # Update a repository via git
@@ -115,12 +130,12 @@ module GeoCombine
 
     # Whether to index a record; if not, log why
     def indexable?(record, record_id, path)
-      record_schema = record['gbl_mdVersion_s'] || record['geoblacklight_version']
+      record_schema = GeoCombine::Schema.version(record)
       record_rights = record['dct_accessRights_s'] || record['dc_rights_s']
 
       # skip indexing if no identifiable schema version
       unless record_schema
-        @logger.debug "skipping #{record_id || path}; no schema version declared in record"
+        @logger.debug "skipping #{path}; no schema version declared in record"
         return false
       end
 

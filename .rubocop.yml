@@ -24,3 +24,7 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/BeforeAfterAll:
   Exclude:
     - 'spec/lib/tasks/geo_combine_spec.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'lib/tasks/*.rake'
