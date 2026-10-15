@@ -37,41 +37,25 @@ module GeoCombine
     end
 
     # Enumerable of docs to index, for passing to an indexer
-    # rubocop:disable-next Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def docs_to_index
       return to_enum(:docs_to_index) unless block_given?
 
       @logger.info "loading documents from #{ogm_path}"
       Find.find(@ogm_path) do |path|
+        # skip hidden directories, like .git
+        Find.prune if hidden_directory?(path)
+
         # skip non-json and layers.json files
         if File.basename(path) == 'layers.json' || !File.basename(path).end_with?('.json')
           @logger.debug "skipping #{path}; not a geoblacklight JSON document"
           next
         end
 
-        doc = JSON.parse(File.read(path))
-        [doc].flatten.each do |record|
-          record_schema = record['gbl_mdVersion_s'] || record['geoblacklight_version']
+        records_in(path).each do |record|
+          next unless record.is_a?(Hash)
+
           record_id = record['layer_slug_s'] || record['dc_identifier_s']
-          record_rights = record['dct_accessRights_s'] || record['dc_rights_s']
-
-          # skip indexing if no identifiable schema version
-          unless record_schema
-            @logger.debug "skipping #{record_id || path}; no schema version declared in record"
-            next
-          end
-
-          # skip indexing if this record has a different schema version than what we want
-          if record_schema != @schema_version
-            @logger.debug "skipping #{record_id}; schema version #{record_schema} doesn't match #{@schema_version}"
-            next
-          end
-
-          # skip indexing if this record is restricted and we want to skip restricted records
-          if @skip_restricted && record_rights == 'Restricted'
-            @logger.debug "skipping #{record_id}; access rights are restricted"
-            next
-          end
+          next unless indexable?(record, record_id, path)
 
           @logger.debug "found record #{record_id} at #{path}"
           yield record, path
@@ -128,6 +112,49 @@ module GeoCombine
     end
 
     private
+
+    # Whether to index a record; if not, log why
+    def indexable?(record, record_id, path)
+      record_schema = record['gbl_mdVersion_s'] || record['geoblacklight_version']
+      record_rights = record['dct_accessRights_s'] || record['dc_rights_s']
+
+      # skip indexing if no identifiable schema version
+      unless record_schema
+        @logger.debug "skipping #{record_id || path}; no schema version declared in record"
+        return false
+      end
+
+      # skip indexing if this record has a different schema version than what we want
+      if record_schema != @schema_version
+        @logger.debug "skipping #{record_id}; schema version #{record_schema} doesn't match #{@schema_version}"
+        return false
+      end
+
+      # skip indexing if this record is restricted and we want to skip restricted records
+      if @skip_restricted && record_rights == 'Restricted'
+        @logger.debug "skipping #{record_id}; access rights are restricted"
+        return false
+      end
+
+      true
+    end
+
+    # Whether a path is a hidden directory inside ogm_path
+    def hidden_directory?(path)
+      path != @ogm_path && File.basename(path).start_with?('.') && File.directory?(path)
+    end
+
+    # The records in a JSON file. A file that can't be parsed is logged and skipped,
+    # so one bad file can't stop the rest of the walk.
+    def records_in(path)
+      json = File.read(path, mode: 'r:bom|utf-8')
+      raise JSON::ParserError, 'not valid UTF-8' unless json.valid_encoding?
+
+      [JSON.parse(json)].flatten
+    rescue JSON::ParserError => e
+      @logger.error "skipping #{path}; could not parse JSON: #{e.message}"
+      []
+    end
 
     # List of repository names to harvest
     def repositories
