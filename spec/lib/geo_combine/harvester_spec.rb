@@ -98,6 +98,21 @@ RSpec.describe GeoCombine::Harvester do
     end
   end
 
+  context 'when walking repositories that publish withdrawal logs' do
+    subject(:harvester) { described_class.new(ogm_path: 'spec/fixtures/withdrawal', logger:) }
+
+    it 'skips withdrawn.json files' do
+      paths = harvester.docs_to_index.map { |_record, path| path }
+      expect(paths).to contain_exactly(
+        'spec/fixtures/withdrawal/edu.example-a/metadata-aardvark/a-contradicted.json',
+        'spec/fixtures/withdrawal/edu.example-a/metadata-aardvark/a-live.json',
+        'spec/fixtures/withdrawal/edu.example-b/metadata-aardvark/b-live.json'
+      )
+      expect(logger).to have_received(:debug)
+        .with('skipping spec/fixtures/withdrawal/edu.example-a/withdrawn.json; not a geoblacklight JSON document')
+    end
+  end
+
   context 'when walking files that cannot be parsed, or are hidden' do
     subject(:harvester) { described_class.new(ogm_path:, logger:) }
 
@@ -120,6 +135,7 @@ RSpec.describe GeoCombine::Harvester do
       write('repo/b.json', record.to_json)
       expect(yielded_ids).to eq ['tmp-record']
       expect(logger).to have_received(:error).with(%r{skipping .*/repo/a.json; could not parse JSON})
+      expect(harvester).to be_walk_complete
     end
 
     it 'logs a file that is not valid UTF-8 and continues the walk' do
@@ -158,6 +174,52 @@ RSpec.describe GeoCombine::Harvester do
         .to contain_exactly('Plano de la ciudad de Bogotá', 'with-bom')
     ensure
       Encoding.default_external = original
+    end
+  end
+
+  describe '#present_ids' do
+    it 'is nil before walking' do
+      expect(harvester.present_ids).to be_nil
+    end
+
+    it 'collects the ids of the records yielded' do
+      harvester.docs_to_index.each { nil }
+      expect(harvester.present_ids).to contain_exactly('p16022coll205:236')
+    end
+
+    it 'collects 1.0 records by layer_slug_s' do
+      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0', logger:)
+      harvester.docs_to_index.each { nil }
+      expect(harvester.present_ids).to contain_exactly('Stanford-bb338jh0716', 'stanford-cz128vq0535')
+    end
+
+    it 'leaves out records that are not yielded' do
+      harvester.docs_to_index.each { nil }
+      expect(harvester.present_ids).not_to include('no-schema-version', 'gmu-arlington-2004-lot-poly')
+    end
+
+    it 'starts over on each walk' do
+      harvester = described_class.new(ogm_path: 'spec/fixtures/indexing', schema_version: '1.0', logger:)
+      harvester.docs_to_index.each { nil }
+      harvester.docs_to_index.first
+      expect(harvester.present_ids.size).to eq 1
+    end
+  end
+
+  describe '#walk_complete?' do
+    it 'is false before walking' do
+      expect(harvester).not_to be_walk_complete
+    end
+
+    it 'is true after walking every file' do
+      harvester.docs_to_index.each { nil }
+      expect(harvester).to be_walk_complete
+    end
+
+    it 'is false when the walk stops early' do
+      harvester.docs_to_index.each { nil }
+      harvester.docs_to_index.first
+      expect(harvester).not_to be_walk_complete
     end
   end
 

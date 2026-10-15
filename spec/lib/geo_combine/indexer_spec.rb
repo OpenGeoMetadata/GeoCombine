@@ -21,8 +21,8 @@ RSpec.describe GeoCombine::Indexer do
   let(:solr) { instance_double(RSolr::Client, options: { url: 'TEST' }) }
   let(:docs) do
     [
-      [{ 'id' => '1' }, 'path/to/record1.json'],              # v1.0 schema
-      [{ 'dc_identifier_s' => '2' }, 'path/to/record2.json']  # aardvark schema
+      [{ 'id' => '1' }, 'path/to/record1.json'],              # aardvark schema
+      [{ 'dc_identifier_s' => '2' }, 'path/to/record2.json']  # v1.0 schema
     ]
   end
 
@@ -160,6 +160,71 @@ RSpec.describe GeoCombine::Indexer do
       it 'logs the status rather than raising an error while parsing' do
         expect { indexer.index(docs) }.not_to raise_error
         expect(logger).to have_received(:error).with(/502 Bad Gateway$/).at_least(:once)
+      end
+    end
+  end
+
+  describe '#delete' do
+    let(:solr_response) { { status: '400', body: { error: { msg: 'error message' } }.to_json } }
+    let(:error) { RSolr::Error::Http.new({ uri: URI('') }, solr_response) }
+
+    before do
+      allow(solr).to receive(:delete_by_id)
+    end
+
+    it 'deletes ids in batches, by id' do
+      indexer.delete(%w[a:1 b/2])
+      expect(solr).to have_received(:delete_by_id).with(%w[a:1 b/2])
+    end
+
+    it 'commits after deleting' do
+      indexer.delete(%w[a b])
+      expect(solr).to have_received(:delete_by_id).ordered
+      expect(solr).to have_received(:commit).ordered
+    end
+
+    it 'returns the ids deleted' do
+      expect(indexer.delete(%w[a b])).to eq %w[a b]
+    end
+
+    it 'never deletes by query, rolls back, or optimizes' do
+      allow(solr).to receive_messages(delete_by_query: nil, rollback: nil, optimize: nil)
+      indexer.delete(%w[a b])
+      expect(solr).not_to have_received(:delete_by_query)
+      expect(solr).not_to have_received(:rollback)
+      expect(solr).not_to have_received(:optimize)
+    end
+
+    context 'when the number of ids is greater than batch size' do
+      before do
+        stub_const('ENV', 'SOLR_BATCH_SIZE' => 10)
+      end
+
+      it 'deletes the ids in batches' do
+        expect(indexer.delete((1..25).map(&:to_s)).size).to eq 25
+        expect(solr).to have_received(:delete_by_id).exactly(3).times
+      end
+    end
+
+    context 'when an error occurs deleting a batch' do
+      before do
+        allow(solr).to receive(:delete_by_id).with(%w[a b]).and_raise(error)
+        allow(solr).to receive(:delete_by_id).with('a')
+        allow(solr).to receive(:delete_by_id).with('b').and_raise(error)
+      end
+
+      it 'retries the ids individually and returns those deleted' do
+        expect(indexer.delete(%w[a b])).to eq %w[a]
+      end
+
+      it 'logs the ids that could not be deleted' do
+        indexer.delete(%w[a b])
+        expect(logger).to have_received(:error).with('error deleting b: 400 Bad Request - error message')
+      end
+
+      it 'still commits' do
+        indexer.delete(%w[a b])
+        expect(solr).to have_received(:commit)
       end
     end
   end

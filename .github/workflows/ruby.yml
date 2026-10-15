@@ -38,3 +38,30 @@ jobs:
       with:
         name: "coverage-${{ matrix.ruby }}"
         path: coverage/
+
+  # Runs the specs that need a real Solr, using the GeoBlacklight schema
+  integration:
+    runs-on: ubuntu-latest
+    env:
+      GEOBLACKLIGHT_VERSION: v5.4.0
+      SOLR_INTEGRATION_URL: http://localhost:8983/solr/blacklight-core
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Start Solr with the GeoBlacklight ${{ env.GEOBLACKLIGHT_VERSION }} configuration
+      run: |
+        mkdir -p tmp/solr-conf
+        curl -sfL "https://github.com/geoblacklight/geoblacklight/archive/refs/tags/${GEOBLACKLIGHT_VERSION}.tar.gz" \
+          | tar -xz -C tmp/solr-conf --strip-components=3 "geoblacklight-${GEOBLACKLIGHT_VERSION#v}/solr/conf"
+        rm tmp/solr-conf/core.properties
+        docker run -d -p 8983:8983 -v "$PWD/tmp/solr-conf:/gbl-conf:ro" solr:9 solr-precreate blacklight-core /gbl-conf
+        timeout 120 sh -c 'until curl -sf "$SOLR_INTEGRATION_URL/get?id=ready" > /dev/null; do sleep 2; done'
+
+    - name: Set up Ruby and install dependencies
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4
+        bundler-cache: true
+
+    - name: Run tests, including integration tests against Solr
+      run: bundle exec rake spec
