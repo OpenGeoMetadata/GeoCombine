@@ -1,0 +1,1183 @@
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<language>
+		<LanguageCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#LanguageCode" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+	</language>
+	<hierarchyLevel>
+		<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+	</hierarchyLevel>
+	<contact>
+		<CI_ResponsibleParty>
+			<individualName>
+				<gco:CharacterString>Geospatial Data Manager</gco:CharacterString>
+			</individualName>
+			<organisationName>
+				<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+			</organisationName>
+			<role>
+				<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115">pointOfContact</CI_RoleCode>
+			</role>
+			<contactInfo>
+				<CI_Contact>
+					<address>
+						<CI_Address>
+							<electronicMailAddress>
+								<gco:CharacterString>LBRY-uageoportal@email.arizona.edu</gco:CharacterString>
+							</electronicMailAddress>
+						</CI_Address>
+					</address>
+				</CI_Contact>
+			</contactInfo>
+		</CI_ResponsibleParty>
+	</contact>
+	<dateStamp>
+		<gco:Date>2017-08-16T16:30:09</gco:Date>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>2007</gco:CharacterString>
+	</metadataStandardVersion>
+	<spatialRepresentationInfo>
+		<MD_VectorSpatialRepresentation>
+			<geometricObjects>
+				<MD_GeometricObjects>
+					<geometricObjectType>
+						<MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="complex" codeSpace="ISOTC211/19115">complex</MD_GeometricObjectTypeCode>
+					</geometricObjectType>
+					<geometricObjectCount>
+						<gco:Integer>21</gco:Integer>
+					</geometricObjectCount>
+				</MD_GeometricObjects>
+			</geometricObjects>
+			<geometricObjects>
+				<MD_GeometricObjects>
+					<geometricObjectType>
+						<MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="complex" codeSpace="ISOTC211/19115">complex</MD_GeometricObjectTypeCode>
+					</geometricObjectType>
+					<geometricObjectCount>
+						<gco:Integer>21</gco:Integer>
+					</geometricObjectCount>
+				</MD_GeometricObjects>
+			</geometricObjects>
+		</MD_VectorSpatialRepresentation>
+	</spatialRepresentationInfo>
+	<identificationInfo>
+		<MD_DataIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>American Indian Reservations, Arizona, 1970</gco:CharacterString>
+					</title>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2007-01-01T:00:00:00</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+							</dateType>
+						</CI_Date>
+					</date>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>University of Arizona</gco:CharacterString>
+								<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="publisher" codeSpace="ISOTC211/19115">publisher</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>University of Arizona. Library</gco:CharacterString>
+								<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+					<presentationForm>
+						<CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode" codeListValue="mapDigital" codeSpace="ISOTC211/19115">mapDigital</CI_PresentationFormCode>
+					</presentationForm>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>Statewide coverage of 1970 American Indian Reservations. Boundaries that cross into the adjacent states are included. Population data is from the U.S. Bureau of Indian Affairs, Phoenix Area Office. Information Profiles of Indian Reservations in Arizona, Nevada, Utah, July 1970.</gco:CharacterString>
+			</abstract>
+			<purpose>
+				<gco:CharacterString>To use in GIS systems for historical study and analysis This datasets is made available to interested persons through the University of Arizona's instance of Open Geoportal. It has been provided to assist educators, students, researchers, and policy makers in mapping and/or analysis applications.</gco:CharacterString>
+			</purpose>
+			<credit>
+				<gco:CharacterString>Chris Kollen, University of Arizona Library</gco:CharacterString>
+			</credit>
+			<status>
+				<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed" codeSpace="ISOTC211/19115">completed</MD_ProgressCode>
+			</status>
+			<pointOfContact>
+				<CI_ResponsibleParty>
+					<individualName>
+						<gco:CharacterString>Chris Kollen</gco:CharacterString>
+					</individualName>
+					<organisationName>
+						<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+					</organisationName>
+					<positionName>
+						<gco:CharacterString>Data Curation Librarian</gco:CharacterString>
+					</positionName>
+					<contactInfo>
+						<CI_Contact>
+							<phone>
+								<CI_Telephone>
+									<voice>
+										<gco:CharacterString>(520) 305-0495</gco:CharacterString>
+									</voice>
+									<facsimile>
+										<gco:CharacterString/>
+									</facsimile>
+								</CI_Telephone>
+							</phone>
+							<address>
+								<CI_Address>
+									<deliveryPoint>
+										<gco:CharacterString>P.O. Box 210055</gco:CharacterString>
+									</deliveryPoint>
+									<city>
+										<gco:CharacterString>Tucson</gco:CharacterString>
+									</city>
+									<administrativeArea>
+										<gco:CharacterString>AZ</gco:CharacterString>
+									</administrativeArea>
+									<postalCode>
+										<gco:CharacterString>85721-0055</gco:CharacterString>
+									</postalCode>
+									<country>
+										<gco:CharacterString>U.S.</gco:CharacterString>
+									</country>
+									<electronicMailAddress>
+										<gco:CharacterString>kollen@email.arizona.edu</gco:CharacterString>
+									</electronicMailAddress>
+								</CI_Address>
+							</address>
+						</CI_Contact>
+					</contactInfo>
+					<role>
+						<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115">pointOfContact</CI_RoleCode>
+					</role>
+				</CI_ResponsibleParty>
+			</pointOfContact>
+			<resourceMaintenance>
+				<MD_MaintenanceInformation>
+					<maintenanceAndUpdateFrequency>
+						<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="asNeeded" codeSpace="ISOTC211/19115">asNeeded</MD_MaintenanceFrequencyCode>
+					</maintenanceAndUpdateFrequency>
+				</MD_MaintenanceInformation>
+			</resourceMaintenance>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Population</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>American Indian Reservations</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme" codeSpace="ISOTC211/19115">theme</MD_KeywordTypeCode>
+					</type>
+					<thesaurusName>
+						<CI_Citation>
+							<title>
+								<gco:CharacterString>REQUIRED: Reference to a formally registered thesaurus or a similar authoritative source of theme keywords.</gco:CharacterString>
+							</title>
+							<date gco:nilReason="missing"/>
+						</CI_Citation>
+					</thesaurusName>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Arizona</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="place" codeSpace="ISOTC211/19115">place</MD_KeywordTypeCode>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Navajo Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Fort Apache Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>San Xavier Indian Reservation (historical)</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Gila River Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Cocopah Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Tohono O'odham Nation Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Fort Yuma Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Fort McDowell Yavapai Nation Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Colorado River Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Kaibab Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Hualapai Indian Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Yavapai-Prescott Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Hopi Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Fort Mojave Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Gila Bend Indian Reservation (historical)</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Salt River Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>San Carlos (historical)</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Camp Verde Military Reservation (historical)</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Ak-Chin Village Census Designated Place</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Havasupai Reservation</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>State of Arizona</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="place" codeSpace="ISOTC211/19115">place</MD_KeywordTypeCode>
+					</type>
+					<thesaurusName>
+						<CI_Citation>
+							<title>
+								<gco:CharacterString>GNIS</gco:CharacterString>
+							</title>
+							<date gco:nilReason="missing"/>
+						</CI_Citation>
+					</thesaurusName>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>1970</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="temporal" codeSpace="ISOTC211/19115">temporal</MD_KeywordTypeCode>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<spatialRepresentationType>
+				<MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector" codeSpace="ISOTC211/19115">vector</MD_SpatialRepresentationTypeCode>
+			</spatialRepresentationType>
+			<language>
+				<LanguageCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#LanguageCode" codeListValue="eng" codeSpace="ISO639-2">eng</LanguageCode>
+			</language>
+			<topicCategory>
+				<MD_TopicCategoryCode>society</MD_TopicCategoryCode>
+			</topicCategory>
+			<topicCategory>
+				<MD_TopicCategoryCode>intelligenceMilitary</MD_TopicCategoryCode>
+			</topicCategory>
+			<topicCategory>
+				<MD_TopicCategoryCode>boundaries</MD_TopicCategoryCode>
+			</topicCategory>
+			<environmentDescription>
+				<gco:CharacterString>Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 9.2.2.1350</gco:CharacterString>
+			</environmentDescription>
+			<extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>-114.996919</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>-108.204306</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>31.455175</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>37.474633</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</extent>
+			<extent>
+				<EX_Extent>
+					<temporalElement>
+						<EX_TemporalExtent>
+							<extent>
+								<gml:TimePeriod>
+									<gml:beginPosition>1970-01-01T00:00:00</gml:beginPosition>
+									<gml:endPosition>1970-12-31T00:00:00</gml:endPosition>
+								</gml:TimePeriod>
+							</extent>
+						</EX_TemporalExtent>
+					</temporalElement>
+				</EX_Extent>
+			</extent>
+		</MD_DataIdentification>
+	</identificationInfo>
+	<distributionInfo>
+		<MD_Distribution>
+			<distributor>
+				<MD_Distributor>
+					<distributorContact>
+						<CI_ResponsibleParty>
+							<individualName>
+								<gco:CharacterString>Geospatial Data Manager</gco:CharacterString>
+							</individualName>
+							<organisationName>
+								<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+							</organisationName>
+							<contactInfo>
+								<CI_Contact>
+									<address>
+										<CI_Address>
+											<deliveryPoint>
+												<gco:CharacterString>1510 E University Blvd.</gco:CharacterString>
+											</deliveryPoint>
+											<city>
+												<gco:CharacterString>Tucson</gco:CharacterString>
+											</city>
+											<administrativeArea>
+												<gco:CharacterString>Arizona</gco:CharacterString>
+											</administrativeArea>
+											<postalCode>
+												<gco:CharacterString>85712</gco:CharacterString>
+											</postalCode>
+											<country>
+												<Country codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CountryCode" codeListValue="US" codeSpace="ISO3166-alpha2">US</Country>
+											</country>
+											<electronicMailAddress>
+												<gco:CharacterString>LBRY-uageoportal@email.arizona.edu</gco:CharacterString>
+											</electronicMailAddress>
+										</CI_Address>
+									</address>
+								</CI_Contact>
+							</contactInfo>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" codeSpace="ISOTC211/19115">distributor</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</distributorContact>
+					<distributionOrderProcess>
+						<MD_StandardOrderProcess/>
+					</distributionOrderProcess>
+					<distributorFormat>
+						<MD_Format>
+							<name>
+								<gco:CharacterString>Shapefile</gco:CharacterString>
+							</name>
+							<version>
+								<gco:CharacterString>unknown</gco:CharacterString>
+							</version>
+						</MD_Format>
+					</distributorFormat>
+					<distributorTransferOptions>
+						<MD_DigitalTransferOptions>
+							<onLine>
+								<CI_OnlineResource>
+									<linkage>
+										<gco:URL>http://dx.doi.org/10.2458/azu_geo_arizona_amerindianreservations_1970</gco:URL>
+									</linkage>
+								</CI_OnlineResource>
+							</onLine>
+						</MD_DigitalTransferOptions>
+					</distributorTransferOptions>
+				</MD_Distributor>
+			</distributor>
+			<transferOptions>
+				<MD_DigitalTransferOptions>
+					<!-- WARNING: no content -->
+				</MD_DigitalTransferOptions>
+			</transferOptions>
+		</MD_Distribution>
+	</distributionInfo>
+	<dataQualityInfo>
+		<DQ_DataQuality>
+			<scope>
+				<DQ_Scope>
+					<level>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+					</level>
+				</DQ_Scope>
+			</scope>
+			<report>
+				<DQ_AbsoluteExternalPositionalAccuracy>
+					<measureDescription>
+						<gco:CharacterString>Digitized reservation boundaries from the following maps: Ak-Chin and Gila River used Highway system map, Pima Indian Agency, Arizona: Gila River Indian Reservation and Maricopa (Ak Chin) Indian Reservation, 1971; Camp Verde used Highway system map, Truxton Canon Indian Agency, Arizona: Camp Verde Indian Reservation, 1971; Cocopah used Highway system map, Colorado River Indian Agency, Arizona: Cocopah Indian Reservation, 1972; Colorado River Indian Reservation used Colorado River Indian Agency, highway system map, 1971 and 1990 American Indian Areas online file; Fort Apache, Fort Yuma-Quechan, San Xavier, Tohono O'odham (Sells), and Yavapai-Prescott used 1990 American Indian Areas online file; Fort Mohave used Highway system map, Colorado River Indian Agency, Arizona: Fort Mojave Indian Reservation, 1972; Gila Bend used Surface management responsibility, State of Arizona, 1979; Havasupai used Highway system map, Truxton Canon Indian Agency, Arizona: Hualapai Indian Reservation and Havasupai Indian Reservation, 1971; Hopi and San Carlos used National atlas: Arizona and New Mexico, 1973; Hualapai used Highway system map, Truxton Canon Indian Agency, Arizona: Hualapai Indian Reservation and Havasupai Indian Reservation, 1971 and 1990 American Indian Areas online file; Kaibab Paiute used Highway system map, Hopi Indian Agency, Arizona (Kaibab Indian Reservation), 1971; Navajo used Indian country in Arizona, New Mexico, Utah, and Colorado, 1971 and as a guide Navajo atlas : environments, resources, people, and history of the Din,e; Bikeyah; and Salt River and Fort McDowell used Highway system map, Salt River Indian Agency, Arizona: Fort McDowell Indian Reservation and Salt River Indian Reservation, 1971. Also used Tiller's guide to Indian country: economic profiles of American Indian reservations for dates on boundary changes.</gco:CharacterString>
+					</measureDescription>
+					<result>
+						<DQ_QuantitativeResult>
+							<valueUnit gco:nilReason="missing"/>
+							<value>
+								<gco:Record>Accuracy ~10 meters (Scale at 1:8,000) to 1 km. (Scale 1:2,000,000)</gco:Record>
+							</value>
+						</DQ_QuantitativeResult>
+					</result>
+				</DQ_AbsoluteExternalPositionalAccuracy>
+			</report>
+			<lineage>
+				<LI_Lineage>
+					<processStep>
+						<LI_ProcessStep>
+							<description>
+								<gco:CharacterString>Dataset renamed from 1970_reservations.shp to Arizona_AmerIndianReservations_1970.shp by Ben Hickson with the University of Arizona Library. Metadata fields corresponding the Open Geoportal Working Group Best Practices Guide (http://opengeoportal.org/working-groups/metadata/) were also updated.</gco:CharacterString>
+							</description>
+							<dateTime/>
+						</LI_ProcessStep>
+					</processStep>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>Automobile Club of Southern California.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>750</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Indian country in Arizona, New Mexico, Utah, and Colorado, 1971.</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>Automobile Club of Southern California.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_e01f6712ad4bc753f745301b23162fd4">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>130</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Truxton Canon Indian Agency, Arizona: Hualapai Indian Reservation and Havasupai Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_79f77dde133ebd8f7a202c1c6c7b9377">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>130</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Pima Indian Agency, Arizona: Gila River Indian Reservation and Maricopa (Ak Chin) Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_b8033d99d297956f8bcc37d0d2fd5aa2">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>126.72</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Colorado River Indian Agency, highway system map</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1985-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_c2be7b86b216e302385298c355f3fed3">
+													<gml:timePosition>1985-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of the Census</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>0</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>1990 American Indian Areas online file</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1990-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of the Census</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_ee9a50fb6ae7f5389e4618e7eeadee18">
+													<gml:timePosition>1990-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>130</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Hopi Indian Agency, Arizona (Kaibab Indian Reservation)</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_fdfabb9344e1646c2ede206083aa5a37">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>8</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Colorado River Indian Agency, Arizona: Cocopah Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1972-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_bd6969742bd87afaae0e38e78157efaa">
+													<gml:timePosition>1972-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Geological Survey</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>0</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>National Atlas: Arizona and New Mexico</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1973-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Geological Survey</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_9ef798517637f7b1768db800d6d746de">
+													<gml:timePosition>1973-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>25</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Truxton Canon Indian Agency, Arizona: Camp Verde Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_740c6d2bf570e69e7e1c1eb89a3eb2bd">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Land Management.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>500</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Surface management responsibility, State of Arizona</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1979-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Land Management.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_92bdd62bf1b274575a1d6c27d703f06f">
+													<gml:timePosition>1979-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>130</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Salt River Indian Agency, Arizona: Fort McDowell Indian Reservation and Salt River Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1971-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_143a15a68d6560271f2bac6336ef1f33">
+													<gml:timePosition>1971-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+					<source>
+						<LI_Source>
+							<description>
+								<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+							</description>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>130</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceCitation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>Highway system map, Colorado River Indian Agency, Arizona: Fort Mojave Indian Reservation</gco:CharacterString>
+									</title>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>1972-01-01</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<citedResponsibleParty>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>U.S. Bureau of Indian Affairs.</gco:CharacterString>
+												<!-- WARNING: translation from FGDC is ambiguous, this may require correction -->
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115">originator</CI_RoleCode>
+											</role>
+										</CI_ResponsibleParty>
+									</citedResponsibleParty>
+								</CI_Citation>
+							</sourceCitation>
+							<sourceExtent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>publication date</gco:CharacterString>
+									</description>
+									<temporalElement>
+										<EX_TemporalExtent>
+											<extent>
+												<gml:TimeInstant gml:id="_d7367066a7c1262c3538bef47e2e95">
+													<gml:timePosition>1972-01-01</gml:timePosition>
+												</gml:TimeInstant>
+											</extent>
+										</EX_TemporalExtent>
+									</temporalElement>
+								</EX_Extent>
+							</sourceExtent>
+						</LI_Source>
+					</source>
+				</LI_Lineage>
+			</lineage>
+		</DQ_DataQuality>
+	</dataQualityInfo>
+	<referenceSystemInfo>
+		<MD_ReferenceSystem>
+			<referenceSystemIdentifier>
+				<RS_Identifier>
+					<code>
+						<gco:CharacterString>NAD83 / UTM zone 12N (EPSG:26912)</gco:CharacterString>
+					</code>
+					<codeSpace>
+						<gco:CharacterString>EPSG</gco:CharacterString>
+					</codeSpace>
+					<version>
+						<gco:CharacterString>7.9</gco:CharacterString>
+					</version>
+				</RS_Identifier>
+			</referenceSystemIdentifier>
+		</MD_ReferenceSystem>
+	</referenceSystemInfo>
+	<dataSetURI>
+		<gco:CharacterString>http://dx.doi.org/10.2458/azu_geo_arizona_amerindianreservations_1970</gco:CharacterString>
+	</dataSetURI>
+</MD_Metadata>

@@ -1,0 +1,560 @@
+<gmi:MI_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gmi="http://www.isotc211.org/2005/gmi" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.isotc211.org/2005/gmi https://www.ngdc.noaa.gov/metadata/published/xsd/schema.xsd">
+	<gmd:fileIdentifier>
+		<gco:CharacterString>Arizona_250kScaleTopoDecollared_1970to1995.tif</gco:CharacterString>
+	</gmd:fileIdentifier>
+	<gmd:language>
+		<gco:CharacterString>eng; USA</gco:CharacterString>
+	</gmd:language>
+	<gmd:characterSet>
+		<gmd:MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</gmd:MD_CharacterSetCode>
+	</gmd:characterSet>
+	<gmd:hierarchyLevel>
+		<gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+	</gmd:hierarchyLevel>
+	<gmd:contact>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>Open Geoportal Manager</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>LBRY-uageoportal@email.arizona.edu</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</gmd:contact>
+	<gmd:dateStamp>
+		<!--2015-06-17-->
+		<gco:Date>2017-08-16T15:58:00</gco:Date>
+	</gmd:dateStamp>
+	<gmd:metadataStandardName>
+		<gco:CharacterString>ISO 19115-2 Geographic Information - Metadata - Part 2: Extensions for Imagery and Gridded Data</gco:CharacterString>
+	</gmd:metadataStandardName>
+	<gmd:metadataStandardVersion>
+		<gco:CharacterString>ISO 19115-2:2009(E)</gco:CharacterString>
+	</gmd:metadataStandardVersion>
+	<gmd:spatialRepresentationInfo>
+		<gmd:MD_GridSpatialRepresentation>
+			<gmd:numberOfDimensions>
+				<gco:Integer>2</gco:Integer>
+			</gmd:numberOfDimensions>
+			<gmd:axisDimensionProperties>
+				<gmd:MD_Dimension>
+					<gmd:dimensionName>
+						<gmd:MD_DimensionNameTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_DimensionNameTypeCode" codeListValue="row">row</gmd:MD_DimensionNameTypeCode>
+					</gmd:dimensionName>
+					<gmd:dimensionSize>
+						<gco:Integer>30727</gco:Integer>
+					</gmd:dimensionSize>
+				</gmd:MD_Dimension>
+			</gmd:axisDimensionProperties>
+			<gmd:axisDimensionProperties>
+				<gmd:MD_Dimension>
+					<gmd:dimensionName>
+						<gmd:MD_DimensionNameTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_DimensionNameTypeCode" codeListValue="column">column</gmd:MD_DimensionNameTypeCode>
+					</gmd:dimensionName>
+					<gmd:dimensionSize>
+						<gco:Integer>29882</gco:Integer>
+					</gmd:dimensionSize>
+				</gmd:MD_Dimension>
+			</gmd:axisDimensionProperties>
+			<gmd:cellGeometry>
+				<gmd:MD_CellGeometryCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CellGeometryCode" codeListValue="point">point</gmd:MD_CellGeometryCode>
+			</gmd:cellGeometry>
+			<gmd:transformationParameterAvailability gco:nilReason="unknown"/>
+		</gmd:MD_GridSpatialRepresentation>
+	</gmd:spatialRepresentationInfo>
+	<gmd:spatialRepresentationInfo>
+		<gmd:MD_VectorSpatialRepresentation>
+			<gmd:geometricObjects>
+				<gmd:MD_GeometricObjects>
+					<gmd:geometricObjectType>
+						<gmd:MD_GeometricObjectTypeCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="Raster">Raster</gmd:MD_GeometricObjectTypeCode>
+					</gmd:geometricObjectType>
+				</gmd:MD_GeometricObjects>
+			</gmd:geometricObjects>
+		</gmd:MD_VectorSpatialRepresentation>
+	</gmd:spatialRepresentationInfo>
+	<!--D North American 1983-->
+	<gmd:referenceSystemInfo xlink:href="https://www.ngdc.noaa.gov/docucomp/65f8b220-95ed-11e0-aa80-0800200c9a66" xlink:title="NAD83"/>
+	<gmd:identificationInfo>
+		<gmd:MD_DataIdentification>
+			<gmd:citation>
+				<gmd:CI_Citation>
+					<gmd:title>
+						<gco:CharacterString>Scanned 250k Scale Topographic Maps (Decollared), Arizona, 1970 to 1995</gco:CharacterString>
+					</gmd:title>
+					<gmd:date>
+						<gmd:CI_Date>
+							<gmd:date>
+								<gco:Date>9999-01-01T:00:00:00</gco:Date>
+							</gmd:date>
+							<gmd:dateType>
+								<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+							</gmd:dateType>
+						</gmd:CI_Date>
+					</gmd:date>
+					<gmd:citedResponsibleParty>
+						<gmd:CI_ResponsibleParty>
+							<gmd:organisationName>
+								<gco:CharacterString>United State. Geological Survey</gco:CharacterString>
+							</gmd:organisationName>
+							<gmd:contactInfo>
+								<gmd:CI_Contact>
+									<gmd:address>
+										<gmd:CI_Address>
+											<gmd:administrativeArea>
+												<gco:CharacterString/>
+											</gmd:administrativeArea>
+										</gmd:CI_Address>
+									</gmd:address>
+								</gmd:CI_Contact>
+							</gmd:contactInfo>
+							<gmd:role>
+								<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="publisher">publisher</gmd:CI_RoleCode>
+							</gmd:role>
+						</gmd:CI_ResponsibleParty>
+					</gmd:citedResponsibleParty>
+					<gmd:citedResponsibleParty>
+						<gmd:CI_ResponsibleParty>
+							<gmd:organisationName>
+								<gco:CharacterString>United State. Geological Survey</gco:CharacterString>
+							</gmd:organisationName>
+							<gmd:role>
+								<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</gmd:CI_RoleCode>
+							</gmd:role>
+						</gmd:CI_ResponsibleParty>
+					</gmd:citedResponsibleParty>
+					<gmd:citedResponsibleParty>
+						<gmd:CI_ResponsibleParty>
+							<gmd:organisationName gco:nilReason="missing"/>
+							<gmd:contactInfo>
+								<gmd:CI_Contact>
+									<gmd:onlineResource>
+										<gmd:CI_OnlineResource>
+											<gmd:linkage>
+												<gmd:URL>http://dx.doi.org/10.2458/azu_geo_arizona_250kscaletopodecollared_1970to1995</gmd:URL>
+											</gmd:linkage>
+										</gmd:CI_OnlineResource>
+									</gmd:onlineResource>
+								</gmd:CI_Contact>
+							</gmd:contactInfo>
+							<gmd:role gco:nilReason="inapplicable"/>
+						</gmd:CI_ResponsibleParty>
+					</gmd:citedResponsibleParty>
+					<gmd:presentationForm>
+						<gmd:CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode" codeListValue="imageDigital">imageDigital</gmd:CI_PresentationFormCode>
+					</gmd:presentationForm>
+				</gmd:CI_Citation>
+			</gmd:citation>
+			<gmd:abstract>
+				<gco:CharacterString>This data set originated as a Digital Raster Graphic (DRG) produced from a scanned USGS topographic map. The DRG included the collar information and was georeferenced to the UTM grid. The current data set has been modified to remove the collar information and has been georeferenced to UTM Zone 12 to be incorporated into a seamless dataset for the Bureau of Land Management. The decollared DRGs have been mosaiced into an image pyramid using Gdal (1.9.2) software utilities to be served in GeoServer.</gco:CharacterString>
+			</gmd:abstract>
+			<gmd:purpose>
+				<gco:CharacterString>To provide a DRG data set that can be combined in a seamless manner to support the Bureau of Land Management's Land and Records Information Systems (LRIS). This datasets is made available to interested persons through the University of Arizona's instance of Open Geoportal. It has been provided to assist educators, students, researchers, and policy makers in mapping and/or analysis applications.</gco:CharacterString>
+			</gmd:purpose>
+			<gmd:credit>
+				<gco:CharacterString>This clipped DRG was derived by Spatial Data Integrations, Inc., of Louisville, KY, under contract to the Bureau of Land Management from a USGS DRG.</gco:CharacterString>
+			</gmd:credit>
+			<gmd:resourceMaintenance>
+				<gmd:MD_MaintenanceInformation>
+					<gmd:maintenanceAndUpdateFrequency>
+						<gmd:MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue=""/>
+					</gmd:maintenanceAndUpdateFrequency>
+				</gmd:MD_MaintenanceInformation>
+			</gmd:resourceMaintenance>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
+						<gco:CharacterString>Digital Raster Graphic</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>DRG</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>USGS</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Topographic Map</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Enid</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:keyword>
+						<gco:CharacterString>Topo</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:type>
+						<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme">theme</gmd:MD_KeywordTypeCode>
+					</gmd:type>
+					<gmd:thesaurusName>
+						<gmd:CI_Citation>
+							<gmd:title>
+								<gco:CharacterString/>
+							</gmd:title>
+							<gmd:date gco:nilReason="unknown"/>
+						</gmd:CI_Citation>
+					</gmd:thesaurusName>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
+						<gco:CharacterString>State of Arizona</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:type>
+						<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="place">place</gmd:MD_KeywordTypeCode>
+					</gmd:type>
+					<gmd:thesaurusName>
+						<gmd:CI_Citation>
+							<gmd:title>
+								<gco:CharacterString>GNIS</gco:CharacterString>
+							</gmd:title>
+							<gmd:date gco:nilReason="unknown"/>
+						</gmd:CI_Citation>
+					</gmd:thesaurusName>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:resourceConstraints>
+				<gmd:MD_Constraints>
+					<gmd:useLimitation>
+						<gco:CharacterString> </gco:CharacterString>
+					</gmd:useLimitation>
+				</gmd:MD_Constraints>
+			</gmd:resourceConstraints>
+			<gmd:resourceConstraints>
+				<gmd:MD_LegalConstraints>
+					<gmd:useConstraints>
+						<gmd:MD_RestrictionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+					</gmd:useConstraints>
+					<gmd:otherConstraints>
+						<gco:CharacterString>Use Constraints: Acknowledgement of USGS and the Bureau of Land Management would be appreciated. Not intended for use as a legal description. The University of Arizona does not guarantee the accuracy, completeness, or timeliness of the information provided for download and shall not be liable for any loss or injury resulting from reliance upon the information given.</gco:CharacterString>
+					</gmd:otherConstraints>
+				</gmd:MD_LegalConstraints>
+			</gmd:resourceConstraints>
+			<gmd:resourceConstraints>
+				<gmd:MD_LegalConstraints>
+					<gmd:accessConstraints>
+						<gmd:MD_RestrictionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+					</gmd:accessConstraints>
+					<gmd:otherConstraints>
+						<gco:CharacterString>Access Constraints: Unrestricted Access - publicly available dataset</gco:CharacterString>
+					</gmd:otherConstraints>
+				</gmd:MD_LegalConstraints>
+			</gmd:resourceConstraints>
+			<gmd:spatialRepresentationType>
+				<gmd:MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="grid">grid</gmd:MD_SpatialRepresentationTypeCode>
+			</gmd:spatialRepresentationType>
+			<gmd:language>
+				<gco:CharacterString>eng; USA</gco:CharacterString>
+			</gmd:language>
+			<gmd:topicCategory>
+				<gmd:MD_TopicCategoryCode>geoscientificInformation</gmd:MD_TopicCategoryCode>
+			</gmd:topicCategory>
+			<gmd:topicCategory>
+				<gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>
+			</gmd:topicCategory>
+			<gmd:topicCategory>
+				<gmd:MD_TopicCategoryCode>planningCadastre</gmd:MD_TopicCategoryCode>
+			</gmd:topicCategory>
+			<gmd:environmentDescription>
+				<gco:CharacterString>Native Dataset Environment: Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.1.1.3143</gco:CharacterString>
+			</gmd:environmentDescription>
+			<gmd:extent>
+				<gmd:EX_Extent id="boundingExtent">
+					<gmd:geographicElement>
+						<gmd:EX_GeographicBoundingBox id="boundingGeographicBoundingBox">
+							<gmd:westBoundLongitude>
+								<gco:Decimal>-116.373923</gco:Decimal>
+							</gmd:westBoundLongitude>
+							<gmd:eastBoundLongitude>
+								<gco:Decimal>-107.737841</gco:Decimal>
+							</gmd:eastBoundLongitude>
+							<gmd:southBoundLatitude>
+								<gco:Decimal>30.905329</gco:Decimal>
+							</gmd:southBoundLatitude>
+							<gmd:northBoundLatitude>
+								<gco:Decimal>38.038250</gco:Decimal>
+							</gmd:northBoundLatitude>
+						</gmd:EX_GeographicBoundingBox>
+					</gmd:geographicElement>
+					<gmd:temporalElement>
+						<gmd:EX_TemporalExtent>
+							<gmd:extent>
+								<ns0:TimePeriod xmlns:ns0="http://www.opengis.net/gml">
+									<ns0:beginPosition>1970-01-01T00:00:00</ns0:beginPosition>
+									<ns0:endPosition>1995-12-31T00:00:00</ns0:endPosition>
+								</ns0:TimePeriod>
+							</gmd:extent>
+						</gmd:EX_TemporalExtent>
+						<gmd:EX_SpatialTemporalExtent>
+							<gmd:extent>
+								<ns0:TimePeriod xmlns:ns0="http://www.opengis.net/gml">
+									<ns0:beginPosition>1970-01-01T00:00:00</ns0:beginPosition>
+									<ns0:endPosition>1995-12-31T00:00:00</ns0:endPosition>
+								</ns0:TimePeriod>
+							</gmd:extent>
+						</gmd:EX_SpatialTemporalExtent>
+					</gmd:temporalElement>
+				</gmd:EX_Extent>
+			</gmd:extent>
+		</gmd:MD_DataIdentification>
+	</gmd:identificationInfo>
+	<gmd:distributionInfo>
+		<gmd:MD_Distribution>
+			<gmd:distributor>
+				<gmd:MD_Distributor>
+					<gmd:distributorContact>
+						<gmd:CI_ResponsibleParty>
+							<gmd:individualName>
+								<gco:CharacterString>Open Geoportal Manager</gco:CharacterString>
+							</gmd:individualName>
+							<gmd:organisationName>
+								<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+							</gmd:organisationName>
+							<gmd:contactInfo>
+								<gmd:CI_Contact>
+									<gmd:address>
+										<gmd:CI_Address>
+											<gmd:deliveryPoint>
+												<gco:CharacterString>1510 E University Blvd.</gco:CharacterString>
+											</gmd:deliveryPoint>
+											<gmd:city>
+												<gco:CharacterString>Tucson</gco:CharacterString>
+											</gmd:city>
+											<gmd:administrativeArea>
+												<gco:CharacterString>Arizona</gco:CharacterString>
+											</gmd:administrativeArea>
+											<gmd:postalCode>
+												<gco:CharacterString>85712</gco:CharacterString>
+											</gmd:postalCode>
+											<gmd:country>
+												<gco:CharacterString>USA</gco:CharacterString>
+											</gmd:country>
+											<gmd:electronicMailAddress>
+												<gco:CharacterString>LBRY-uageoportal@email.arizona.edu</gco:CharacterString>
+											</gmd:electronicMailAddress>
+										</gmd:CI_Address>
+									</gmd:address>
+								</gmd:CI_Contact>
+							</gmd:contactInfo>
+							<gmd:role>
+								<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor">distributor</gmd:CI_RoleCode>
+							</gmd:role>
+						</gmd:CI_ResponsibleParty>
+					</gmd:distributorContact>
+					<gmd:distributorTransferOptions>
+						<gmd:MD_DigitalTransferOptions>
+							<gmd:onLine>
+								<gmd:CI_OnlineResource>
+									<gmd:linkage>
+										<gco:URL>http://dx.doi.org/10.2458/azu_geo_arizona_250kscaletopodecollared_1970to1995</gco:URL>
+									</gmd:linkage>
+								</gmd:CI_OnlineResource>
+							</gmd:onLine>
+						</gmd:MD_DigitalTransferOptions>
+					</gmd:distributorTransferOptions>
+					<gmd:distributorFormat>
+						<gmd:MD_Format>
+							<gmd:name>
+								<gco:CharacterString>GeoTIFF</gco:CharacterString>
+							</gmd:name>
+						</gmd:MD_Format>
+					</gmd:distributorFormat>
+				</gmd:MD_Distributor>
+			</gmd:distributor>
+		</gmd:MD_Distribution>
+	</gmd:distributionInfo>
+	<gmd:dataQualityInfo>
+		<gmd:DQ_DataQuality>
+			<gmd:scope>
+				<gmd:DQ_Scope>
+					<gmd:level>
+						<gmd:MD_ScopeCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+					</gmd:level>
+				</gmd:DQ_Scope>
+			</gmd:scope>
+			<gmd:report>
+				<gmd:DQ_AbsoluteExternalPositionalAccuracy>
+					<gmd:nameOfMeasure>
+						<gco:CharacterString>Horizontal Positional Accuracy Report</gco:CharacterString>
+					</gmd:nameOfMeasure>
+					<gmd:evaluationMethodDescription>
+						<gco:CharacterString/>
+					</gmd:evaluationMethodDescription>
+					<gmd:result gco:nilReason="missing"/>
+				</gmd:DQ_AbsoluteExternalPositionalAccuracy>
+			</gmd:report>
+			<gmd:report>
+				<gmd:DQ_CompletenessCommission>
+					<gmd:evaluationMethodDescription>
+						<gco:CharacterString/>
+					</gmd:evaluationMethodDescription>
+					<gmd:result gco:nilReason="unknown"/>
+				</gmd:DQ_CompletenessCommission>
+			</gmd:report>
+			<gmd:report>
+				<gmd:DQ_ConceptualConsistency>
+					<gmd:measureDescription>
+						<gco:CharacterString/>
+					</gmd:measureDescription>
+					<gmd:result gco:nilReason="unknown"/>
+				</gmd:DQ_ConceptualConsistency>
+			</gmd:report>
+			<gmd:lineage>
+				<gmd:LI_Lineage>
+					<gmd:processStep>
+						<gmi:LE_ProcessStep>
+							<gmd:description>
+								<gco:CharacterString>Create Digital Raster Graphic (DRG). The production procedures, instrumentation, hardware, and software used in the collection of standard DRG products vary depending on systems used at the contract, cooperator or USGS production sites. The majority of DRG data sets are acquired through government contract. The process step describes, in general, the process used in the production of standard DRG data sets. 1. Production of a DRG begins with the scanning of a paper 7.5-minute topographic map (map1) on a high-resolution scanner. Scanning resolutions range from 500 - 1000 dpi with the output file running between 160-300 mb. 2. Removal of screens (descreening) and color quantization to reduce the number of colors also takes place during the scanning phase. 3. The raw scan file is then transformed and georeferenced using UTM coordinates of the sixteen 2.5-minute grid ticks, which are obtained using the in-house produced program COORDAT and stored in a ground control file. Those sixteen 2.5-minute ticks are interactively visited and assigned their respective UTM coordinates. USGS program XSHAPES4 then performs a piecewise linear rubber sheet transformation. 4. An output resolution of 2.4 meters (8.2 feet) is chosen in order to resample the file to 250 dpi. 5. The image file is converted to a TIFF and further reduced by converting the file to a run length encoding Packbits compression (type 32773). 6. The color palette of the compressed DRG is then standardized by replacing the original RGB values assigned during the scanning process with standard RGB value combinations using the in-house produced TIFFREMAP program. 7. Prior to archiving the DRG undergoes the following quality assurance procedures: a. The color index values of each DRG are checked to ensure the RGB combinations are consistent with the standardized color palette. b. All DRG files are inspected to ensure that they are geometrically consistent with normal map presentation. c. Selected DRG's are checked to ensure that data elements in the DRG metadata file correspond to the map collar information and to the information in the associated image file. d. Selected DRG's are checked for georeferencing accuracy by comparing the book value of latitude and longitude tick marks with corresponding tick intersections in the DRG image. e. Transformations are checked on selected DRG's by comparing the positions of well-defined points, such as UTM grid intersections in the graphic product, with the corresponding image points in the DRG. USGS DRG production specifications are available on request from the National Mapping Division and Mid-Continent Mapping Center by contacting: Rolla-ESIC U.S. Geological Survey 1400 Independence Rd., MS231 Rolla, MO 65401-2602 Phone (573)308-3500 Facsimile (573)308-3615 E-mail to mcmcesic@usgs.gov World Wide Web: http://mcmcweb.er.usgs.gov/drg/</gco:CharacterString>
+							</gmd:description>
+							<gmd:dateTime>
+								<gco:DateTime>1996-01-01T00:00:00</gco:DateTime>
+							</gmd:dateTime>
+							<gmd:processor>
+								<gmd:CI_ResponsibleParty>
+									<gmd:organisationName>
+										<gco:CharacterString>Spatial Data Integrations Inc.</gco:CharacterString>
+									</gmd:organisationName>
+									<gmd:positionName>
+										<gco:CharacterString>Processor; distributor</gco:CharacterString>
+									</gmd:positionName>
+									<gmd:contactInfo>
+										<gmd:CI_Contact>
+											<gmd:phone>
+												<gmd:CI_Telephone>
+													<gmd:voice>
+														<gco:CharacterString>502-568-2591</gco:CharacterString>
+													</gmd:voice>
+													<gmd:facsimile>
+														<gco:CharacterString>502-568-6929</gco:CharacterString>
+													</gmd:facsimile>
+												</gmd:CI_Telephone>
+											</gmd:phone>
+											<gmd:address>
+												<gmd:CI_Address>
+													<gmd:deliveryPoint>
+														<gco:CharacterString>710 West Main Street, Suite 108</gco:CharacterString>
+													</gmd:deliveryPoint>
+													<gmd:city>
+														<gco:CharacterString>Louisville</gco:CharacterString>
+													</gmd:city>
+													<gmd:administrativeArea>
+														<gco:CharacterString>Kentucky</gco:CharacterString>
+													</gmd:administrativeArea>
+													<gmd:postalCode>
+														<gco:CharacterString>40202</gco:CharacterString>
+													</gmd:postalCode>
+													<gmd:country>
+														<gco:CharacterString>USA</gco:CharacterString>
+													</gmd:country>
+												</gmd:CI_Address>
+											</gmd:address>
+											<gmd:hoursOfService>
+												<gco:CharacterString>8:00am - 5:00pm, EST</gco:CharacterString>
+											</gmd:hoursOfService>
+										</gmd:CI_Contact>
+									</gmd:contactInfo>
+									<gmd:role>
+										<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="processor">processor</gmd:CI_RoleCode>
+									</gmd:role>
+								</gmd:CI_ResponsibleParty>
+							</gmd:processor>
+							<gmd:source xlink:href="#"/>
+						</gmi:LE_ProcessStep>
+					</gmd:processStep>
+					<gmd:processStep>
+						<gmi:LE_ProcessStep>
+							<gmd:description>
+								<gco:CharacterString>Adjusting DRG to UTM Zone 12 and remapping colormap and clipping collar. The original DRGs are adjusted (rubbersheeted) to fit an index coverage in NAD 27, UTM Zone 13. The colormap of the adjusted DRG is remapped to allow for the use of cell zero (0) as nodata cells. These nodata cells can be turned transparent in ArcView GIS 3.* to allow adjacent clipped DRGs to be displayed as a seamless dataset. Each raster entity or pixel contains a color index for 0 through 13 referencing a color palette of RGB values from 0 through 255 in which the standard colors used in the DRG are defined. USGS DRG Color Palette Digital Number Color Red Green Blue 0 (Nodata) Black 0 0 0 1 White 255 255 255 2 Blue 0 151 164 3 Red 203 0 23 4 Brown 131 66 37 5 Green 201 234 157 6 Purple 137 51 128 7 Yellow 255 234 0 8 Light Blue 167 226 226 9 Light Red 255 184 184 10 Light Purple 218 179 214 11 Light Grey 209 209 209 12 Light Brown 207 164 142 13 Black 0 0 0</gco:CharacterString>
+							</gmd:description>
+							<gmd:dateTime>
+								<gco:DateTime>2502-20-01T00:00:00</gco:DateTime>
+							</gmd:dateTime>
+						</gmi:LE_ProcessStep>
+					</gmd:processStep>
+					<gmd:processStep>
+						<gmi:LE_ProcessStep>
+							<gmd:description>
+								<gco:CharacterString>Dataset renamed from Mos_250k.tif to Arizona_250kScaleTopoDecollared_1970to1995.tif by Ben Hickson with the University of Arizona Library. Metadata fields corresponding the Open Geoportal Working Group Best Practices Guide (http://opengeoportal.org/working-groups/metadata/) were also updated.</gco:CharacterString>
+							</gmd:description>
+							<gmd:dateTime>
+								<gco:DateTime>9999-01-01T11:53:20</gco:DateTime>
+							</gmd:dateTime>
+						</gmi:LE_ProcessStep>
+					</gmd:processStep>
+					<gmd:source>
+						<gmd:LI_Source>
+							<gmd:description>
+								<gco:CharacterString>Source Contribution: Source Type: computer program</gco:CharacterString>
+							</gmd:description>
+							<gmd:sourceExtent>
+								<gmd:EX_Extent/>
+							</gmd:sourceExtent>
+						</gmd:LI_Source>
+					</gmd:source>
+				</gmd:LI_Lineage>
+			</gmd:lineage>
+		</gmd:DQ_DataQuality>
+	</gmd:dataQualityInfo>
+	<gmd:metadataMaintenance>
+		<gmd:MD_MaintenanceInformation>
+			<gmd:maintenanceAndUpdateFrequency>
+				<gmd:MD_MaintenanceFrequencyCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="annually">annually</gmd:MD_MaintenanceFrequencyCode>
+			</gmd:maintenanceAndUpdateFrequency>
+			<gmd:maintenanceNote>
+				<gco:CharacterString> This metadata was automatically generated from the FGDC Content Standard for Digital Geospatial Metadata standard (version FGDC-STD-001-1998) using the 2016-10-18 version of the FGDC RSE to ISO 19115-2 transform.</gco:CharacterString>
+			</gmd:maintenanceNote>
+			<gmd:maintenanceNote>
+				<gco:CharacterString>Translated from FGDC 2017-08-16T12:51:23.401-07:00</gco:CharacterString>
+			</gmd:maintenanceNote>
+			<gmd:contact>
+				<gmd:CI_ResponsibleParty>
+					<gmd:individualName>
+						<gco:CharacterString>Open Geoportal Manager</gco:CharacterString>
+					</gmd:individualName>
+					<gmd:organisationName>
+						<gco:CharacterString>University of Arizona Library</gco:CharacterString>
+					</gmd:organisationName>
+					<gmd:contactInfo>
+						<gmd:CI_Contact/>
+					</gmd:contactInfo>
+					<gmd:role>
+						<gmd:CI_RoleCode codeList="https://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+					</gmd:role>
+				</gmd:CI_ResponsibleParty>
+			</gmd:contact>
+		</gmd:MD_MaintenanceInformation>
+	</gmd:metadataMaintenance>
+	<gmd:referenceSystemInfo>
+		<gmd:MD_ReferenceSystem>
+			<gmd:referenceSystemIdentifier>
+				<gmd:RS_Identifier>
+					<gmd:code>
+						<gco:CharacterString>NAD83 / UTM zone 12N (EPSG:26912)</gco:CharacterString>
+					</gmd:code>
+					<gmd:codeSpace>
+						<gco:CharacterString>EPSG</gco:CharacterString>
+					</gmd:codeSpace>
+					<gmd:version>
+						<gco:CharacterString>7.9</gco:CharacterString>
+					</gmd:version>
+				</gmd:RS_Identifier>
+			</gmd:referenceSystemIdentifier>
+		</gmd:MD_ReferenceSystem>
+	</gmd:referenceSystemInfo>
+	<gmd:dataSetURI>
+		<gco:CharacterString>http://dx.doi.org/10.2458/azu_geo_arizona_250kscaletopodecollared_1970to1995</gco:CharacterString>
+	</gmd:dataSetURI>
+</gmi:MI_Metadata>

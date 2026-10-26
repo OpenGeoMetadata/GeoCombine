@@ -252,7 +252,7 @@ Some formats also support conversion into HTML for display in a web browser:
 
 #### Converting metadata into Aardvark JSON
 
-`GeoCombine::Fgdc` also implements `#to_aardvark`, which converts FGDC XML into the [OGM Aardvark schema](https://opengeometadata.org/ogm-aardvark/) and returns a `GeoCombine::GeoblacklightAardvark`:
+`GeoCombine::Fgdc` and `GeoCombine::Iso19139` also implement `#to_aardvark`, which converts FGDC or ISO 19139 XML into the [OGM Aardvark schema](https://opengeometadata.org/ogm-aardvark/) and returns a `GeoCombine::GeoblacklightAardvark`:
 
 ```ruby
 # Create a new Fgdc object
@@ -269,7 +269,7 @@ Some formats also support conversion into HTML for display in a web browser:
 > aardvark.to_json
 ```
 
-Aardvark defines some fields that FGDC has no source for, such as `gbl_suppressed_b`, and the links in a record may not be the ones you want to publish. Pass fields in and they are merged into the transformed record, replacing any derived values:
+Aardvark defines some fields that FGDC and ISO have no source for, such as `gbl_suppressed_b`, and the links in a record may not be the ones you want to publish. Pass fields in and they are merged into the transformed record, replacing any derived values:
 
 ```ruby
 > fgdc_metadata.to_aardvark(
@@ -295,7 +295,20 @@ Note about `schema_provider_s` and `id`:
 => "tufts-ecuador-drilling-towers"
 ```
 
-The transformation fills in `dct_references_s` from the citation's online linkage and the network resources of each digital form, classified by URL and by the format they're distributed in: a landing page, downloads (a labeled list when there's more than one), FGDC and HTML metadata, and OGC (WMS, WFS, WCS, WMTS) and Esri service endpoints. A browse graphic URL becomes the thumbnail, and `gbl_wxsIdentifier_s` is the layer an OGC request asks for. References you pass in replace the derived ones.
+The FGDC transformation fills in `dct_references_s` from the citation's online linkage and the network resources of each digital form, classified by URL and by the format they're distributed in: a landing page, downloads (a labeled list when there's more than one), FGDC and HTML metadata, and OGC (WMS, WFS, WCS, WMTS) and Esri service endpoints. A browse graphic URL becomes the thumbnail, and `gbl_wxsIdentifier_s` is the layer an OGC request asks for. References you pass in replace the derived ones.
+
+ISO 19139 records (including ISO 19115-2 `gmi:MI_Metadata`) work the same way. Their ids use the last segment of the `fileIdentifier`, falling back to the `dataSetURI`, the citation identifier and the title:
+
+```ruby
+> iso_metadata = GeoCombine::Iso19139.new('./tmp/opengeometadata/edu.stanford.purl/bb/338/jh/0716/iso19139.xml')
+
+> iso_metadata.to_aardvark('schema_provider_s' => 'Stanford').metadata['id']
+=> "stanford-bb338jh0716"
+```
+
+The ISO transformation also fills in `dct_references_s`, from the dataset URI, downloads, and OGC (WMS, WFS, WCS, WMTS) and Esri service links, along with `gbl_wxsIdentifier_s` from the name of an OGC link. References you pass in replace the derived ones.
+
+Some values can't be derived reliably and are left for you to pass in: `gbl_resourceType_sm` for vector data whose geometry is only described as `composite` (used for both lines and polygons), and `pcdm_memberOf_sm` and `dct_isPartOf_sm`, which take the ids of other Aardvark records.
 
 ### Migrating metadata
 

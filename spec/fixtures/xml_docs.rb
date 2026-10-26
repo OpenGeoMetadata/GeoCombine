@@ -20,6 +20,42 @@ module XmlDocs
   end
 
   ##
+  # NYU ISO19139 example from https://github.com/OpenGeoMetadata/edu.nyu/blob/dfcef04cd2fd8cc5f6e6de098b8734911c2aec40/metadata-1.0/handle/2451/3/44/91/iso19139.xml
+  #
+  # ArcGIS export of a vector point dataset with a GUID fileIdentifier, an
+  # untyped "Downloadable Data" keyword and a license URI written into the
+  # use limitation.
+  def nyu_colleges_iso
+    File.read(File.join(File.dirname(__FILE__), './docs/nyu_colleges_iso.xml'))
+  end
+
+  ##
+  # University of Arizona ISO19139 examples from https://github.com/OpenGeoMetadata/edu.uarizona/tree/42f5e656325e3d739b8fe67f8c1eae150baab8ed
+  #
+  # Vector polygon dataset with an empty fileIdentifier, so the id comes from
+  # the DOI in dataSetURI. Its lineage sources carry their own temporal extents.
+  # Upstream path: bM5/Up7/Ma/9Q/iso19139.xml
+  def arizona_reservations_iso
+    File.read(File.join(File.dirname(__FILE__), './docs/arizona_reservations_iso.xml'))
+  end
+
+  ##
+  # ISO 19115-2 (gmi:MI_Metadata) record for scanned topographic maps served
+  # as a raster, mixing GML 3.2 and GML 3.1 namespaces, with a 1970-1995 time
+  # period. Upstream path: OY5/p8N/xC/Lr/iso19139.xml
+  def arizona_topo_iso
+    File.read(File.join(File.dirname(__FILE__), './docs/arizona_topo_iso.xml'))
+  end
+
+  ##
+  # Hand-authored ISO 19115-2 record with OGC and Esri services, several
+  # downloads, GBL controlled keywords, restricted access, multiple bounding
+  # boxes and an open-ended time period
+  def services_iso
+    File.read(File.join(File.dirname(__FILE__), './docs/services_iso.xml'))
+  end
+
+  ##
   # Example FGDC XML from https://github.com/OpenGeoMetadata/edu.tufts/blob/master/0/108/220/208/fgdc.xml
   def tufts_fgdc
     File.read(File.join(File.dirname(__FILE__), './docs/tufts_fgdc.xml'))
