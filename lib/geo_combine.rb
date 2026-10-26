@@ -92,6 +92,8 @@ require 'geo_combine/ckan_metadata'
 require 'geo_combine/ogp'
 
 # Require harvesting/indexing files
+require 'geo_combine/harvester'
+require 'geo_combine/indexer'
 require 'geo_combine/geo_blacklight_harvester'
 
 # Migrators

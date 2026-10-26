@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'json'
+require 'net/http'
+require 'rsolr'
+require 'faraday/net_http_persistent'
 require 'geo_combine/logger'
 
 module GeoCombine
