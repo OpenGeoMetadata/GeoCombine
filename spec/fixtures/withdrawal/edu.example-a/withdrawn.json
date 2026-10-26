@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opengeometadata.org/schema/ogm-withdrawals-1.0.json",
+  "ogm_version": "1.0",
+  "withdrawn": [
+    { "id": "a-gone", "date": "2026-03-14", "reason": "upstream-removed" },
+    { "id": "a-contradicted", "date": "2026-03-14", "reason": "duplicate", "note": "Still published, so it stays." },
+    { "id": "b-live", "date": "2026-03-14", "note": "Another repository's live record." },
+    { "id": "a-never-indexed", "date": "2026-03-14" },
+    { "id": " a-padded ", "date": "2026-03-14" },
+    { "id": "a-undated" },
+    { "id": "a-embargoed", "date": "2026-03-14T12:00:00Z", "reason": "embargoed" }
+  ]
+}

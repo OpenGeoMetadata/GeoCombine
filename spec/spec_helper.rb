@@ -25,6 +25,9 @@ WebMock.allow_net_connect!
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
+  # Integration specs delete documents, so they only run against a disposable Solr core
+  config.filter_run_excluding :integration unless ENV['SOLR_INTEGRATION_URL']
+
   config.include Helpers
   config.include RSpecHtmlMatchers
   config.expect_with :rspec do |expectations|

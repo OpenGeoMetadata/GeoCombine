@@ -118,6 +118,36 @@ You can also set the Solr instance URL using `SOLR_URL`:
 SOLR_URL=http://www.example.com:1234/solr/collection bundle exec rake geocombine:index
 ```
 
+#### Withdrawn records
+
+An OpenGeoMetadata repository can withdraw records by listing them in a `withdrawn.json` file at its root:
+
+```json
+{
+  "$schema": "https://opengeometadata.org/schema/ogm-withdrawals-1.0.json",
+  "ogm_version": "1.0",
+  "withdrawn": [
+    { "id": "stanford-bb058zh0946", "date": "2026-03-14", "reason": "superseded" }
+  ]
+}
+```
+
+After indexing, `geocombine:index` deletes the records these files list from your Solr index. It is careful about what it deletes:
+
+- A record is only deleted if a `withdrawn.json` lists its `id` (or `layer_slug_s`, for `SCHEMA_VERSION=1.0`). Removing a record's file from a repository does not delete it from your index.
+- A record that is still present in the repository is never deleted, even if it is also listed as withdrawn. GeoCombine logs a warning instead.
+- A `withdrawn.json` that can't be read is logged and skipped; it doesn't stop indexing.
+- Repositories listed in `OGM_SKIP_REPOS` can't delete anything.
+- If the harvest stops before it has walked every record, nothing is deleted.
+
+GeoCombine keeps no record of what it has deleted. Every run deletes every withdrawn record again, which changes nothing for records that are already gone. Deletes match by `id` alone, so a withdrawn `id` that matches a record you indexed from somewhere other than OpenGeoMetadata will delete that record too.
+
+To delete withdrawn records without reindexing everything, run:
+
+```sh
+bundle exec rake geocombine:withdraw
+```
+
 #### Logging
 
 Some of the tools and scripts in this gem use Ruby's `Logger` class to print information to `$stderr`. By default, the log level is set to `Logger::INFO`. For more verbose information, you can set the `LOG_LEVEL` environment variable to `DEBUG`:
@@ -342,6 +372,12 @@ To run the tests, use:
 
 ```sh
 bundle exec rake spec
+```
+
+Some tests need a real Solr core running the GeoBlacklight schema. They delete documents, so they only run when `SOLR_INTEGRATION_URL` points at a core you don't mind them changing:
+
+```sh
+SOLR_INTEGRATION_URL=http://localhost:8983/solr/blacklight-core bundle exec rake spec
 ```
 
 ## Contributing
