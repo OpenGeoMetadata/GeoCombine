@@ -54,6 +54,14 @@ By default, GeoCombine will only fetch and index records that are not marked as 
 export OGM_SKIP_RESTRICTED=false
 ```
 
+#### GitHub API token
+
+GeoCombine uses the GitHub API to find OpenGeoMetadata repositories. Unauthenticated requests are limited to 60 per hour, and `geocombine:clone` makes one for each repository. If you hit the limit, set the `GITHUB_TOKEN` environment variable to a GitHub personal access token to raise it; the token only needs read access to public repositories:
+
+```sh
+export GITHUB_TOKEN=your-token
+```
+
 #### Clone OpenGeoMetadata repositories locally
 
 ```sh
