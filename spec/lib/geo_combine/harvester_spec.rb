@@ -281,7 +281,7 @@ RSpec.describe GeoCombine::Harvester do
         repo_url,
         nil, {
           depth: 1, # shallow clone
-          path: harvester.ogm_path
+          chdir: harvester.ogm_path
         }
       )
     end

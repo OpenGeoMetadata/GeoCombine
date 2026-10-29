@@ -114,7 +114,7 @@ module GeoCombine
         return @logger.warn "repository #{repo_url} clone to #{repo_path}; repository properties don't include schema version #{@schema_version} (found #{repo_schemas.join(', ')})"
       end
 
-      Git.clone(repo_url, nil, path: ogm_path, depth: 1)
+      Git.clone(repo_url, nil, chdir: ogm_path, depth: 1)
       @logger.info "cloned #{repo_url} to #{repo_path}"
       repo
     end
