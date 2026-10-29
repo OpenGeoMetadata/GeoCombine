@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'fileutils'
 require 'find'
 require 'git'
 require 'net/http'
@@ -114,6 +115,7 @@ module GeoCombine
         return @logger.warn "repository #{repo_url} clone to #{repo_path}; repository properties don't include schema version #{@schema_version} (found #{repo_schemas.join(', ')})"
       end
 
+      FileUtils.mkdir_p(ogm_path)
       Git.clone(repo_url, nil, chdir: ogm_path, depth: 1)
       @logger.info "cloned #{repo_url} to #{repo_path}"
       repo
