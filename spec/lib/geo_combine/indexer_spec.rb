@@ -162,6 +162,42 @@ RSpec.describe GeoCombine::Indexer do
         expect(logger).to have_received(:error).with(/502 Bad Gateway$/).at_least(:once)
       end
     end
+
+    context 'when a request to solr times out' do
+      let(:timeout) { Faraday::TimeoutError.new('Net::ReadTimeout') }
+
+      before do
+        # Timeouts have no response; RSolr raises them with the Faraday error as the cause
+        allow(solr).to receive(:update) { raise RSolr::Error::Timeout.new({ uri: URI('') }, nil), cause: timeout }
+        allow(solr).to receive(:add)
+      end
+
+      it 'attempts to index records individually' do
+        expect(indexer.index(docs)).to eq 2
+      end
+
+      it 'logs the timeout rather than raising an error while formatting' do
+        indexer.index(docs)
+        expect(logger).to have_received(:error).with('error indexing batch (2 docs): RSolr::Error::Timeout - Net::ReadTimeout')
+      end
+    end
+
+    context 'when a request to solr times out and then succeeds' do
+      subject(:indexer) { described_class.new(solr_url: 'http://solr.example.com/solr/test', logger:) }
+
+      before do
+        stub_request(:post, %r{solr\.example\.com/solr/test/update})
+          .to_raise(Net::ReadTimeout).then
+          .to_return(status: 200, body: +'{}', headers: { 'Content-Type' => 'application/json' })
+      end
+
+      it 'retries the request' do
+        expect(indexer.index(docs)).to eq 2
+        # the timed out update, the retried update, and the commit
+        expect(a_request(:post, %r{solr\.example\.com/solr/test/update})).to have_been_made.times(3)
+        expect(logger).not_to have_received(:error)
+      end
+    end
   end
 
   describe '#delete' do
@@ -225,6 +261,23 @@ RSpec.describe GeoCombine::Indexer do
       it 'still commits' do
         indexer.delete(%w[a b])
         expect(solr).to have_received(:commit)
+      end
+    end
+
+    context 'when a request to solr times out' do
+      let(:timeout) { Faraday::TimeoutError.new('Net::ReadTimeout') }
+
+      before do
+        allow(solr).to receive(:delete_by_id).with(%w[a b]) { raise RSolr::Error::Timeout.new({ uri: URI('') }, nil), cause: timeout }
+      end
+
+      it 'retries the ids individually and returns those deleted' do
+        expect(indexer.delete(%w[a b])).to eq %w[a b]
+      end
+
+      it 'logs the timeout' do
+        indexer.delete(%w[a b])
+        expect(logger).to have_received(:error).with('error deleting batch (2 ids): RSolr::Error::Timeout - Net::ReadTimeout')
       end
     end
   end

@@ -9,6 +9,10 @@ require 'geo_combine/logger'
 module GeoCombine
   # Indexes Geoblacklight documents into Solr, and deletes them
   class Indexer
+    # faraday-retry middleware normally doesn't retry POSTs, but it's safe
+    # because documents are added with overwrite and deleted by id
+    RETRY_METHODS = (Faraday::Retry::Middleware::IDEMPOTENT_METHODS + [:post]).freeze
+
     attr_reader :solr
 
     # Initialize a new indexer
@@ -123,6 +127,8 @@ module GeoCombine
 
     # Generate a friendly error message for logging including status code and message
     def format_error(error)
+      return [error.class, error.cause&.message].compact.join(' - ') unless error.response
+
       code = error.response[:status]
       status_info = "#{code} #{RSolr::Error::Http::STATUS_CODES[code.to_i]}"
       error_info = parse_solr_error(error)
@@ -146,7 +152,7 @@ module GeoCombine
 
     def client
       @client ||= Faraday.new do |conn|
-        conn.request :retry, max: 3, interval: 1, backoff_factor: 2, exceptions: [
+        conn.request :retry, max: 3, interval: 1, backoff_factor: 2, methods: RETRY_METHODS, exceptions: [
           Faraday::TimeoutError,
           Faraday::ConnectionFailed,
           Faraday::TooManyRequestsError
