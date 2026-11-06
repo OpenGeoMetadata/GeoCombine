@@ -281,9 +281,18 @@ RSpec.describe GeoCombine::Harvester do
         repo_url,
         nil, {
           depth: 1, # shallow clone
-          path: harvester.ogm_path
+          chdir: harvester.ogm_path
         }
       )
+    end
+
+    it 'creates the OGM path if it does not exist' do
+      Dir.mktmpdir do |dir|
+        ogm_path = File.join(dir, 'tmp', 'opengeometadata')
+        described_class.new(ogm_path:, logger:).clone(repo_name)
+        expect(File).to be_directory(ogm_path)
+        expect(Git).to have_received(:clone).with(repo_url, nil, { depth: 1, chdir: ogm_path })
+      end
     end
 
     it 'skips repositories that already exist' do
